@@ -17,6 +17,13 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+
+		<UpToDateCheckBuilt Include="wwwroot/css/sitenew.css" Set="Css" />
+		<UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
 	</ItemGroup>
+
+	<Target Name="Tailwind" BeforeTargets="Build">
+		<Exec Command="npm run css:build"/>
+	</Target>
 
 </Project>

@@ -5,11 +5,139 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="card shadow border-0 mt-4">
+<!-- Login Form  -->
+
+
+<div class="h-screen flex items-center flex justify-center">
+    <div class="bg-blue bg-opacity-10 backdrop-blur-lg px-10 py-12 rounded-md border max-w-md w-full">
+        <h2 class="text-3xl text-center mb-7 font-semibold">Login</h2>
+        
+        <form id="account" method="post" class="space-y-4">
+
+            <div class="mb-4 flex items-center">
+                <label asp-for="Input.Email" class="block text-sm font-medium text-gray-600">
+                    <i class="bi bi-envelope-fill text-gray-400 enlarge-icon mr-2"></i>
+                </label>
+                <input asp-for="Input.Email" class="mt-1 ml-3 p-2 w-full border rounded-md bg-transparent" autocomplete="username" aria-required="true" placeholder="Email" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(m => m.Input.Email)
+                </div>
+            </div>
+
+            <div class="mb-4 flex items-center">
+                <label asp-for="Input.Password" class="block text-sm font-medium text-gray-600">
+                    <i class="bi bi-key-fill text-gray-400 enlarge-icon mr-2"></i>
+                </label>
+                <input asp-for="Input.Password" class="mt-1 p-2 w-full border rounded-md bg-transparent" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(m => m.Input.Password)
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between text-sm mb-4">
+                <div class="flex items-center gap-1">
+                    <label asp-for="Input.RememberMe" class="flex items-center">
+                        <input class="form-checkbox" asp-for="Input.RememberMe" />
+                        <span class="ml-2">Remember me</span>
+                    </label>
+                </div>
+                <a id="forgot-password" asp-page="./ForgotPassword" class="text-blue-500">Forgot your password?</a>
+            </div>
+
+            <div class="text-center">
+                <button id="login-submit" type="submit" class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 w-full">Login</button>
+            </div>
+
+            <div class="text-sm text-center">
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-orange-200">Resend email confirmation</a>
+            </div>
+
+        </form>
+
+        @* <section>
+            <form id="account" method="post">
+
+                <div class="flex items-center border-b mb-3">
+                    <div class="mb-3 row">
+                        <label asp-for="Input.Email" class="col-sm-2 col-form-label">
+                            <i class="bi bi-envelope-fill text-gray-400 enlarge-icon"></i>
+                        </label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.Email" class="form-control py-2 outline-none bg-inherit" autocomplete="username" aria-required="true" placeholder="Email" />
+                            <div class="text-danger">
+                                @Html.ValidationMessageFor(m => m.Input.Email)
+                            </div>
+                        </div>
+                    </div>        
+                </div>
+
+                <div class="flex items-center border-b mb-3">
+                    <div class="mb-3 row">
+                        <label asp-for="Input.Password" class="col-sm-2 col-form-label">
+                            <i class="bi bi-key-fill text-gray-400 enlarge-icon"></i>
+                        </label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.Password" class="form-control py-2 outline-none bg-inherit" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                            <div class="text-danger">
+                                @Html.ValidationMessageFor(m => m.Input.Password)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-right justify-between text-s mb-4">
+                  <div class="flex items-center gap-1">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                  </div> 
+          
+                  <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                </div>
+
+                <div>
+                    <button id="login-submit" type="submit" class="bg-white hover:bg-gray-400 rounded-md text-black py-2 text-center mb-5 font-semibold">Login</button>
+                </div>
+
+                <div class="text-sm text-center">
+                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-orange-200">Resend email confirmation</a>    
+                </div>
+
+            </form>
+        </section> *@
+
+    </div>
+</div>
+
+@* <label asp-for="Input.Email" class="form-label"><i class="bi bi-envelope-fill text-gray-400 enlarge-icon"></i></label>
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <input asp-for="Input.Email" class="form-control py-2 outline-none bg-inherit w-64" autocomplete="username" aria-required="true" placeholder="Email" /> *@
+<!--Email img-->
+<!--input type="checkbox" />
+            <p>Remember password</p>
+          </div>
+          <a href="#" class="text-orange-200"> Forget password?</a>
+        </div>
+        <div
+          class="bg-white hover:bg-gray-400 rounded-md text-black py-2 text-center mb-5 font-semibold"
+        >
+          Login
+        </div>
+        <div class="text-sm text-center">
+          Don't have an account? <a href="#" class="text-orange-200">Register</a>
+        </div>
+
+        <div class="text-sm text-center">
+             <a href="#" class="text-orange-200">Resend email confirmation</a>      
+          </div-->
+
+
+@* <div class="card shadow border-0 mt-4">
     <div class="card-header bg-primary ml-0 py-4">
         <div class="row">
             <div class="col-12 text-white text-center">
-                <h2 class="py-2">Log in</h2>
+                <h2 class="py-2">Login</h2>
             </div>
         </div>
     </div>
@@ -57,7 +185,7 @@
 
         </div>
     </div>
-</div>
+</div> *@
 
 
 @section Scripts {

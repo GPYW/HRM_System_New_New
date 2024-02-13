@@ -19,7 +19,10 @@ html {
 
 body {
     margin-bottom: 60px;
-    transition: background-color .5s;   
+    transition: background-color .5s;
+    background-size: cover;
+    background-image: url('../images/bgnew.jpg');
+    background-repeat: no-repeat;
 }
 
 .sidenav {
@@ -78,4 +81,8 @@ body {
         .sidenav a {
             font-size: 18px;
         }
+}
+
+.enlarge-icon {
+    font-size: 28px;
 }
