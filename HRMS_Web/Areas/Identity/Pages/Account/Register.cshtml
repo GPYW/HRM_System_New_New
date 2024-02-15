@@ -1,8 +1,8 @@
 ﻿@page
 @model RegisterModel
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-primary ml-0 py-4">
+<div class="card shadow border-0 mt-2">
+    <div class="card-header bg-primary ml-0 py-2">
         <div class="row">
             <div class="col-12 text-white text-center">
                 <h2 class="py-2">Add New Employee</h2>
@@ -13,9 +13,32 @@
         <div class="row pt-4">
             <div class="col-md-12">
                 <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <h3 class="border-bottom pb-3 text-bg-secondary text-center">Create a new account.</h3>
+                    <h3 class="border-bottom pb-3 text-bg-secondary text-center">Create a New Account.</h3>
+
+
+
+
                     
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-floating mb-3 ">
+                            <input asp-for="Input.FirstName" class="form-control" autocomplete="FirstName" aria-required="true" placeholder="FirstName" />
+                                <label asp-for="Input.FirstName" class="ms-2 text-muted">FirstName</label>
+                                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                       
+                    <div class="col-6">
+                        <div class="form-floating mb-3 ">
+                            <input asp-for="Input.LastName" class="form-control" autocomplete="LastName" aria-required="true" placeholder="LastName" />
+                                <label asp-for="Input.LastName" class="ms-2 text-muted">LastName</label>
+                                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+
                     <div class="form-floating mb-3 col-md-12">
                         <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                         <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
@@ -31,6 +54,37 @@
                         <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
+
+                    @* <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.Address" class="form-control" autocomplete="Address" aria-required="true" placeholder="Address" />
+                        <label asp-for="Input.Address" class="ms-2 text-muted">Address</label>
+                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.MobileNo" class="form-control" autocomplete="MobileNo" aria-required="true" placeholder="MobileNo" />
+                        <label asp-for="Input.MobileNo" class="ms-2 text-muted">MobileNo</label>
+                        <span asp-validation-for="Input.MobileNo" class="text-danger"></span>
+                    </div> *@
+
+                   @*  <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3 ">
+                                <input asp-for="Input.join_date" class="form-control" autocomplete="join_date" aria-required="true" placeholder="join_date" />
+                                <label asp-for="Input.join_date" class="ms-2 text-muted">join_date</label>
+                                <span asp-validation-for="Input.join_date" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3 ">
+                                <input asp-for="Input.DOB" class="form-control" autocomplete="DOB" aria-required="true" placeholder="DOB" />
+                                <label asp-for="Input.DOB" class="ms-2 text-muted">DOB</label>
+                                <span asp-validation-for="Input.DOB" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div> *@
+
                     <div class="form-floating mb-3 col-md-6">
                         <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
                             <option disabled selected>-Select Role-</option>
