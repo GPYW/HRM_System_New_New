@@ -20,6 +20,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.AddRazorPages();
 
+// Add HttpClient for making API requests
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

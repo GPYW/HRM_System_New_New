@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace HRMS_Web.Areas.Identity.Pages.Account
 {
@@ -21,11 +23,15 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -115,6 +121,10 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    // Call the API method to log the click
+                    await LogClickApi();
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -136,5 +146,32 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+        private async Task LogClickApi()
+        {
+            using (var httpClient = _httpClientFactory.CreateClient())
+            {
+                // Read base address and endpoint URL from configuration
+                var apiConfig = _configuration.GetSection("ApiConfiguration");
+                var baseAddress = apiConfig["BaseAddress"];
+                var endpointPath = apiConfig["EndpointPath"];
+
+                // Adjust the base address as needed
+                httpClient.BaseAddress = new Uri("https://localhost:7240");
+
+                // Make a request to the LogClick endpoint
+                var response = await httpClient.GetAsync("api/LoginApi/logClick");
+
+                // Handle the response as needed
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("Click logged successfully via API.");
+                }
+                else
+                {
+                    _logger.LogError($"Error logging click via API. Status code: {response.StatusCode}");
+                }
+            }
+        }
+
     }
 }
