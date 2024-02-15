@@ -118,29 +118,27 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            //[Required]
-            //[StringLength(255, ErrorMessage = "The address field should have a maximum of 255 characters")]
-            //[DataType(DataType.Text)]
-            //[Display(Name = "Address")]
-            //public string Address { get; set; }
+            [Required]
+            [StringLength(255, ErrorMessage = "The address field should have a maximum of 255 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Address")]
+            public string Address { get; set; }
 
-            //[Required]
-            //[StringLength(10, ErrorMessage = "The MobileNo field should have a maximum of 10 characters")]
-            //[DataType(DataType.Text)]
-            //[Display(Name = "MobileNo")]
-            //public int MobileNo { get; set; }
+            [Required]
+            [StringLength(10, ErrorMessage = "The PhoneNumber field should have a maximum of 10 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "PhoneNumber")]
+            public string PhoneNumber { get; set; }
 
-            //[Required]
-            //[StringLength(15, ErrorMessage = "The Joined Date field should have a maximum of 15 characters")]
-            //[DataType(DataType.DateTime)]
-            //[Display(Name = "join_date")]
-            //public int join_date { get; set; }
+            [Required]
+            [DataType(DataType.DateTime)]
+            [Display(Name = "join_date")]
+            public DateTime join_date { get; set; }
 
-            //[Required]
-            //[StringLength(15, ErrorMessage = "The  DOB field should have a maximum of 15 characters")]
-            //[DataType(DataType.DateTime)]
-            //[Display(Name = "DOB")]
-            //public int DOB { get; set; }
+            [Required]
+            [DataType(DataType.DateTime)]
+            [Display(Name = "DOB")]
+            public DateTime DOB { get; set; }
 
             public string? Role { get; set; }
             [ValidateNever]
@@ -180,10 +178,10 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                //user.Address = Input.Address;
-                //user.MobileNo = Input.MobileNo;
-                //user.DOB = Input.DOB;
-                //user.join_date = Input.join_date;
+                user.Address = Input.Address;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.DOB = Input.DOB;
+                user.join_date = Input.join_date;
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
