@@ -76,6 +76,20 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+
+            [Required]
+            [StringLength(255, ErrorMessage = "The first name field should have a maximum of 255 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+
+            [Required]
+            [StringLength(255, ErrorMessage = "The second name field should have a maximum of 255 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -103,6 +117,30 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            //[Required]
+            //[StringLength(255, ErrorMessage = "The address field should have a maximum of 255 characters")]
+            //[DataType(DataType.Text)]
+            //[Display(Name = "Address")]
+            //public string Address { get; set; }
+
+            //[Required]
+            //[StringLength(10, ErrorMessage = "The MobileNo field should have a maximum of 10 characters")]
+            //[DataType(DataType.Text)]
+            //[Display(Name = "MobileNo")]
+            //public int MobileNo { get; set; }
+
+            //[Required]
+            //[StringLength(15, ErrorMessage = "The Joined Date field should have a maximum of 15 characters")]
+            //[DataType(DataType.DateTime)]
+            //[Display(Name = "join_date")]
+            //public int join_date { get; set; }
+
+            //[Required]
+            //[StringLength(15, ErrorMessage = "The  DOB field should have a maximum of 15 characters")]
+            //[DataType(DataType.DateTime)]
+            //[Display(Name = "DOB")]
+            //public int DOB { get; set; }
 
             public string? Role { get; set; }
             [ValidateNever]
@@ -139,6 +177,14 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                //user.Address = Input.Address;
+                //user.MobileNo = Input.MobileNo;
+                //user.DOB = Input.DOB;
+                //user.join_date = Input.join_date;
+
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
