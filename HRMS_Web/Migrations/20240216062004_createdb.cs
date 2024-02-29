@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HRMS_Web.Migrations
 {
     /// <inheritdoc />
-    public partial class addDatabase : Migration
+    public partial class createdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,7 +70,7 @@ namespace HRMS_Web.Migrations
             //    constraints: table =>
             //    {
             //        table.PrimaryKey("PK_Employee", x => x.EmployeeID);
-            //    });
+                //});
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
