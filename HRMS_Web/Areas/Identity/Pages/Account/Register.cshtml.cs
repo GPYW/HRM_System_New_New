@@ -5,10 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -36,7 +33,6 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IConfiguration Configuration;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -44,8 +40,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
-            IConfiguration configuration)
+            IEmailSender emailSender)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -54,7 +49,6 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            Configuration = configuration;
         }
 
         /// <summary>
@@ -82,6 +76,20 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+
+            [Required]
+            [StringLength(255, ErrorMessage = "The first name field should have a maximum of 255 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+
+            [Required]
+            [StringLength(255, ErrorMessage = "The second name field should have a maximum of 255 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -109,6 +117,28 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [StringLength(255, ErrorMessage = "The address field should have a maximum of 255 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+
+            [Required]
+            [StringLength(10, ErrorMessage = "The PhoneNumber field should have a maximum of 10 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "PhoneNumber")]
+            public string PhoneNumber { get; set; }
+
+            [Required]
+            [DataType(DataType.DateTime)]
+            [Display(Name = "join_date")]
+            public DateTime join_date { get; set; }
+
+            [Required]
+            [DataType(DataType.DateTime)]
+            [Display(Name = "DOB")]
+            public DateTime DOB { get; set; }
 
             public string? Role { get; set; }
             [ValidateNever]
@@ -146,6 +176,14 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.Address = Input.Address;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.DOB = Input.DOB;
+                user.join_date = Input.join_date;
+
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -153,7 +191,6 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
 
                     if (!String.IsNullOrEmpty(Input.Role))
                     {
@@ -174,9 +211,8 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.",
-                        Input.Password);
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -196,71 +232,6 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink, string password)
-        {
-            try
-            {
-                //MailMessage message = new MailMessage();
-                //SmtpClient smtpClient = new SmtpClient();
-                //message.From = new MailAddress("teamoutstanders@gmail.com");
-                //message.To.Add(email);
-                //message.Subject = subject;
-                //message.IsBodyHtml = true;
-                //message.Body = confirmLink;
-
-                //smtpClient.Port = 465;
-                //smtpClient.Host = "smtp.gmail.com";
-
-                //smtpClient.EnableSsl = true;
-                //smtpClient.UseDefaultCredentials = false;
-                //smtpClient.Credentials = new NetworkCredential("teamoutstanders@gmail.com", "vbjb gvbn bekj ekqv");
-                //smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                //smtpClient.Send(message);
-                //return true;
-
-
-                // Get SMTP settings from appsettings.json
-                var smtpSettings = Configuration.GetSection("EmailSettings");
-                var smtpServer = smtpSettings["SmtpServer"];
-                var smtpPort = int.Parse(smtpSettings["SmtpPort"]);
-                var smtpUsername = smtpSettings["SmtpUsername"];
-                var smtpPassword = smtpSettings["SmtpPassword"];
-                var enableSsl = bool.Parse(smtpSettings["EnableSsl"]);
-
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
-
-                // Use SMTP username as the sender
-                message.From = new MailAddress("pasindiyathra@gmail.com");
-
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                message.Body = $"Please confirm your account and log in using the following credentials:<br>" +
-                       $"Email: {email}<br>" +
-                       $"Password: {password}<br>" +
-                       $"Confirmation Link: <a href='{HtmlEncoder.Default.Encode(confirmLink)}'>Click here</a>.";
-
-                smtpClient.Port = smtpPort;
-                smtpClient.Host = smtpServer;
-                smtpClient.EnableSsl = enableSsl;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-
-                
-                Console.WriteLine("Email sent successfully.");
-                return true;
-            }
-            catch (Exception)
-            {
-                
-                Console.WriteLine($"Error sending email");
-                return false;
-            }
         }
 
         private ApplicationUser CreateUser()
