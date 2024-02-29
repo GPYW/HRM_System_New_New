@@ -17,12 +17,12 @@ html {
   min-height: 100%;
 }
 
-body {
+body{
     margin-bottom: 60px;
     transition: background-color .5s;
     background-size: cover;
-    background-image: url('../images/bgnew.jpg');
     background-repeat: no-repeat;
+    background-image: url('../images/frame 2 (1).png') !important;
 }
 
 .sidenav {
