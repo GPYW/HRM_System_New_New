@@ -1,7 +1,6 @@
-using HRMS_Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using HRMS_Web.Models;
+using HRMS_Web.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
