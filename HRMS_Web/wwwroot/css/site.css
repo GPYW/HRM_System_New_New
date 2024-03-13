@@ -86,3 +86,171 @@ body{
 .enlarge-icon {
     font-size: 28px;
 }
+
+
+/*main home stye
+*/
+
+.headerContainer .title,
+.headerContainer .subtitle {
+    font-weight: 500;
+    font-family: sans-serif;
+    font-size: 60px; /* Adjust the font size as needed */
+    text-align: center;
+    position: absolute;
+    top: 45%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    color: yellow;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@keyframes typing {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+/* Animate each letter */
+.headerContainer .title,
+.headerContainer .subtitle {
+    animation: typing 5s steps(40, end);
+}
+
+    /* Stop the animation after typing is done */
+    .headerContainer .title::after,
+    .headerContainer .subtitle::after {
+        content: "";
+        animation: typing-stop 0.01s 5s steps(40, end);
+    }
+
+@keyframes typing-stop {
+    from, to {
+        width: 100%;
+    }
+}
+
+/* Additional styles for .subtitle */
+.headerContainer .subtitle {
+    top: 53%; /* Adjust position as needed */
+    color: cyan; /* Change color for subtitle */
+    font-size: 20px; /* Adjust font size for subtitle */
+}
+
+
+/*main home style ends
+*/
+
+
+.navbar-nav .nav-link {
+    color: cyan;  
+}
+
+.navbar-nav .nav-link:hover {
+     color: white !important;
+}
+
+.navbar-brand {
+    color: cyan;
+}
+
+.custom-login-heading {
+    color: cyan;
+}
+
+
+.custom-login-heading {
+    color: cyan;
+    font-family: Arial, sans-serif;
+}
+.my-custom-input {
+    border-color: cyan !important;
+    border-radius: 20px !important;
+    background-color: transparent !important;
+    width: 350px !important;
+    padding-left: 20px !important;
+    font-size: 15px !important;
+    color: cyan !important;
+}
+
+.my-custom-icon {
+    font-size: 2rem;
+    color: cyan !important;
+}
+
+
+/*.my-custom-validation-message {
+    color: red;
+}*/
+
+.my-custom-validation-message {
+    margin-top: 4px;
+    margin-left: 60px;
+    font-size: 10px;
+    
+}
+
+.text-blue-500 {
+    color: cyan !important;
+}
+
+#login-submit {
+    background-color: darkblue !important;
+    color: white !important;
+    width: 40%;
+}
+
+    #login-submit:hover {
+        background-color: cyan !important;
+        color: darkblue !important;
+    }
+
+.text-orange-200 {
+    color: yellow !important;
+}
+
+.rememberMe {
+    color: cyan !important;
+}
+
+.my-custom-class {
+border-color:yellow !important}
+
+
+
+.greeting-box {
+    width: 300px;
+    height: 250px;
+    background-color: #191970;
+    color: white;
+    text-align: left;
+    padding: 40px;
+    border-radius: 5%;
+}
+
+.greeting {
+    font-size: 30px;
+    color: yellow;
+
+}
+
+.time {
+    font-size: 55px;
+    padding: 0 !important;
+    color: cyan;
+}
+
+.day {
+    font-size: 15px;
+    color: cyan;
+}
+
+.date {
+    font-size: 15px;
+    color: cyan;
+    }
