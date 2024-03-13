@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -17,6 +17,9 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
+		<ProjectReference Include="..\HRMS_Web.Models\HRMS_Web.Models.csproj" />
+		<ProjectReference Include="..\HRMS_Web.DataAccess\HRMS_Web.DataAccess.csproj" />
+
 
 		<UpToDateCheckBuilt Include="wwwroot/css/sitenew.css" Set="Css" />
 		<UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />

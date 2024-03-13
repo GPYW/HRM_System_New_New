@@ -3,7 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMS_Web", "HRMS_Web\HRMS_Web.csproj", "{61D8256E-D303-41D1-9F95-46C0CBF70646}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMS_Web", "HRMS_Web\HRMS_Web.csproj", "{61D8256E-D303-41D1-9F95-46C0CBF70646}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E2162942-172E-4D6F-A54B-DD2BB6212FC1} = {E2162942-172E-4D6F-A54B-DD2BB6212FC1}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMS_Web.DataAccess", "HRMS_Web.DataAccess\HRMS_Web.DataAccess.csproj", "{3C0856B3-AB80-47DD-8AED-CB22333BF2B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMS_Web.Models", "HRMS_Web.Models\HRMS_Web.Models.csproj", "{89E3DFA2-CA3F-44FD-994A-19127298710A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMS_Web.Utility", "HRMS_Web.Utility\HRMS_Web.Utility.csproj", "{E2162942-172E-4D6F-A54B-DD2BB6212FC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +24,18 @@ Global
 		{61D8256E-D303-41D1-9F95-46C0CBF70646}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61D8256E-D303-41D1-9F95-46C0CBF70646}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61D8256E-D303-41D1-9F95-46C0CBF70646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C0856B3-AB80-47DD-8AED-CB22333BF2B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C0856B3-AB80-47DD-8AED-CB22333BF2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C0856B3-AB80-47DD-8AED-CB22333BF2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C0856B3-AB80-47DD-8AED-CB22333BF2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89E3DFA2-CA3F-44FD-994A-19127298710A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89E3DFA2-CA3F-44FD-994A-19127298710A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89E3DFA2-CA3F-44FD-994A-19127298710A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E3DFA2-CA3F-44FD-994A-19127298710A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2162942-172E-4D6F-A54B-DD2BB6212FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2162942-172E-4D6F-A54B-DD2BB6212FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2162942-172E-4D6F-A54B-DD2BB6212FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2162942-172E-4D6F-A54B-DD2BB6212FC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
