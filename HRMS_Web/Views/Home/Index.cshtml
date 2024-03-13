@@ -1,7 +1,66 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-}
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-</div>
+    string GetGreeting()
+    {
+        string greeting = "Hello";
+
+        int hour = DateTime.Now.Hour;
+
+        if (hour >= 5 && hour < 12)
+        {
+            greeting = "Good morning";
+        }
+        else if (hour >= 12 && hour < 18)
+        {
+            greeting = "Good afternoon";
+        }
+        else if (hour >= 18 && hour < 22)
+        {
+            greeting = "Good evening";
+        }
+        else
+        {
+            greeting = "Good night";
+        }
+
+        return greeting + " !";
+    }
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Greeting Dashboard</title>
+    <link href=" ~ /css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="greeting-box">
+        <div class="greeting">@GetGreeting()</div>
+
+        <div class="time" id="currentTime">@DateTime.Now.ToString("HH:mm:ss")</div>
+        <div class="day">@DateTime.Now.ToString("dddd")</div>
+        <div class="date">@DateTime.Now.ToString("dd MMMM yyyy")</div>
+
+    </div>
+
+    <script>
+        // Function to update the time display every second
+        function updateTime() {
+            var currentTimeElement = document.getElementById('currentTime');
+            var now = new Date();
+            var hours = now.getHours().toString().padStart(2, '0');
+            var minutes = now.getMinutes().toString().padStart(2, '0');
+            var seconds = now.getSeconds().toString().padStart(2, '0');
+            currentTimeElement.textContent = hours + ":" + minutes + ":" + seconds;
+        }
+
+        // Call updateTime function initially to update the time display
+        updateTime();
+
+        // Set up a timer to call updateTime function every second
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
