@@ -1,4 +1,6 @@
-﻿@page
+﻿
+
+@page
 @model LoginModel
 
 @{
@@ -9,36 +11,45 @@
 
 
 <div class="h-screen flex items-center flex justify-center">
-    <div class="bg-blue bg-opacity-10 backdrop-blur-lg px-10 py-12 rounded-md border max-w-md w-full">
-        <h2 class="text-3xl text-center mb-7 font-semibold">Login</h2>
-        
+    <div class="bg-blue bg-opacity-10 backdrop-blur-lg px-10 py-12 rounded-md border max-w-md w-full my-custom-class">
+        <h2 class="text-3xl text-center mb-7 font-semibold custom-login-heading">Login</h2>
+
         <form id="account" method="post" class="space-y-4">
 
-            <div class="mb-4 flex items-center">
-                <label asp-for="Input.Email" class="block text-sm font-medium text-gray-600">
-                    <i class="bi bi-envelope-fill text-gray-400 enlarge-icon mr-2"></i>
-                </label>
-                <input asp-for="Input.Email" class="mt-1 ml-3 p-2 w-full border rounded-md bg-transparent" autocomplete="username" aria-required="true" placeholder="Email" />
-                <div class="text-danger">
+            <div class="mb-4 flex flex-col">
+                <div class="flex items-center">
+                    <label asp-for="Input.Email" class="block text-sm font-medium text-gray-600">
+                        <i class="bi bi-person text-gray-400 enlarge-icon mr-2 my-custom-icon"></i>
+                    </label>
+                    <input asp-for="Input.Email" class="mt-1 ml-3 p-2 w-full border rounded-md bg-transparent my-custom-input" autocomplete="username" aria-required="true" placeholder="Email" />
+                </div>
+
+                <div class="text-danger my-custom-validation-message">
                     @Html.ValidationMessageFor(m => m.Input.Email)
                 </div>
             </div>
 
-            <div class="mb-4 flex items-center">
-                <label asp-for="Input.Password" class="block text-sm font-medium text-gray-600">
-                    <i class="bi bi-key-fill text-gray-400 enlarge-icon mr-2"></i>
-                </label>
-                <input asp-for="Input.Password" class="mt-1 p-2 w-full border rounded-md bg-transparent" autocomplete="current-password" aria-required="true" placeholder="Password" />
-                <div class="text-danger">
+
+
+            <div class="mb-4 flex flex-col">
+                <div class="flex items-center">
+                    <label asp-for="Input.Password" class="block text-sm font-medium text-gray-600">
+                        <i class="bi bi-lock text-gray-400 enlarge-icon mr-2 my-custom-icon"></i>
+                    </label>
+                    <input asp-for="Input.Password" class="mt-1 ml-3 p-2 w-full border rounded-md bg-transparent my-custom-input" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                </div>
+
+                <div class="text-danger my-custom-validation-message">
                     @Html.ValidationMessageFor(m => m.Input.Password)
                 </div>
             </div>
+
 
             <div class="flex items-center justify-between text-sm mb-4">
                 <div class="flex items-center gap-1">
                     <label asp-for="Input.RememberMe" class="flex items-center">
                         <input class="form-checkbox" asp-for="Input.RememberMe" />
-                        <span class="ml-2">Remember me</span>
+                        <span class="rememberMe">Remember me</span>
                     </label>
                 </div>
                 <a id="forgot-password" asp-page="./ForgotPassword" class="text-blue-500">Forgot your password?</a>
