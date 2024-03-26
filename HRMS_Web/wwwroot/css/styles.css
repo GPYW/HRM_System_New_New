@@ -564,10 +564,6 @@ video {
   margin-left: 0px;
 }
 
-.ml-2 {
-  margin-left: 0.5rem;
-}
-
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -606,6 +602,10 @@ video {
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .items-center {
