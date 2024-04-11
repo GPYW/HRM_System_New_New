@@ -86,3 +86,63 @@ body{
 .enlarge-icon {
     font-size: 28px;
 }
+
+
+/* profile setting */
+
+.Div1 {
+    border: 5px outset rgb(255, 255, 255);
+    background: linear-gradient(90deg,white, dodgerblue);
+    width: 6cm;
+    padding: 10px 20px;
+    margin-left: 500px;
+    Border: 2px;
+}
+
+
+
+.Div2 {
+    border: 5px outset rgb(22, 14, 239);
+    background-color:rgb(22, 14, 239);
+    width: 6cm;
+    margin-left: 500px;
+    color: white;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+
+label {
+    width: 140px;
+    display: inline-block;
+    margin: 0.2cm;
+    font-size: 16px;
+}
+
+input#login {
+    margin-top: 7px;
+    color: dodgerblue;
+    font-weight: bold;
+    padding: 4px;
+    background-color: white;
+}
+
+    input#login:hover {
+        background-color: blue;
+        color: #f9f9f9;
+    }
+
+input#reset {
+    margin-top: 7px;
+    color: dodgerblue;
+    font-weight: bold;
+    padding: 4px;
+    background-color: white;
+}
+
+    input#reset:hover {
+        background-color: blue;
+        color: #f9f9f9;
+    }
