@@ -8,5 +8,17 @@ namespace HRMS_Web.Controllers
         {
             return View();
         }
+        public IActionResult Reports()
+        {
+            return View();
+        }
+        public IActionResult MarkAttendance()
+        {
+            return View();
+        }
+        public IActionResult ViewHistory()
+        {
+            return View();
+        }
     }
 }
