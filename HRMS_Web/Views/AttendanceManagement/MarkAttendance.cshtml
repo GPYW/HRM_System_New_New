@@ -60,9 +60,6 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        @* <ul class="nav nav-pills">
-        <li class="nav-item"> *@
-
         <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">Home</a>
 
         <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Reports">Reports</a>
@@ -70,18 +67,7 @@
         <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="">View History</a>
 
         <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="MarkAttendance">Mark Attendance</a>
-
-        @*  <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle"  data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Attendance Report</a>
-        <div class="dropdown-menu" style="">
-        <a class="dropdown-item" href="#">Daily Report</a>
-        <a class="dropdown-item" href="#">Monthly Report</a>
-        <a class="dropdown-item" href="#">Yearly Report</a>
-
-        </div>
-        </li> *@
-
-        @*   </ul> *@
+       
         <div />
 </nav>
 
@@ -98,22 +84,25 @@
             </div>
         </div>
         <div class="col-md-8">
-            <h2>Attendance Management</h2>
-            <form method="post" action="submitAttendance">
-                <div class="mb-3">
+
+            <form method="post" action="submitAttendance" class="row g-3">
+                <div class="col-md-4">
                     <label for="date" class="form-label">Date:</label>
                     <input type="date" class="form-control" id="date" name="date" required>
                 </div>
-                <div class="mb-3">
+                <div class="col-md-4">
                     <label for="checkInTime" class="form-label">Check-In Time:</label>
                     <input type="time" class="form-control" id="checkInTime" name="checkInTime" required>
                 </div>
-                <div class="mb-3">
+                <div class="col-md-4">
                     <label for="checkOutTime" class="form-label">Check-Out Time:</label>
                     <input type="time" class="form-control" id="checkOutTime" name="checkOutTime" required>
                 </div>
-                <button type="submit" class="btn btn-submit">Submit</button>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-submit">Submit</button>
+                </div>
             </form>
+
         </div>
     </div>
 
