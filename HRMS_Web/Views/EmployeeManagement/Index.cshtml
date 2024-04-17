@@ -40,11 +40,14 @@
                 <th>
                     MobileNo
                 </th>
+       
                 @* <th>
                     Role
                 </th> *@
-        </tr>
+                </tr>
         </thead>
+        
+     
         <tbody>
             @foreach (var obj in Model)
             {
@@ -57,12 +60,12 @@
                     <td> @obj.join_date </td>
                     <td> @obj.PhoneNumber </td>
                     <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="EmployeeManagement" asp-action="Edit" class="btn btn-success mx-4"> 
+                        <div class="w-55 btn-group" role="group">
+                            <a asp-controller="EmployeeManagement" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-4"> 
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
 
-                            <a asp-controller="EmployeeManagement" asp-action="Delete" class="btn btn-danger mx-4">
+                            <a asp-controller="EmployeeManagement" asp-action="Delete" asp-route-Id="@obj.Id" class="btn btn-danger mx-4">
                                  <i class="bi bi-trash3-fill"></i> Delete
                             </a>
                       
