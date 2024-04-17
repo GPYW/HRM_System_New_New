@@ -6,7 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-	<ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\EmployeeManagement\Create.cshtml" />
+    <Content Remove="Views\EmployeeManagement\Index1.cshtml" />
+  
+
+	
 		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.2" />
@@ -22,11 +27,8 @@
 
 
 		<UpToDateCheckBuilt Include="wwwroot/css/sitenew.css" Set="Css" />
-		<UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+		
 	</ItemGroup>
 
-	<Target Name="Tailwind" BeforeTargets="Build">
-		<Exec Command="npm run css:build" />
-	</Target>
-
+	
 </Project>
