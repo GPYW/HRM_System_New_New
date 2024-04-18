@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using HRMS_Web.Models;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 public class ProfileSettingsController : Controller
 {
@@ -32,41 +33,65 @@ public class ProfileSettingsController : Controller
         return View(userDetails);
     }
 
-
     // Action to update user details
+    public IActionResult Update()
+    {
+        // Get the ID of the currently logged-in user
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (userId == null)
+        {
+            return NotFound();
+        }
+
+        // Find the ApplicationUser based on the retrieved ID
+        ApplicationUser applicationUserFromDb = _context.ApplicationUser.Find(userId);
+
+        if (applicationUserFromDb == null)
+        {
+            return NotFound();
+        }
+
+        return View(applicationUserFromDb);
+    }
+
+
     [HttpPost]
     public IActionResult Update(ApplicationUser model)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
         if (ModelState.IsValid)
         {
-            // Update user details in the database
-            _context.ApplicationUser.Update(model);
-            _context.SaveChanges();
+            // Find the user object from the database
+            ApplicationUser obj = _context.ApplicationUser.Find(userId);
+            if (obj == null)
+            {
+                return NotFound();
+            }
 
-            return RedirectToAction("Index"); // Redirect to user details page
+            // Update properties of the ApplicationUser object
+            obj.FirstName = model.FirstName;
+            obj.LastName = model.LastName;
+            obj.Address = model.Address;
+            obj.DOB = model.DOB;
+            obj.PhoneNumber = model.PhoneNumber;
+            obj.join_date = model.join_date;
+
+            try
+            {
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // Handle concurrency conflicts if needed
+                return RedirectToAction("ConcurrencyError", "Error");
+            }
         }
-
-        return View(model); // Return to the update form with validation errors
+        // If ModelState is not valid, return to the Edit view with the model to show validation errors
+        return View(model);
     }
-
-
-
-    // Action to delete user details
-    public IActionResult Delete(String id)
-    {
-        // Retrieve user details from the database
-        var userDetails = _context.ApplicationUser.FirstOrDefault(u => u.Id == id);
-
-        if (userDetails == null)
-        {
-            return NotFound(); // Return 404 if user not found
-        }
-
-        _context.ApplicationUser.Remove(userDetails);
-        _context.SaveChanges();
-
-        return RedirectToAction("Index"); // Redirect to user details page
-    }
-
     
 }
