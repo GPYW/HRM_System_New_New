@@ -72,14 +72,28 @@
         <div />
 </nav>
 <br/>
-
-<div class="container">
 <form method="post" action="submitAttendance" class="row g-3">
     <div class="col-md-4">
         <label for="date" class="form-label">Date:</label>
         <input type="date" class="form-control" id="date" name="date" required>
     </div>
     <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+   
+</form>
+
+@* 
+ *@<div class="container">
+@* <form method="post" action="submitAttendance" class="row g-3">
+    <div class="col-md-4">
+        <label for="date" class="form-label">Date:</label>
+        <input type="date" class="form-control" id="date" name="date" required>
+    </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div> *@
+   @*  <div class="col-md-4">
         <label for="month" class="form-label">Month:</label>
         <select class="form-control" id="month" name="month" required>
             <option value="" selected disabled>Select Month</option>
@@ -109,11 +123,5 @@
             <option value="2023">2023</option>
             <option value="2024">2024</option>
         </select>
-    </div>
+    </div> *@
 
-
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-
-</form>
