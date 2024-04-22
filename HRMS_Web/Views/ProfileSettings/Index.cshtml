@@ -1,1 +1,14 @@
-﻿<h1>;odifghfdiofdjhgsdijhgdsijhgdsijhjs</h1>
+﻿@model HRMS_Web.Models.ApplicationUser
+
+<h2>User Details</h2>
+
+<div>
+    <p><strong>First Name:</strong> @Model.FirstName</p>
+    <p><strong>Last Name:</strong> @Model.LastName</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+    <!-- Add other properties as needed -->
+
+    <a asp-controller="ProfileSettings" asp-action="Update" class="btn btn-primary" id="update">Edit</a>
+</div>
+
