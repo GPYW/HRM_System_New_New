@@ -11,17 +11,25 @@ namespace HRMS_Web.Models
     public class AttendanceManagement
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RecordId { get; set; }
+
         [Required]
-        public DateTime Date { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime Date { get; set; } 
+
         [Required]
-        public TimeSpan CheckIn { get; set; }
+        [Column(TypeName = "time")]
+        public TimeSpan CheckIn { get; set; } 
+
         [Required]
-        public TimeSpan CheckOut { get; set; }
+        [Column(TypeName = "time")]
+        public TimeSpan CheckOut { get; set; } 
+
         [Required]
-        public TimeSpan Break { get; set; }
+        public string Break { get; set; } 
+
         [Required]
-        public TimeSpan OverTime { get; set; }
+        public TimeSpan OverTime { get; set; } 
     }
+
 }
