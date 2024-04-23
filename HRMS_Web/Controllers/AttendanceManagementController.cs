@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HRMS_Web.DataAccess.Data;
+using HRMS_Web.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HRMS_Web.Controllers
 {
     public class AttendanceManagementController : Controller
     {
+        private readonly ApplicationDbContext _db;
+        public AttendanceManagementController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
         public IActionResult Index()
         {
             return View();
@@ -14,11 +21,12 @@ namespace HRMS_Web.Controllers
         }
         public IActionResult MarkAttendance()
         {
-            return View();
+            return View();  
         }
         public IActionResult ViewHistory()
         {
-            return View();
+            List<AttendanceManagement> objAttendanceManagemetList = _db.AttendanceTimeTable.ToList();
+            return View(objAttendanceManagemetList);
         }
     }
 }
