@@ -1,109 +1,363 @@
-﻿    @using HRMS_Web;
+﻿@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HRMS_Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/HRMS_Web.styles.css" asp-append-version="true" />
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HRM System</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+    <link rel="stylesheet" href="~/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+
+    @*   Icons *@
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-    @* <script src="https://cdn.tailwindcss.com"></script> *@
+    <link rel="stylesheet" href="~/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
+    <link rel="stylesheet" href="~/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/AdminLTE/plugins/jqvmap/jqvmap.min.css">
+
+    <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css?v=3.2.0">
+
+    <link rel="stylesheet" href="~/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+    <link rel="stylesheet" href="~/AdminLTE/plugins/daterangepicker/daterangepicker.css">
+
+    <link rel="stylesheet" href="~/AdminLTE/plugins/summernote/summernote-bs4.min.css">
+    <script nonce="ae60b1a4-bbc8-493e-a700-9bf7c86886e8">try { (function (w, d) { !function (k, l, m, n) { k[m] = k[m] || {}; k[m].executed = []; k.zaraz = { deferred: [], listeners: [] }; k.zaraz.q = []; k.zaraz.f = function (o) { return async function () { var p = Array.prototype.slice.call(arguments); k.zaraz.q.push({ m: o, a: p }) } }; for (const q of ["track", "set", "debug"]) k.zaraz[q] = k.zaraz.f(q); k.zaraz.init = () => { var r = l.getElementsByTagName(n)[0], s = l.createElement(n), t = l.getElementsByTagName("title")[0]; t && (k[m].t = l.getElementsByTagName("title")[0].text); k[m].x = Math.random(); k[m].w = k.screen.width; k[m].h = k.screen.height; k[m].j = k.innerHeight; k[m].e = k.innerWidth; k[m].l = k.location.href; k[m].r = l.referrer; k[m].k = k.screen.colorDepth; k[m].n = l.characterSet; k[m].o = (new Date).getTimezoneOffset(); if (k.dataLayer) for (const x of Object.entries(Object.entries(dataLayer).reduce(((y, z) => ({ ...y[1], ...z[1] })), {}))) zaraz.set(x[0], x[1], { scope: "page" }); k[m].q = []; for (; k.zaraz.q.length;) { const A = k.zaraz.q.shift(); k[m].q.push(A) } s.defer = !0; for (const B of [localStorage, sessionStorage]) Object.keys(B || {}).filter((D => D.startsWith("zaraz"))).forEach((C => { try { k[m]["z" + C.slice(7)] = JSON.parse(B.getItem(C)) } catch { k[m]["z" + C.slice(7)] = B.getItem(C) } })); s.referrerPolicy = "origin"; s.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(k[m]))); r.parentNode.insertBefore(s, r) };["complete", "interactive"].includes(l.readyState) ? zaraz.init() : k.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document) } catch (e) { throw fetch("/cdn-cgi/zaraz/t"), e; };</script>
 </head>
-<body>
-    <div id="main">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+<body class="hold-transition sidebar-mini layout-collapse">
+    <div class="wrapper">
 
-
-                    @if (User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Admin))
-                    {
-                        <div class="nav-item">
-                            <span class="navbar-brand" style="font-size:30px;cursor:pointer" onclick="openNav()">
-                                <i class="bi bi-list"></i>
-                            </span>
-                        </div>
-                    }
-                
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    HRMS_Web
-                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                      @if (User.IsInRole(SD.Role_Admin)){
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="EmployeeManagement" asp-action="Index">Employee Management</a>
-                        </li>
-                      }
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <div id="mySidenav" class="sidenav navbar-dark bg-primary">
-            <span class="closebtn" onclick="closeNav()"><i class="bi bi-x"></i></span>
-
-        <ul class="navbar-nav flex-grow-1">
-            <li class="nav-item">
-                <a class="ver-nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-house-door"></i> Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="ver-nav-link" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">
-                    <i class="bi bi-list-check"></i> Attendance Management
-                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="ver-nav-link" asp-area="" asp-controller="" asp-action="">
-                    <i class="bi bi-calendar2"></i> Leave Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="ver-nav-link" asp-area="" asp-controller="" asp-action="">
-                    <i class="bi bi-bullseye"></i> Performance
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="ver-nav-link" asp-area="" asp-controller="ProfileSettings" asp-action="Index">
-                        <i class="bi bi-person-gear"></i> Profile Settings
-                </a>
-            </li>
-        </ul>
-    </div>
-
-
-    <footer class="border-top footer bg-primary text-muted">
-        <div class="text-center text-light">
-            Made with <i class="bi bi-heart-fill"></i> by Outstanders
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="~/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
-    </footer>
+
+        <nav class="main-header navbar navbar-expand navbar-dark">
+
+            @* Home Contact *@
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                @*                 <li class="nav-item d-none d-sm-inline-block">
+                <a asp-area="" asp-controller="EmployeeManagement" asp-action="Index" class="nav-link">EmployeeManagement</a>
+                </li> *@
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="navbar-search-block">
+                        <form class="form-inline">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-comments"></i>
+                        <span class="badge badge-danger navbar-badge">3</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+
+                            <div class="media">
+                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        Brad Diesel
+                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">Call me whenever you can...</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+
+                            <div class="media">
+                                <img src="~/AdminLTE/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        John Pierce
+                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">I got your message bro</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+
+                            <div class="media">
+                                <img src="~/AdminLTE/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        Nora Silvester
+                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">The subject goes here</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-envelope mr-2"></i> 4 new messages
+                            <span class="float-right text-muted text-sm">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-file mr-2"></i> 3 new reports
+                            <span class="float-right text-muted text-sm">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">Logout</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+                            <i class="bi bi-person-circle"></i> Login
+                        </a>
+                    </li>
+                }
+
+                @* <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                <i class="fas fa-th-large"></i>
+                </a>
+                </li> *@
+            </ul>
+        </nav>
+
+
+
+        @*  Side Nav *@
+
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+
+            <a href="index3.html" class="brand-link">
+                <img src="~/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">HRMS</span>
+            </a>
+
+            <div class="sidebar">
+
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="~/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a id="manage" class="d-block" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
+                    </div>
+                </div>
+
+                @* <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                <button class="btn btn-sidebar">
+                <i class="bi bi-search"></i>
+                </button>
+                </div>
+                </div>
+                </div> *@
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door"></i>
+                                <p>
+                                    Home
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="AttendanceManagement" asp-action="Index" class="nav-link">
+                                <i class="bi bi-list-check"></i>
+                                <p>
+                                    Attendance Management
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Leave Management" asp-action="Index" class="nav-link ">
+                                <i class="bi bi-house-door"></i>
+                                <p>
+                                    Leave Management
+                                </p>
+                            </a>
+                        </li>
+
+
+
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Profile Settings" asp-action="Index" class="nav-link ">
+                                <i class="bi bi-person-gear"></i>
+                                <p>
+                                    Profile Settings
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller=Performance asp-action="Index" class="nav-link ">
+                                <i class="bi bi-bullseye"></i>
+                                <p>
+                                    Performance
+                                </p>
+                            </a>
+                        </li>
+
+
+
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="EmployeeManagement" asp-action="Index" class="nav-link">
+                                <i class="bi bi-people"></i>
+                                <p>
+                                    Employee Management
+                                </p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+
+            </div>
+
+        </aside>
+
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+
+        <footer class="border-bottom footer bg-dark text-muted fixed-bottom">
+            <div class="text-center text-light">
+                Made with <i class="bi bi-heart-fill"></i> by Outstanders
+            </div>
+        </footer>
+
+        @* <aside class="control-sidebar control-sidebar-dark">
+
+        </aside> *@
+
+
+
+    </div>
+
+
+    <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
+
+    <script src="~/AdminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+
+    <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/AdminLTE/plugins/chart.js/Chart.min.js"></script>
+
+    <script src="~/AdminLTE/plugins/sparklines/sparkline.js"></script>
+
+    <script src="~/AdminLTE/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/AdminLTE/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+
+    <script src="~/AdminLTE/plugins/jquery-knob/jquery.knob.min.js"></script>
+
+    <script src="~/AdminLTE/plugins/moment/moment.min.js"></script>
+    <script src="~/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script src="~/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script src="~/AdminLTE/plugins/summernote/summernote-bs4.min.js"></script>
+
+    <script src="~/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+
+    <script src="~/AdminLTE/dist/js/adminlte.js?v=3.2.0"></script>
+
+    <script src="~/AdminLTE/dist/js/pages/dashboard.js"></script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    </div>
+
 </body>
 </html>
