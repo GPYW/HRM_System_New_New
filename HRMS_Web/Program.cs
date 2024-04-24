@@ -43,4 +43,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=MainHome}/{action=Index}/{id?}");
 
+// Add routing for API controllers
+app.MapControllers(); // This line adds routing for API controllers
+
 app.Run();
