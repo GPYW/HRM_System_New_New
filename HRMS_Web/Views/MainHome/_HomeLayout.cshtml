@@ -29,10 +29,10 @@
 
 
 </head>
-<body style="background-color:white"  class="text-primary">
+<body>
 
 	<header>
-		<a asp-area="" asp-controller="Home" asp-action="Index">
+		<a class="logo" href="#">
 			<img src="~/AdminLTE/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 			<span class="brand-text font-weight-light">HRMS</span>
 		</a>
@@ -43,12 +43,12 @@
 		<style>
 			html, body {
 				height: 100%;
-				overflow: hidden;
+				overflow: hidden; /* Prevent scrolling */
 			}
 
 			.page-content {
-				overflow-y: auto;
-				max-height: calc(100% - 130px);
+				overflow-y: auto; /* Allow scrolling within the content */
+				max-height: calc(100% - 130px); /* Adjust according to your header and footer height */
 			}
 		</style>
 
@@ -61,7 +61,7 @@
 	</div>
 
 
-	<footer class="border-top footer text-primary" style="background-color:white">
+	<footer class="border-top footer bg-primary text-white">
 
 		<span class="pt-3 pb-3">Made with <i class="bi bi-heart-fill"></i> by Outstanders</span>
 
@@ -71,9 +71,12 @@
 			<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
 			<li><a href="#"><i class="ion-social-vimeo-outline"></i></a></li>
 			<li><a href="#"><i class="ion-social-pinterest-outline"></i></a></li>
-		</ul><!-- social-icons -->
+		</ul>
 
 	</footer>
+
+	<!-- SCIPTS -->
+
 	<script src="~/AdminLTE/hometemp/common-js/jquery-3.2.1.min.js"></script>
 
 	<script src="~/AdminLTE/hometemp/common-js/tether.min.js"></script>
