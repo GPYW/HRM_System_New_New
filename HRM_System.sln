@@ -8,11 +8,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMS_Web", "HRMS_Web\HRMS_W
 		{E2162942-172E-4D6F-A54B-DD2BB6212FC1} = {E2162942-172E-4D6F-A54B-DD2BB6212FC1}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMS_Web.DataAccess", "HRMS_Web.DataAccess\HRMS_Web.DataAccess.csproj", "{3C0856B3-AB80-47DD-8AED-CB22333BF2B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMS_Web.DataAccess", "HRMS_Web.DataAccess\HRMS_Web.DataAccess.csproj", "{3C0856B3-AB80-47DD-8AED-CB22333BF2B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMS_Web.Models", "HRMS_Web.Models\HRMS_Web.Models.csproj", "{89E3DFA2-CA3F-44FD-994A-19127298710A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMS_Web.Models", "HRMS_Web.Models\HRMS_Web.Models.csproj", "{89E3DFA2-CA3F-44FD-994A-19127298710A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMS_Web.Utility", "HRMS_Web.Utility\HRMS_Web.Utility.csproj", "{E2162942-172E-4D6F-A54B-DD2BB6212FC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMS_Web.Utility", "HRMS_Web.Utility\HRMS_Web.Utility.csproj", "{E2162942-172E-4D6F-A54B-DD2BB6212FC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

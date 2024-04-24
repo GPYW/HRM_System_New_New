@@ -1,62 +1,14 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>Profile Setting</title>
-</head>
+﻿@model HRMS_Web.Models.ApplicationUser
 
-<body>
+<h2>User Details</h2>
 
-    <div class="Div1">
-        <h1>Profile Setting</h1>
-    </div>
+<div>
+    <p><strong>First Name:</strong> @Model.FirstName</p>
+    <p><strong>Last Name:</strong> @Model.LastName</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+    <!-- Add other properties as needed -->
 
+    <a asp-controller="ProfileSettings" asp-action="Update" class="btn btn-primary" id="update">Edit</a>
+</div>
 
-    <div class="Div2">
-
-
-
-        <form>
-            <label for="name">Name :</label>
-            <input type="textbox" name="name" required><br>
-            <label for="name">Date of Birth:</label>
-            <input type="date" name="bday"><br>
-            <label for="gender">Gender:</label>
-            <select>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-            </select><br>
-            <label for="address">Address:</label>
-            <input type="Textbox" name="address"><br>
-            <label for="telephone">Mobile Number:</label>
-            <input type="number" name="mobile"><br>
-            <label for="email">E-Mail:</label>
-            <input type="email" name="email"><br>
-            <label for="createpassword">Create Password:</label>
-            <input type="" password><br>
-            <label for="confirmpassword">Confirm Password:</label>
-            <input type="" password><br>
-
-
-
-            <input type="button" value="Log In" id="login">
-            <input type="button" value="Reset" id="reset">
-
-
-
-
-
-        </form>
-
-    </div>
-
-
-
-
-
-
-
-
-</body>
-
-</html>
