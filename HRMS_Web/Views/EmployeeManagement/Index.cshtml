@@ -3,20 +3,22 @@
 
 <div class="container">
     <div class="row pt-4 pb-23">
-        <div class="col-6">
-            <h2 class="text-primary">
-                Employee Management
-            </h2>
-        </div>
-        <div class="col-6 text-end">
+        
+        <div class="col-6 text-end me-3">
             <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary" id="register">
                 <i class="bi bi-person-add"></i> Add New Employee
             </a>
         </div>
     </div>
 
-    <h1> Employee List</h1>
-    <table class="table table-bordered table-striped"> 
+   
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-info">Employee List</h3>
+        </div> 
+
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>
@@ -40,6 +42,12 @@
                 <th>
                     MobileNo
                 </th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
        
                 @* <th>
                     Role
@@ -60,20 +68,24 @@
                     <td> @obj.join_date </td>
                     <td> @obj.PhoneNumber </td>
                     <td>
-                        <div class="w-55 btn-group" role="group">
-                            <a asp-controller="EmployeeManagement" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-success mx-4"> 
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-
-                            <a asp-controller="EmployeeManagement" asp-action="Delete" asp-route-Id="@obj.Id" class="btn btn-danger mx-4">
-                                 <i class="bi bi-trash3-fill"></i> Delete
-                            </a>
-                      
+                        @* <div class="w-55 btn-group" role="group"> *@
+                                <a asp-controller="EmployeeManagement" asp-action="Edit" asp-route-Id="@obj.Id" class="btn-sm btn btn-success">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            
                     </td>
-                    
+                    <td>
+                                <a asp-controller="EmployeeManagement" asp-action="Delete" asp-route-Id="@obj.Id" class="btn-sm btn btn-danger mx-4">
+                            <i class="fa fa-trash"> </i> Delete
+                        </a>
+                    </td>
+
+
 
                 </tr>
             }
         </tbody>
     </table>
+</div>
+</div>
 </div>
