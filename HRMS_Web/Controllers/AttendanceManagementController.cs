@@ -28,5 +28,20 @@ namespace HRMS_Web.Controllers
             List<AttendanceManagement> objAttendanceManagemetList = _db.AttendanceTimeTable.ToList();
             return View(objAttendanceManagemetList);
         }
+        public IActionResult AddAttendance()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddAttendance(AttendanceManagement obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.AttendanceTimeTable.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("ViewHistory");
+            }
+            return View(obj);
+        }
     }
 }
