@@ -22,14 +22,26 @@ namespace HRMS_Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
         {
-            var user = await _context.ApplicationUser.FindAsync(id);
+            var user = _context.ApplicationUser.FirstOrDefault(u => u.Id == id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return user;
+            var userModel = new Employee
+            {
+                EmployeeID = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Address = user.Address,
+                DOB = (DateTime)user.DOB,
+                join_date = (DateTime)user.join_date, // Assuming JoinDate is a property in ApplicationUser
+                MobileNo = user.PhoneNumber
+            };
+
+            return Ok(userModel);
         }
 
         // PUT: api/CategoryAPI/5
