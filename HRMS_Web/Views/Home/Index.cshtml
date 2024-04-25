@@ -11,7 +11,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard v1</li>
+                    <li class="breadcrumb-item active">Dashboard</li>
                 </ol>
             </div>
         </div>
@@ -30,7 +30,7 @@
                     <div class="icon">
                         <i class="ion ion-ios-people"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-area="" asp-controller="EmployeeManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
@@ -42,7 +42,7 @@
                     <div class="icon">
                         <i class="ion ion-calendar"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-area="" asp-controller="AttendanceManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
@@ -54,7 +54,7 @@
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-area="" asp-controller= "LeaveManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
@@ -66,7 +66,28 @@
                     <div class="icon">
                         <i class="ion ion-document-text"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a asp-area="" asp-controller="AttendanceManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="card employee-month-card flex-fill border border-info shadow" style="border-width: 2px; border-radius: 0.25rem;">
+            <div class="card-body bg-white">
+                <div class="row align-items-center">
+                    <div class="col-lg-9 col-md-12">
+                        <div class="employee-month-details">
+                            <h4>Employee of the month</h4>
+                            <p>We are really proud of the difference you have made which gives everybody the reason to applaud &amp; appreciate</p>
+                        </div>
+                        <div class="employee-month-content">
+                            <h6>Congrats, Hanna</h6>
+                            <p>UI/UX Team Lead</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <div class="employee-month-img">
+                            <img src="assets/img/employee-img.png" class="img-fluid" alt="User">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
