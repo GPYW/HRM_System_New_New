@@ -1,14 +1,153 @@
 ﻿@model HRMS_Web.Models.ApplicationUser
 
-<h2>User Details</h2>
+<!DOCTYPE html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smarthr - Bootstrap Admin Template">
+    <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+    <meta name="author" content="Dreamstechnologies - Bootstrap Admin Template">
+    <title>Employee Profile - HRMS admin template</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+
+    <link rel="stylesheet" href="assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/material.css">
+
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="assets/css/select2.min.css">
+
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+
+    <link rel="stylesheet" href="assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body>
 
 <div>
-    <p><strong>First Name:</strong> @Model.FirstName</p>
-    <p><strong>Last Name:</strong> @Model.LastName</p>
-    <p><strong>Email:</strong> @Model.Email</p>
-    <p><strong>Phone:</strong> @Model.PhoneNumber</p>
-    <!-- Add other properties as needed -->
 
-    <a asp-controller="ProfileSettings" asp-action="Update" class="btn btn-primary" id="update">Edit</a>
+    <div class="page-wrapper">
+
+        <div class="content container-fluid pb-0">
+
+
+            <div class="card mb-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="profile-view">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="profile-img-wrap">
+                                            <div class="profile-img">
+                                                <a href="#"><img src="~/images/cr7.jpg" /></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="profile-basic">
+                                            <div class="profile-info-left">
+                                                <h3 class="user-name m-t-0 mb-0">@Model.FirstName</h3>
+                                                <h6 class="text-muted">Admin</h6>
+                                                <div class="staff-id">Employee ID : @Model.Id</div>
+                                                <div class="small doj text-muted">Date of Join : @Model.join_date</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+    <div class="profile-basic">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="profile-info-left">
+                    
+
+                </div>
+            </div>
+            <div class="col-md-7">
+                <ul class="personal-info">
+                    <li>
+                        <div class="title">First Name:</div>
+                        <div class="text"><a href="#">@Model.FirstName</a></div>
+                    </li>
+                    <li>
+                        <div class="title">Last Name:</div>
+                        <div class="text"><a href="#">@Model.LastName</a></div>
+                    </li>
+                    <li>
+                        <div class="title">Address:</div>
+                        <div class="text"><a href="#">@Model.Address</a></div>
+                    </li>
+                    <li>
+                        <div class="title">Date of Birth:</div>
+                        <div class="text"><a href="#">@Model.DOB</a></div>
+                    </li>
+                    <li>
+                        <div class="title">Join Date:</div>
+                        <div class="text"><a href="#">@Model.join_date</a></div>
+                    </li>
+                    <li>
+                        <div class="title">Email:</div>
+                        <div class="text"><a href="#"><span class="__cf_email__" data-cfemail="94fefbfcfaf0fbf1d4f1ecf5f9e4f8f1baf7fbf9">@Model.Email</span></a></div>
+                    </li>
+                    @* <li>
+                        <div class="title">Gender:</div>
+                        <div class="text">@Model.Gender</div>
+                    </li> *@
+                </ul>
+
+                            <a asp-controller="ProfileSettings" asp-action="Update" class="btn btn-primary" id="update">Edit</a>
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+   @*  <div class="container">
+  < class="row">
+    <div class="col-md-6">
+      
+        <div class="form-group">
+          <label for="firstname">Firstname:</label>
+          <input type="text" class="form-control" id="firstname" name="firstname">
+        </div>
+        <div class="form-group">
+          <label for="lastname">Lastname:</label>
+          <input type="text" class="form-control" id="lastname" name="lastname">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="phone">Phone Number:</label>
+          <input type="tel" class="form-control" id="phone" name="phone">
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth:</label>
+          <input type="date" class="form-control" id="dob" name="dob">
+        </div>
+      </div> *@
+     
 </div>
 
+
+</body>
+</html>
