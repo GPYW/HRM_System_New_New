@@ -14,8 +14,8 @@
 
     <style>
         /*  body {
-                            font-family: 'Roboto', sans-serif;
-                        } */
+                                    font-family: 'Roboto', sans-serif;
+                                } */
 
         .form-control {
             margin-bottom: 20px;
@@ -60,47 +60,51 @@
     </style>
 </head>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
 
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">Home</a>
+<div class="ml-4">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid text-cneter">
 
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Reports">Reports</a>
+            <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">Home</a>
 
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="">View History</a>
+            <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Reports">Reports</a>
 
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="MarkAttendance">Mark Attendance</a>
+            <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="">View History</a>
 
-        <div />
-</nav>
-<br/>
+            <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="MarkAttendance">Mark Attendance</a>
 
-<form method="post" action="submitAttendance" class="row g-3">
-    <div class="row pt-4">
-        <div class="col-4">
-            <label for="date" class="form-label">Date:</label>
-            <input type="date" class="form-control" id="date" name="date" required>
-        </div>
-        <div class="col-4">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-    </div>  
-</form>
+    </div>
+    </nav>
+    <br/>
 
- 
-<table class="table table-boarded table-striped">
-    <thead>
-    <tr>
-        <th>Employee Id</th>
-        <th>Date</th>
-        <th>Check-In</th>
-        <th>Check-Out</th>
-        <th>Break</th>
-        <th>Over Time</th>
-    </tr>
-    </thead>
-    <tbody>
-            @foreach(var obj in Model)
+    <div class="container">
+        <form method="post" action="submitAttendance" class="row g-3">
+            <div class="row pt-4  pb-3">
+                <div class="col-4">
+                    @* <label for="date" class="form-label">Date:</label> *@
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="col-4">
+                    <a asp-controller="" asp-action="" class="btn btn-info">Search</a>
+                </div>   
+            </div>
+        </form>
+    </div>
+
+
+    <table class="table table-boarded table-striped">
+        <thead>
+            <tr>
+                <th class="bg-gradient-info">Employee Id</th>
+                <th class="bg-gradient-info">Date</th>
+                <th class="bg-gradient-info">Check-In</th>
+                <th class="bg-gradient-info">Check-Out</th>
+                <th class="bg-gradient-info">Break</th>
+                <th class="bg-gradient-info">Over Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
             {
                 <tr>
                     <td>@obj.RecordId</td>
@@ -111,7 +115,11 @@
                     <td>@obj.OverTime</td>
                 </tr>
             }
-            
-    </tbody>
-</table>
+
+        </tbody>
+    </table>
+</div>
+
+
+
 
