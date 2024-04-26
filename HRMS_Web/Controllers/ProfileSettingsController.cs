@@ -22,12 +22,11 @@ public class ProfileSettingsController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        // Now you have the userId, you can use it to retrieve user details from the database
         var userDetails = _context.ApplicationUser.FirstOrDefault(u => u.Id == userId);
 
         if (userDetails == null)
         {
-            return NotFound(); // Return 404 if user not found
+            return NotFound();
         }
 
         return View(userDetails);
@@ -36,7 +35,6 @@ public class ProfileSettingsController : Controller
     // Action to update user details
     public IActionResult Update()
     {
-        // Get the ID of the currently logged-in user
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (userId == null)
@@ -44,7 +42,6 @@ public class ProfileSettingsController : Controller
             return NotFound();
         }
 
-        // Find the ApplicationUser based on the retrieved ID
         ApplicationUser applicationUserFromDb = _context.ApplicationUser.Find(userId);
 
         if (applicationUserFromDb == null)
@@ -64,14 +61,12 @@ public class ProfileSettingsController : Controller
 
         if (ModelState.IsValid)
         {
-            // Find the user object from the database
             ApplicationUser obj = _context.ApplicationUser.Find(userId);
             if (obj == null)
             {
                 return NotFound();
             }
 
-            // Update properties of the ApplicationUser object
             obj.FirstName = model.FirstName;
             obj.LastName = model.LastName;
             obj.Address = model.Address;
@@ -86,11 +81,9 @@ public class ProfileSettingsController : Controller
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                // Handle concurrency conflicts if needed
                 return RedirectToAction("ConcurrencyError", "Error");
             }
         }
-        // If ModelState is not valid, return to the Edit view with the model to show validation errors
         return View(model);
     }
     
