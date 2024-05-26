@@ -68,7 +68,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
                 // Retrieve the password from TempData
-                var password = TempData["TempPassword"]?.ToString();
+                //var password = TempData["TempPassword"]?.ToString();
 
                 EmailConfirmationUrl = Url.Page(
                     "/Account/ConfirmEmail",
@@ -78,8 +78,8 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         area = "Identity",
                         userId = userId,
                         code = code,
-                        returnUrl = returnUrl,
-                        password = password // Pass the password in the confirmation link
+                        returnUrl = returnUrl
+                        /*password = password*/ // Pass the password in the confirmation link
                     },
                 protocol: Request.Scheme);
 
