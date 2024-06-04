@@ -4,18 +4,22 @@ using System.Linq;
 using HRMS_Web.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using HRMS_Web.ViewModel;
+using Microsoft.AspNetCore.Hosting;  // Ensure this using statement is present
+using System.IO;  // Ensure this using statement is present
+using System;
 
 public class ProfileSettingsController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    // Constructor to inject ApplicationDbContext
-    public ProfileSettingsController(ApplicationDbContext context)
+    // Constructor to inject ApplicationDbContext and IWebHostEnvironment
+    public ProfileSettingsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
     {
-        _context = context;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
     }
-
-
 
     // Action to display all user details
     public IActionResult Index(string id)
@@ -52,13 +56,10 @@ public class ProfileSettingsController : Controller
         return View(applicationUserFromDb);
     }
 
-
     [HttpPost]
     public IActionResult Update(ApplicationUser model)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
         if (ModelState.IsValid)
         {
             ApplicationUser obj = _context.ApplicationUser.Find(userId);
@@ -86,5 +87,56 @@ public class ProfileSettingsController : Controller
         }
         return View(model);
     }
-    
+
+    public ActionResult UploadPhoto()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public ActionResult UploadPhoto(EmployeeViewModel vm, ApplicationUser model)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        string stringFileName = UploadFile(vm);
+        if (ModelState.IsValid)
+        {
+            ApplicationUser obj = _context.ApplicationUser.Find(userId);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            obj.ProfileImage = stringFileName;
+
+            try
+            {
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return RedirectToAction("ConcurrencyError", "Error");
+            }
+        }
+            return RedirectToAction("Index");
+        
+        }
+
+    private string UploadFile(EmployeeViewModel vm)
+    {
+        string fileName = null;
+        if (vm.ProfileImage != null)
+        {
+            string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+            fileName = Guid.NewGuid().ToString() + "_" + vm.ProfileImage.FileName;
+            string filePath = Path.Combine(uploadDir, fileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                vm.ProfileImage.CopyTo(fileStream);
+            }
+        }
+
+        return fileName;
+    }
 }

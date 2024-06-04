@@ -1,6 +1,5 @@
 ﻿@model HRMS_Web.Models.ApplicationUser
 
-
 <div class="container">
     <div class="row">
         <div class="col-sm-8"></div>
@@ -8,16 +7,22 @@
     </div>
     <div class="row"><br /></div>
     <div class="row">
-        <div class="col-sm-3">
-            <img src="~/images/me.jpg" width="150px" height="auto" class="rounded-circle" />
+        <div class="col-sm-3" style="position: relative;">
+            <img src="~/images/@Model.ProfileImage" width="150px" height="auto" class="rounded-circle" alt="user" />
+            <a asp-action="UploadPhoto">
+                <i class="fas fa-camera" style="position: absolute; bottom: 10%; right: 40%; font-size: 22px; color: white; background-color: rgba(0, 0, 0, 0.8); border-radius: 100%; padding: 10px;"></i>
+            </a>
         </div>
+
+
         <div class="col-sm-4 align-self-center">
             <p class='h1 text-capitalize'>@Model.FirstName @Model.LastName</p>
-            <p class='h4 text-capitalize'>(Genaral Manager)</p>
+            <p class='h4 text-capitalize'>(General Manager)</p>
         </div>
         <div class="col-sm-5 d-flex">
             <div class="ms-auto">
-                <a asp-area="" asp-controller="ProfileSettings" asp-action="Update" class="btn btn-dark">Edit Details&nbsp;&nbsp;<i class="fas fa-pencil-alt"></i>
+                <a asp-area="" asp-controller="ProfileSettings" asp-action="Update" class="btn btn-dark">
+                    Edit Details&nbsp;&nbsp;<i class="fas fa-pencil-alt"></i>
                 </a>
             </div>
         </div>
@@ -29,13 +34,12 @@
         <br />
         <div class="col-sm-6">
             <div class="container mt-3">
-
                 <table class="table">
                     <tbody>
                         <tr>
                             <td>First Name</td>
                             <td>:</td>
-                            <td>@Model.FirstName</td>
+                            <td>@Model.FirstName </td>
                         </tr>
                         <tr>
                             <td>Last Name</td>
@@ -49,23 +53,21 @@
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </div>
         <div class="col-sm-6">
             <div class="container mt-3">
-
                 <table class="table">
                     <tbody>
                         <tr>
                             <td>Date of Birth</td>
                             <td>:</td>
-                            <td>@Model.DOB</td>
+                            <td>@(Model.DOB?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
                         </tr>
                         <tr>
                             <td>Join Date</td>
                             <td>:</td>
-                            <td>@Model.join_date</td>
+                            <td>@(Model.join_date?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
                         </tr>
                         <tr>
                             <td>User Name</td>
@@ -74,14 +76,12 @@
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </div><br />
         <div class="row">
             <p class="h4">Contact Details</p>
         </div>
         <div class="container mt-3">
-
             <table class="table">
                 <tbody>
                     <tr>
@@ -96,8 +96,6 @@
                     </tr>
                 </tbody>
             </table>
-
         </div>
     </div>
 </div>
-

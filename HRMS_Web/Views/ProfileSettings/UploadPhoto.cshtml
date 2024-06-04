@@ -1,0 +1,30 @@
+﻿@model HRMS_Web.ViewModel.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "UploadPhoto";
+}
+
+<h1>UploadPhoto</h1>
+
+<h4>ApplicationDbContextModelSnapshot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UploadPhoto" enctype="multipart/form-data">
+            <div class="form-control">
+                <label for="ProfileImage">Upload Photo</label>
+                <input asp-for="ProfileImage" class="form-control" />
+                <span asp-validation-for="ProfileImage" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

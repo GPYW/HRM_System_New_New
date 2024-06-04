@@ -60,15 +60,16 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-floating mb-3 ">
-                                <input asp-for="join_date" class="form-control" autocomplete="join_date" aria-required="true" placeholder="join_date" />
+                                <input type="date" asp-for="join_date" class="form-control" autocomplete="join_date" aria-required="true" placeholder="join_date" />
                                 <label class="ms-2 text-muted">join_date</label>
                                 <span asp-validation-for="join_date" class="text-danger"></span>
                             </div>
+
                         </div>
 
                         <div class="col-6">
                             <div class="form-floating mb-3 ">
-                                <input asp-for="DOB" class="form-control" autocomplete="DOB" aria-required="true" placeholder="DOB" />
+                                <input asp-for="DOB" class="form-control" autocomplete="DOB" aria-required="true" placeholder="DOB" type="date" value="2022-12-21" />
                                 <label class="ms-2 text-muted">DOB</label>
                                 <span asp-validation-for="DOB" class="text-danger"></span>
                             </div>
@@ -80,7 +81,7 @@
                             <button type="submit" class="w-100 btn btn-lg btn-primary">Update</button>
                         </div>
                         <div class="col-6 col-md-3">
-                            <a asp-controller="ProfileSettings" asp-action="Index" class="w-100 btn btn-lg btn-secondary">Cancel</a>
+                            <a asp-action="Index">Cancel</a>
                         </div>
                     </div>
 
