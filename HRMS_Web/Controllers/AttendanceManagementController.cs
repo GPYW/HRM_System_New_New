@@ -13,6 +13,10 @@ namespace HRMS_Web.Controllers
         }
         public IActionResult Index()
         {
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = "Attendance Management", Url = Url.Action("Index", "AttendanceManagement") },
+        };
             return View();
         }
         public IActionResult Reports()

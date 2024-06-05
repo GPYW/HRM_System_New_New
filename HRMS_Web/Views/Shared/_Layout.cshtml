@@ -1,5 +1,6 @@
 ﻿@using HRMS_Web;
 @using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -57,9 +58,10 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                        <i class="bi bi-house-door"></i>
-                    </a>
+                    @if (ViewData["Breadcrumb"] != null)
+                    {
+                        @await Html.PartialAsync("_Breadcrumb", ViewData["Breadcrumb"] as List<BreadcrumbItem>)
+                    }
                 </li>
             </ul>
 

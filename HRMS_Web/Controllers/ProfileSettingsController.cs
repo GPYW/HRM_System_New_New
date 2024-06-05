@@ -33,6 +33,11 @@ public class ProfileSettingsController : Controller
             return NotFound();
         }
 
+        ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = "Profile Settings", Url = Url.Action("Index", "ProfileSettings") }
+        };
+
         return View(userDetails);
     }
 
@@ -52,6 +57,12 @@ public class ProfileSettingsController : Controller
         {
             return NotFound();
         }
+
+        ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = "Profile Settings", Url = Url.Action("Index", "ProfileSettings") },
+            new BreadcrumbItem { Title = "Edit", Url = Url.Action("Edit", "ProfileSettings") }
+        };
 
         return View(applicationUserFromDb);
     }
@@ -90,6 +101,12 @@ public class ProfileSettingsController : Controller
 
     public ActionResult UploadPhoto()
     {
+        ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = "Profile Settings", Url = Url.Action("Index", "ProfileSettings") },
+            new BreadcrumbItem { Title = "Upload Profile Picture", Url = Url.Action("UploadPhoto", "ProfileSettings") }
+        };
+
         return View();
     }
 

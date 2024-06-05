@@ -1,0 +1,32 @@
+﻿@using HRMS_Web.Models;
+@using HRMS_Web;
+@model List<BreadcrumbItem>
+
+<style>
+    .breadcrumb-item a:hover {
+        background-color: #343a40 !important;
+        color: #007bff  !important;
+        opacity:1 !important;
+        font-weight:500 !important/* Example hover effect, you can customize this */
+    }
+
+    .breadcrumb-item a {
+        font-weight: 500 !important /* Example hover effect, you can customize this */
+    }
+</style>
+
+<nav>
+    <ol class="breadcrumb bg-dark mb-0">
+        @foreach (var item in Model)
+        {
+            if (item.Url != null)
+            {
+                <li class="breadcrumb-item bg-dark"><a class="text-white text-capitalize bg-dark" href="@item.Url">@item.Title</a></li>
+            }
+            else
+            {
+                <li class="breadcrumb-item bg-dark active" aria-current="page">@item.Title</li>
+            }
+        }
+    </ol>
+</nav>

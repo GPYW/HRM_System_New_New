@@ -16,11 +16,21 @@ namespace HRMS_Web.Controllers
         public IActionResult Index()
         {
             List<ApplicationUser> applicationUsers = _db.ApplicationUser.ToList();
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+        };
             return View(applicationUsers);
         }
 
         public IActionResult Register()
         {
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+            //new BreadcrumbItem { Title = "Add a New Employee", Url = Url.Action("Register","EmployeeManagement") }
+        };
             return View();
         }
 
