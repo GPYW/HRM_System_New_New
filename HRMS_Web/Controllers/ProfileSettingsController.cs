@@ -85,6 +85,7 @@ public class ProfileSettingsController : Controller
             obj.DOB = model.DOB;
             obj.PhoneNumber = model.PhoneNumber;
             obj.join_date = model.join_date;
+            obj.UserName = model.UserName;
 
             try
             {

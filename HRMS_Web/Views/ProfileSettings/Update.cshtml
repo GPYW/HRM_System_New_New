@@ -1,112 +1,106 @@
 ﻿@using HRMS_Web.Models
-
-
 @model ApplicationUser
 
 <form method="post" asp-controller="ProfileSettings" asp-action="Update">
-    <div class="card shadow border-0 mt-2">
-        <div class="card-header bg-primary ml-0 py-2">
+    <div class="card shadow border-0 mt-3">
+        <div class="card-header text-black py-2">
+            <h2 class="text-capitalize">Edit Employee Details</h2>
+        </div>
+        <div class="card-body p-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+           
             <div class="row">
-                <div class="col-12 text-white text-center">
-                    <h2 class="py-2">Edit Employee Details</h2>
+                <div class="col-md-6">
+                    <div class=" mb-3">
+                        <label asp-for="UserName" class="ms-2 text-dark">User Name</label>
+                        <input asp-for="UserName" class="form-control" autocomplete="family-name" placeholder="UserName" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class=" mb-3">
+                        <label asp-for="Id" class="ms-2 text-dark">Employee ID</label>
+                        <input asp-for="Id" class="form-control" autocomplete="family-name" readonly placeholder="@Model.Id" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-body p-4">
-            <div class="row pt-4">
-                <div class="col-md-12">
-
-
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-floating mb-3 ">
-                                <input asp-for="FirstName" class="form-control" autocomplete="FirstName" aria-required="true" placeholder="FirstName" />
-                                <label class="ms-2 text-muted">FirstName</label>
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-floating mb-3 ">
-                                <input asp-for="LastName" class="form-control" autocomplete="LastName" aria-required="true" placeholder="LastName" />
-                                <label class="ms-2 text-muted">LastName</label>
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="ms-2 text-dark" style="font-weight:600">First Name</label>
+                        <input asp-for="FirstName" class="form-control" autocomplete="given-name" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
+                </div>
 
-
-                    <div class="form-floating mb-3 col-md-12">
-                        <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                        <label class="ms-2 text-muted">Email</label>
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="col-md-6">
+                    <div class=" mb-3">
+                        <label asp-for="LastName" class="ms-2 text-dark">Last Name</label>
+                        <input asp-for="LastName" class="form-control" autocomplete="family-name" placeholder="LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
+                </div>
+            </div>
 
+            <div class=" mb-3">
+                <label asp-for="Email" class="ms-2 text-dark">Email</label>
+                <input asp-for="Email" class="form-control" readonly placeholder="@Model.Email" />
+            </div>
 
-
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Address" class="form-control" autocomplete="Address" aria-required="true" placeholder="Address" />
-                        <label class="ms-2 text-muted">Address</label>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class=" mb-3">
+                        <label asp-for="Address" class="ms-2 text-dark">Address</label>
+                        <input asp-for="Address" class="form-control" autocomplete="street-address" placeholder="Address" />
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
-
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="PhoneNumber" class="form-control" autocomplete="MobileNo" aria-required="true" placeholder="MobileNo" />
-                        <label class="ms-2 text-muted">MobileNo</label>
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-floating mb-3 ">
-                                <input type="date" asp-for="join_date" class="form-control" autocomplete="join_date" aria-required="true" placeholder="join_date" />
-                                <label class="ms-2 text-muted">join_date</label>
-                                <span asp-validation-for="join_date" class="text-danger"></span>
-                            </div>
-
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-floating mb-3 ">
-                                <input asp-for="DOB" class="form-control" autocomplete="DOB" aria-required="true" placeholder="DOB" type="date" value="2022-12-21" />
-                                <label class="ms-2 text-muted">DOB</label>
-                                <span asp-validation-for="DOB" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6 col-md-3">
-                            <button type="submit" class="w-100 btn btn-lg btn-primary">Update</button>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <a asp-action="Index">Cancel</a>
-                        </div>
-                    </div>
-
-</form>
                 </div>
 
+                <div class="col-md-6">
+                    <div class=" mb-3">
+                        <label asp-for="PhoneNumber" class="ms-2 text-dark">Mobile No</label>
+                        <input asp-for="PhoneNumber" class="form-control" autocomplete="tel" placeholder="MobileNo" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
 
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class=" mb-3">
+                        <label asp-for="join_date" class="ms-2 text-dark">Join Date</label>
+                        <input asp-for="join_date" type="date" class="form-control" readonly placeholder="join_date" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class=" mb-3">
+                        <label asp-for="DOB" class="ms-2 text-dark">Date of Birth</label>
+                        <input asp-for="DOB" type="date" class="form-control" placeholder="DOB" />
+                        <span asp-validation-for="DOB" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-3 align-items-center">
+                <div class="col-md-8 ">
+                    <label asp-for="ProfileImage" class="ms-2 text-dark">Profile Picture  :&nbsp;&nbsp;&nbsp;</label>
+                    <img src="~/images/@Model.ProfileImage" width="50px" height="auto" class="rounded-circle" alt="user" />&nbsp;&nbsp;
+                    <a asp-action="UploadPhoto" class="w-100 ">Update<i class="fas fa-camera color-black ml-1"></i></a>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dark w-100">Update</button>
+                </div>
+                <div class="col-md-2">
+                    <a asp-action="Index" class="btn btn-outline-dark w-100">Cancel</a>
+                </div>
+                
+            </div>
         </div>
     </div>
-
-
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
-
-
-
-
-
-
-
-
-
-
-
