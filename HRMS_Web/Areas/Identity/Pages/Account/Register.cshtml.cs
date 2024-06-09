@@ -176,7 +176,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("/Home/Index");
+            returnUrl ??= Url.Content("/EmployeeManagement/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -197,7 +197,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
+                    //TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
 
                     if (!String.IsNullOrEmpty(Input.Role))
                     {
@@ -217,30 +217,25 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    var subject = "HRMS System Account";
-                    var body = "<html><body> " +
-                        "Account Created Successfully.</br>" +
-                        "Username: " +Input.Email + "</br>" +
-                        "Password: " + Input.Password + "</br>" +
-                        "Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." +
-                        "</body></html>";
+                    var subject = "Confirm your email";
+                    var body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." +
+                        $"Account Credentials" +
+                        $"Username:  {Input.Email}" +
+                        $"Password:  {Input.Password}";
 
                     await _emailSender.SendEmailAsync(Input.Email, subject, body);
-                    
 
-                    //await SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.",
-                    //    Input.Password);
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //{
+                    //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    //}
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
+                    return LocalRedirect(returnUrl); // Redirect to the current user's home page
                 }
                 foreach (var error in result.Errors)
                 {

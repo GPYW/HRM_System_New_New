@@ -17,6 +17,10 @@ namespace HRMS_Web.DataAccess.Data
 
         public DbSet<AttendanceManagement> AttendanceTimeTable { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+           
+        }
     }
 }
