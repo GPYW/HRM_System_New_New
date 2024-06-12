@@ -8,117 +8,96 @@
 <!-- Login Form  -->
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
 <link rel="stylesheet" href="~/AdminLTE/plugins/fontawesome-free/css/all.min.css">
-
 <link rel="stylesheet" href="~/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-
 <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css?v=3.2.0">
-<script nonce="d1aa953a-e0e0-45d3-88e8-643307e7b832">try { (function (w, d) { !function (j, k, l, m) { j[l] = j[l] || {}; j[l].executed = []; j.zaraz = { deferred: [], listeners: [] }; j.zaraz.v = "5592"; j.zaraz.q = []; j.zaraz.f = function (n) { return async function () { var o = Array.prototype.slice.call(arguments); j.zaraz.q.push({ m: n, a: o }) } }; for (const p of ["track", "set", "debug"]) j.zaraz[p] = j.zaraz.f(p); j.zaraz.init = () => { var q = k.getElementsByTagName(m)[0], r = k.createElement(m), s = k.getElementsByTagName("title")[0]; s && (j[l].t = k.getElementsByTagName("title")[0].text); j[l].x = Math.random(); j[l].w = j.screen.width; j[l].h = j.screen.height; j[l].j = j.innerHeight; j[l].e = j.innerWidth; j[l].l = j.location.href; j[l].r = k.referrer; j[l].k = j.screen.colorDepth; j[l].n = k.characterSet; j[l].o = (new Date).getTimezoneOffset(); if (j.dataLayer) for (const w of Object.entries(Object.entries(dataLayer).reduce(((x, y) => ({ ...x[1], ...y[1] })), {}))) zaraz.set(w[0], w[1], { scope: "page" }); j[l].q = []; for (; j.zaraz.q.length;) { const z = j.zaraz.q.shift(); j[l].q.push(z) } r.defer = !0; for (const A of [localStorage, sessionStorage]) Object.keys(A || {}).filter((C => C.startsWith("_zaraz"))).forEach((B => { try { j[l]["z" + B.slice(7)] = JSON.parse(A.getItem(B)) } catch { j[l]["z" + B.slice(7)] = A.getItem(B) } })); r.referrerPolicy = "origin"; r.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(j[l]))); q.parentNode.insertBefore(r, q) };["complete", "interactive"].includes(k.readyState) ? zaraz.init() : j.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document) } catch (e) { throw fetch("/cdn-cgi/zaraz/t"), e; };</script>
-<script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
-
-<script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<script src="~/AdminLTE/dist/js/adminlte.min.js?v=3.2.0"></script>
-
-<!-- Font -->
 <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700%7CAllura" rel="stylesheet">
-
-<!-- Stylesheets -->
 <link href="~/AdminLTE/hometemp/common-css/bootstrap.css" rel="stylesheet">
-
-<!-- Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 <link href="~/AdminLTE/hometemp/common-css/ionicons.css" rel="stylesheet">
-
-<!-- REVOLUTION STYLE SHEETS -->
 <link rel="stylesheet" type="text/css" href="~/AdminLTE/hometemp/revolution/css/settings.css">
+<link href="~/AdminLTE/hometemp/01_Photography/css/styles.css" rel="stylesheet">
+<link href="~/AdminLTE/hometemp/01_Photography/css/responsive.css" rel="stylesheet">
 
-<!-- REVOLUTION JS FILES -->
+<script nonce="d1aa953a-e0e0-45d3-88e8-643307e7b832">try { (function (w, d) { !function (j, k, l, m) { j[l] = j[l] || {}; j[l].executed = []; j.zaraz = { deferred: [], listeners: [] }; j.zaraz.v = "5592"; j.zaraz.q = []; j.zaraz.f = function (n) { return async function () { var o = Array.prototype.slice.call(arguments); j.zaraz.q.push({ m: n, a: o }) } }; for (const p of ["track", "set", "debug"]) j.zaraz[p] = j.zaraz.f(p); j.zaraz.init = () => { var q = k.getElementsByTagName(m)[0], r = k.createElement(m), s = k.getElementsByTagName("title")[0]; s && (j[l].t = k.getElementsByTagName("title")[0].text); j[l].x = Math.random(); j[l].w = j.screen.width; j[l].h = j.screen.height; j[l].j = j.innerHeight; j[l].e = j.innerWidth; j[l].l = j.location.href; j[l].r = k.referrer; j[l].k = j.screen.colorDepth; j[l].n = k.characterSet; j[l].o = (new Date).getTimezoneOffset(); if (j.dataLayer) for (const w of Object.entries(Object.entries(dataLayer).reduce(((x, y) => ({ ...x[1], ...y[1] })), {}))) zaraz.set(w[0], w[1], { scope: "page" }); j[l].q = []; for (; j.zaraz.q.length;) { const z = j.zaraz.q.shift(); j[l].q.push(z) } r.defer = !0; for (const A of [localStorage, sessionStorage]) Object.keys(A || {}).filter((C => C.startsWith("_zaraz"))).forEach((B => { try { j[l]["z" + B.slice(7)] = JSON.parse(A.getItem(B)) } catch { j[l]["z" + B.slice(7)] = A.getItem(B) } })); r.referrerPolicy = "origin"; r.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(j[l]))); q.parentNode.insertBefore(r, q) };["complete", "interactive"].includes(k.readyState) ? zaraz.init() : j.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document) } catch (e) { throw fetch("/cdn-cgi/zaraz/t"), e; };</script>
+
+<script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/AdminLTE/dist/js/adminlte.min.js?v=3.2.0"></script>
 <script type="text/javascript" src="~/AdminLTE/hometemp/revolution/js/jquery.themepunch.tools.min.js"></script>
 <script type="text/javascript" src="~/AdminLTE/hometemp/revolution/js/jquery.themepunch.revolution.min.js"></script>
 
-<link href="~/AdminLTE/hometemp/01_Photography/css/styles.css" rel="stylesheet">
+<div>
+    <img src="~/images/login3.png" style="position:absolute;"/>
+</div>
 
-<link href="~/AdminLTE/hometemp/01_Photography/css/responsive.css" rel="stylesheet">
+<div class="row" >
+    <div class="col-sm-6 d-flex align-items-center justify-content-center" style="height: 100vh;">
+        <div class="row d-flex flex-column align-items-center">
+            <p style="color:white; font-size:30px; font-weight:600;">Welcome Back :)</p>
+            <img src="~/images/logo-nobg1.png" width="auto" height="250" />
+            <p style="color:#2993b8; font-size:30px; font-weight:600;">Outstanders</p>
+            <p style="margin-top:-5%; color:white; font-size:20px; font-weight:600;">Solutions</p>
 
+        </div>
+    </div>
 
-<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="login-box">
-        <div class="card card-outline card-light">
-            <div class="card-header text-center">
-                <h2><b>Login</b></h2>
+    <div class="col-sm-6 d-flex align-items-center justify-content-start" style="height: 100vh;">
+        <div class="login-box">
+            <div class="card card-outline card-dark">
+                <div class="card-header text-center" style="background-color:#343a40;">
+                    <h2 style="color:white; font-weight:100;">Login</h2>
+                </div>
+                <div class="card-body" style="background-color: rgba(255, 255, 255, 0.5);">
+                    <form id="account" method="post">
+                            <div class="input-group mb-3">
+                                <input type="email" asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-envelope"></span>
+                                    </div>
+                                </div>
+                                <div class="text-danger">
+                                    @Html.ValidationMessageFor(m => m.Input.Email)
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input type="password" asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-lock"></span>
+                                    </div>
+                                </div>
+                                <div class="text-danger">
+                                    @Html.ValidationMessageFor(m => m.Input.Password)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="icheck-primary">
+                                        <input type="checkbox" id="remember" asp-for="Input.RememberMe" />
+                                        <label style="font-weight:100; font-size:12px;"for="remember">
+                                            Remember Me
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                            <button id="login-submit" type="submit" class="btn btn-dark btn-block">Login</button><br />
+                            <div class="text-sm text-center">
+                                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-orange-200">Resend email confirmation</a>
+                            </div>
+                            <div class="text-sm text-center">
+                                <a id="forgot-password" asp-page="./ForgotPassword">Forgot password</a>
+                            </div>
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <p class="login-box-msg">Sign in to your account</p>
-                <form id="account" method="post">
-
-                    <div class="input-group mb-3">
-                        <input type="email" asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                        <div class="text-danger">
-                            @Html.ValidationMessageFor(m => m.Input.Email)
-                        </div>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        @* <label asp-for="Input.Password" class="block text-sm font-medium text-gray-600">
-                        <i class="bi bi-key-fill text-gray-400 enlarge-icon mr-2"></i>
-                        </label> *@
-                        <input type="password" asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                        <div class="text-danger">
-                            @Html.ValidationMessageFor(m => m.Input.Password)
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="icheck-primary">
-                                @* <label asp-for="Input.RememberMe" class="flex items-center">
-                                <input class="form-checkbox" asp-for="Input.RememberMe" />
-                                <span class="ml-2">Remember me</span>
-                                </label> *@
-                                @* </div>
-                                <a id="forgot-password" asp-page="./ForgotPassword" class="text-blue-500">Forgot your password?</a>
-                                </div> *@
-                                <input type="checkbox" id="remember" asp-for="Input.RememberMe" />
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <a id="forgot-password" asp-page="./ForgotPassword">Forgot password</a>
-
-                        </div>
-                    </div>
-
-                    <div class="text-sm text-center">
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-orange-200">Resend email confirmation</a>
-                    </div>
-
-                    <button id="login-submit" type="submit" class="btn btn-primary btn-block">Login</button>
-                </form>
-
-
-            </div>
-
         </div>
     </div>
 </div>
 
-
-
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"   />
+    <partial name="_ValidationScriptsPartial" />
 }
