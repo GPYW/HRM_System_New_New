@@ -176,7 +176,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("/Home/Index");
+            returnUrl ??= Url.Content("/EmployeeManagement/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -197,7 +197,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
+                    //TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
 
                     if (!String.IsNullOrEmpty(Input.Role))
                     {
@@ -208,7 +208,6 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, SD.Role_Employee);
                     }
 
-
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -218,19 +217,25 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.",
-                        Input.Password);
+                    var subject = "Confirm your email";
+                    var body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." +
+                        $"Account Credentials" +
+                        $"Username:  {Input.Email}" +
+                        $"Password:  {Input.Password}";
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    await _emailSender.SendEmailAsync(Input.Email, subject, body);
+
+
+                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //{
+                    //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    //}
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
+                    return LocalRedirect(returnUrl); // Redirect to the current user's home page
                 }
                 foreach (var error in result.Errors)
                 {
@@ -240,71 +245,6 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink, string password)
-        {
-            try
-            {
-                //MailMessage message = new MailMessage();
-                //SmtpClient smtpClient = new SmtpClient();
-                //message.From = new MailAddress("teamoutstanders@gmail.com");
-                //message.To.Add(email);
-                //message.Subject = subject;
-                //message.IsBodyHtml = true;
-                //message.Body = confirmLink;
-
-                //smtpClient.Port = 465;
-                //smtpClient.Host = "smtp.gmail.com";
-
-                //smtpClient.EnableSsl = true;
-                //smtpClient.UseDefaultCredentials = false;
-                //smtpClient.Credentials = new NetworkCredential("teamoutstanders@gmail.com", "vbjb gvbn bekj ekqv");
-                //smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                //smtpClient.Send(message);
-                //return true;
-
-
-                // Get SMTP settings from appsettings.json
-                var smtpSettings = Configuration.GetSection("EmailSettings");
-                var smtpServer = smtpSettings["SmtpServer"];
-                var smtpPort = int.Parse(smtpSettings["SmtpPort"]);
-                var smtpUsername = smtpSettings["SmtpUsername"];
-                var smtpPassword = smtpSettings["SmtpPassword"];
-                var enableSsl = bool.Parse(smtpSettings["EnableSsl"]);
-
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
-
-                // Use SMTP username as the sender
-                message.From = new MailAddress("pasindiyathra@gmail.com");
-
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                message.Body = $"Please confirm your account and log in using the following credentials:<br>" +
-                       $"Email: {email}<br>" +
-                       $"Password: {password}<br>" +
-                       $"Confirmation Link: <a href='{HtmlEncoder.Default.Encode(confirmLink)}'>Click here</a>.";
-
-                smtpClient.Port = smtpPort;
-                smtpClient.Host = smtpServer;
-                smtpClient.EnableSsl = enableSsl;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-
-
-                Console.WriteLine("Email sent successfully.");
-                return true;
-            }
-            catch (Exception)
-            {
-
-                Console.WriteLine($"Error sending email");
-                return false;
-            }
         }
 
         private ApplicationUser CreateUser()

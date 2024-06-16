@@ -17,7 +17,7 @@ namespace HRMS_Web.Controllers
             _db = db;
         }
 
-        // GET: api/CategoryAPI
+        // GET: api/EmployeeManagementAPI
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetApplicationUser()
         {
@@ -36,7 +36,7 @@ namespace HRMS_Web.Controllers
             return Ok(users);
         }
 
-        // GET: api/CategoryAPI/5
+        // GET: api/EmployeeManagementAPI/ID
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
         {
@@ -63,7 +63,7 @@ namespace HRMS_Web.Controllers
 
         }
 
-        // POST: api/CategoryAPI
+        // POST: api/EmployeeManagementAPI
         [HttpPost]
         public async Task<ActionResult<ApplicationUser>> PostApplicationUser(ApplicationUser user)
         {
@@ -102,7 +102,7 @@ namespace HRMS_Web.Controllers
             return NoContent();
         }
 
-        // DELETE: api/CategoryAPI/5
+        // DELETE: api/EmployeeManagementAPI/ID
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApplicationUser(string id)
         {
