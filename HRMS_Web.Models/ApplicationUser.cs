@@ -10,5 +10,8 @@ namespace HRMS_Web.Models
         public DateTime? DOB { get; set; }
         public DateTime? join_date { get; set; }
         public string? ProfileImage { get; set; }
+
+        // Navigation property to LeaveRequestModel
+        public ICollection<LeaveRequestModel> LeaveRequests { get; set; } = new List<LeaveRequestModel>();
     }
 }

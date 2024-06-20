@@ -16,6 +16,27 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         public DbSet<AttendanceManagement> AttendanceTimeTable { get; set; }
+        
+        public DbSet<LeaveRequestModel> LeaveRequests { get; set; }
+
+        public DbSet<LeaveManagement> LeaveManagement { get; set; }
+        public object LeaveRequestTable { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LeaveRequestModel>()
+                .HasOne(lr => lr.LeaveManagement)
+                .WithMany(lm => lm.LeaveRequests)
+                .HasForeignKey(lr => lr.LeaveId)
+                .IsRequired();
+
+            modelBuilder.Entity<LeaveRequestModel>()
+               .HasOne(l => l.User)
+               .WithMany(u => u.LeaveRequests)
+               .HasForeignKey(l => l.Id)
+                .IsRequired();
+        }
+
 
 
     }
