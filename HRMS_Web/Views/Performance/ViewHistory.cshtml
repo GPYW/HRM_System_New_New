@@ -1,0 +1,248 @@
+﻿ @model HRMS_Web.Models.ApplicationUser
+@using HRMS_Web.ViewModel;
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View History</title>
+    <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        body {
+            background-color: #f0f8ff;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History </a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>View History</h2>
+
+        <!-- Filter Options -->
+        <div class="filter-section">
+            <h4>Filters</h4>
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="dateRange">Date Range</label>
+                        <input type="date" id="startDate" class="form-control">
+                        <input type="date" id="endDate" class="form-control mt-2">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="projectFilter">Project</label>
+                        <select id="projectFilter" class="form-control">
+                            <option value="all">All Projects</option>
+                            <!-- Populate with project options -->
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="statusFilter">Status</label>
+                        <select id="statusFilter" class="form-control">
+                            <option value="all">All Statuses</option>
+                            <option value="completed">Completed</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="not-started">Not Started</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Historical Performance Charts -->
+        <div class="chart-container">
+            <h4>Historical Performance</h4>
+            <div id="line_chart_div"></div>
+            <div id="bar_chart_div"></div>
+            <div id="pie_chart_div"></div>
+        </div>
+
+        <!-- Task and Project Logs -->
+        <div class="logs-section mt-4">
+            <h4>Logs</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Changed By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populate with log entries -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Completion Timelines -->
+        <div class="timeline-section mt-4">
+            <h4>Completion Timelines</h4>
+            <div id="gantt_chart_div"></div>
+        </div>
+
+        <!-- Comments and Feedback -->
+        <div class="comments-section mt-4">
+            <h4>Comments and Feedback</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Commenter</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populate with comments and feedback -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Export Options -->
+        <div class="export-section mt-4">
+            <button class="btn btn-secondary">Export as CSV</button>
+            <button class="btn btn-secondary">Export as PDF</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Load Google Charts
+        google.charts.load('current', { 'packages': ['corechart', 'gantt'] });
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            // Example Line Chart
+            var lineData = google.visualization.arrayToDataTable([
+                ['Month', 'Completed Tasks'],
+                ['Jan', 30],
+                ['Feb', 50],
+                ['Mar', 40],
+                ['Apr', 60],
+                ['May', 80],
+                ['Jun', 70]
+            ]);
+
+            var lineOptions = {
+                title: 'Task Completion Over Time',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var lineChart = new google.visualization.LineChart(document.getElementById('line_chart_div'));
+            lineChart.draw(lineData, lineOptions);
+
+            // Example Bar Chart
+            var barData = google.visualization.arrayToDataTable([
+                ['Month', 'Completed Tasks'],
+                ['Jan', 30],
+                ['Feb', 50],
+                ['Mar', 40],
+                ['Apr', 60],
+                ['May', 80],
+                ['Jun', 70]
+            ]);
+
+            var barOptions = {
+                title: 'Monthly Task Completion',
+                legend: { position: 'none' }
+            };
+
+            var barChart = new google.visualization.BarChart(document.getElementById('bar_chart_div'));
+            barChart.draw(barData, barOptions);
+
+            // Example Pie Chart
+            var pieData = google.visualization.arrayToDataTable([
+                ['Status', 'Number of Tasks'],
+                ['Completed', 45],
+                ['In Progress', 25],
+                ['Not Started', 30]
+            ]);
+
+            var pieOptions = {
+                title: 'Task Status Distribution'
+            };
+
+            var pieChart = new google.visualization.PieChart(document.getElementById('pie_chart_div'));
+            pieChart.draw(pieData, pieOptions);
+
+            // Example Gantt Chart
+            var ganttData = new google.visualization.DataTable();
+            ganttData.addColumn('string', 'Task ID');
+            ganttData.addColumn('string', 'Task Name');
+            ganttData.addColumn('string', 'Resource');
+            ganttData.addColumn('date', 'Start Date');
+            ganttData.addColumn('date', 'End Date');
+            ganttData.addColumn('number', 'Duration');
+            ganttData.addColumn('number', 'Percent Complete');
+            ganttData.addColumn('string', 'Dependencies');
+
+            ganttData.addRows([
+                ['Design', 'Design Phase', null, new Date(2024, 0, 1), new Date(2024, 0, 31), null, 100, null],
+                ['Development', 'Development Phase', null, new Date(2024, 1, 1), new Date(2024, 3, 30), null, 60, 'Design'],
+                ['Testing', 'Testing Phase', null, new Date(2024, 4, 1), new Date(2024, 4, 31), null, 0, 'Development']
+            ]);
+
+            var ganttOptions = {
+                height: 300,
+                gantt: {
+                    criticalPathEnabled: true,
+                    criticalPathStyle: {
+                        stroke: '#e64a19',
+                        strokeWidth: 5
+                    },
+                    labelStyle: {
+                        fontName: 'Arial',
+                        fontSize: 12,
+                        color: '#1a237e'
+                    },
+                    palette: [
+                        {
+                            "color": "#00acc1",
+                            "dark": "#007c91",
+                            "light": "#33c9dc"
+                        },
+                        {
+                            "color": "#8e24aa",
+                            "dark": "#5c007a",
+                            "light": "#c158dc"
+                        }
+                    ]
+                }
+            };
+
+            var ganttChart = new google.visualization.Gantt(document.getElementById('gantt_chart_div'));
+            ganttChart.draw(ganttData, ganttOptions);
+        }
+
+        function applyFilters() {
+            // Function to apply filters and update charts and logs
+            alert('Filters applied');
+            // Fetch and display filtered data
+        }
+    </script>
+</body>
+
+</html>
