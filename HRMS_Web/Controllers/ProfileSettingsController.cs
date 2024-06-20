@@ -71,7 +71,6 @@ public class ProfileSettingsController : Controller
     public IActionResult Update(ApplicationUser model)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (ModelState.IsValid)
         {
             ApplicationUser obj = _context.ApplicationUser.Find(userId);
             if (obj == null)
@@ -97,7 +96,6 @@ public class ProfileSettingsController : Controller
                 return RedirectToAction("ConcurrencyError", "Error");
             }
         }
-        return View(model);
     }
 
     public ActionResult UploadPhoto()
@@ -116,7 +114,6 @@ public class ProfileSettingsController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         string stringFileName = UploadFile(vm);
-        if (ModelState.IsValid)
         {
             ApplicationUser obj = _context.ApplicationUser.Find(userId);
 
@@ -137,7 +134,6 @@ public class ProfileSettingsController : Controller
                 return RedirectToAction("ConcurrencyError", "Error");
             }
         }
-            return RedirectToAction("Index");
         
         }
 
