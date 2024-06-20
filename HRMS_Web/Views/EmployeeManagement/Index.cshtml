@@ -37,6 +37,7 @@
                     <th style="font-weight:600;">DOB</th>
                     <th style="font-weight:600;">Join Date</th>
                     <th style="font-weight:600;">Mobile No</th>
+                    <th style="font-weight:600;">Department</th>
                     <th style="font-weight:600;">Edit</th>
                 </tr>
             </thead>
@@ -54,6 +55,7 @@
                         <td>@(obj.DOB?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
                         <td>@(obj.join_date?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
                         <td>@obj.PhoneNumber</td>
+                        <td>@obj.Department?.DepartmentName</td>
                         <td>
                             <a asp-controller="EmployeeManagement" asp-action="Edit" asp-route-Id="@obj.Id" class="btn-sm btn btn-outline-dark">
                                 <i class="fas fa-edit"></i> Edit

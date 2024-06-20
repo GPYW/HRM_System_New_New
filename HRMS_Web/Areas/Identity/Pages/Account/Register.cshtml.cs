@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using HRMS_Web.DataAccess.Data;
 using HRMS_Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -23,12 +24,15 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace HRMS_Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
+
     {
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -39,6 +43,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         private readonly IConfiguration Configuration;
 
         public RegisterModel(
+            ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IUserStore<IdentityUser> userStore,
@@ -47,6 +52,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             IConfiguration configuration)
         {
+            _context = context;
             _roleManager = roleManager;
             _userManager = userManager;
             _userStore = userStore;
@@ -146,6 +152,13 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             [Display(Name = "DOB")]
             public DateTime DOB { get; set; }
 
+            [Required]
+            [Display(Name = "Department")]
+            public string DepartmentID { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> DepartmentList { get; set; }
+
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
@@ -167,7 +180,12 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 {
                     Text = i,
                     Value = i
-                })
+                }),
+                DepartmentList = _context.Department.Select(d => new SelectListItem
+                {
+                    Text = d.DepartmentName,
+                    Value = d.DepartmentID
+                }).ToList()
             };
 
             ReturnUrl = returnUrl;
@@ -188,6 +206,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 user.PhoneNumber = Input.PhoneNumber;
                 user.DOB = Input.DOB;
                 user.join_date = Input.join_date;
+                user.DepartmentID = Input.DepartmentID;
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -242,6 +261,11 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            Input.DepartmentList = _context.Department.Select(d => new SelectListItem
+            {
+                Text = d.DepartmentName,
+                Value = d.DepartmentID
+            }).ToList();
 
             // If we got this far, something failed, redisplay form
             return Page();
