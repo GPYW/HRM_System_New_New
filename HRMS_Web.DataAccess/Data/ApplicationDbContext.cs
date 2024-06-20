@@ -14,9 +14,19 @@ namespace HRMS_Web.DataAccess.Data
 
         //public DbSet<Employee> Employee { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Department> Department { get; set; }
 
         public DbSet<AttendanceManagement> AttendanceTimeTable { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
 
+            builder.Entity<ApplicationUser>()
+                .HasOne(c => c.Department)
+                .WithMany(u => u.ApplicationUsers)
+                .HasForeignKey(c => c.DepartmentID);
+           
+        }
     }
 }

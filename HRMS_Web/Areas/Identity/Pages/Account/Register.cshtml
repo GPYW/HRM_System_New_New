@@ -88,12 +88,12 @@
                 </div>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Input.EmployeeID" class="ms-2 text-muted">Employee ID</label>
-                <input asp-for="Input.EmployeeID" class="form-control form-control-sm" aria-required="true" readonly />
-                <span asp-validation-for="Input.EmployeeID" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Input.DepartmentID" class="control-label"></label>
+                <select asp-for="Input.DepartmentID" class="form-control" asp-items="Model.Input.DepartmentList"></select>
+                <span asp-validation-for="Input.DepartmentID" class="text-danger"></span>
             </div>
-                        
+            
             <div class="row g-3 align-items-center">
                 <div class="mb-3">
                     <label asp-for="Input.Role" class="ms-2 text-muted">Role</label>

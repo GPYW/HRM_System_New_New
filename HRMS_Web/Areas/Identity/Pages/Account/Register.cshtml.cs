@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
 using HRMS_Web.DataAccess.Data;
 using HRMS_Web.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -21,7 +23,9 @@ using Microsoft.Extensions.Logging;
 namespace HRMS_Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
+
     {
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -33,6 +37,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         private readonly ApplicationDbContext _context;
 
         public RegisterModel(
+            ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IUserStore<IdentityUser> userStore,
@@ -42,6 +47,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             IConfiguration configuration,
             ApplicationDbContext context)
         {
+            _context = context;
             _roleManager = roleManager;
             _userManager = userManager;
             _userStore = userStore;
@@ -116,6 +122,13 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             [Display(Name = "DOB")]
             public DateTime DOB { get; set; }
 
+            [Required]
+            [Display(Name = "Department")]
+            public string DepartmentID { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> DepartmentList { get; set; }
+
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
@@ -136,7 +149,12 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 {
                     Text = i,
                     Value = i
-                })
+                }),
+                DepartmentList = _context.Department.Select(d => new SelectListItem
+                {
+                    Text = d.DepartmentName,
+                    Value = d.DepartmentID
+                }).ToList()
             };
 
             ReturnUrl = returnUrl;
@@ -145,7 +163,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("/Home/Index");
+            returnUrl ??= Url.Content("/EmployeeManagement/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -157,7 +175,8 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 user.PhoneNumber = Input.PhoneNumber;
                 user.DOB = Input.DOB;
                 user.join_date = Input.join_date;
-                user.CompanyID = Input.EmployeeID;
+                user.DepartmentID = Input.DepartmentID;
+
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -166,7 +185,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
+                    //TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
 
                     if (!String.IsNullOrEmpty(Input.Role))
                     {
@@ -186,88 +205,39 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.",
-                        Input.Password);
+                    var subject = "Confirm your email";
+                    var body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." +
+                        $"Account Credentials" +
+                        $"Username:  {Input.Email}" +
+                        $"Password:  {Input.Password}";
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    await _emailSender.SendEmailAsync(Input.Email, subject, body);
+
+
+                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //{
+                    //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    //}
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
+                    return LocalRedirect(returnUrl); // Redirect to the current user's home page
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            Input.DepartmentList = _context.Department.Select(d => new SelectListItem
+            {
+                Text = d.DepartmentName,
+                Value = d.DepartmentID
+            }).ToList();
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private async Task<string> GenerateEmployeeIDAsync()
-        {
-            var maxEmployeeID = await _context.ApplicationUser
-                .OrderByDescending(e => e.CompanyID)
-                .Select(e => e.CompanyID)
-                .FirstOrDefaultAsync();
-
-            int nextId = 1;
-
-            if (!string.IsNullOrEmpty(maxEmployeeID) && int.TryParse(maxEmployeeID.Substring(2), out int currentId))
-            {
-                nextId = currentId + 1;
-            }
-
-            return $"OS{nextId:D4}"; // Formats the number as a 4-digit string, e.g., OS0001
-        }
-
-        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink, string password)
-        {
-            try
-            {
-                var smtpSettings = _configuration.GetSection("EmailSettings");
-                var smtpServer = smtpSettings["SmtpServer"];
-                var smtpPort = int.Parse(smtpSettings["SmtpPort"]);
-                var smtpUsername = smtpSettings["SmtpUsername"];
-                var smtpPassword = smtpSettings["SmtpPassword"];
-                var enableSsl = bool.Parse(smtpSettings["EnableSsl"]);
-
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
-
-                // Use SMTP username as the sender
-                message.From = new MailAddress("pasindiyathra@gmail.com");
-
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                message.Body = $"Please confirm your account and log in using the following credentials:<br>" +
-                       $"Email: {email}<br>" +
-                       $"Password: {password}<br>" +
-                       $"Confirmation Link: <a href='{HtmlEncoder.Default.Encode(confirmLink)}'>Click here</a>.";
-
-                smtpClient.Port = smtpPort;
-                smtpClient.Host = smtpServer;
-                smtpClient.EnableSsl = enableSsl;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-
-                Console.WriteLine("Email sent successfully.");
-                return true;
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Error sending email");
-                return false;
-            }
         }
 
         private ApplicationUser CreateUser()

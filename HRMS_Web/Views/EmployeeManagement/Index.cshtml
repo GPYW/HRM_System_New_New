@@ -7,37 +7,58 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Employee List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-jc6qpZXu8h5V5m7p4U5xZx6NAl/LbD9FZT8K+2mbOUX+SRts6cfMmDe0fPIMxEa+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-0C8F5W4QWZ6MSisOkby+mqplV4MDQZnTXtAk5oKCbSp1I6xzyIC9k3E9vpXAR5jEC+NYFj4Vh25nshJ8RV5Q4Q==" crossorigin="anonymous" />
     <style>
         .text-center {
             text-align: center;
             vertical-align: middle;
         }
+
+        .table th {
+            font-size: 0.65rem;
+            vertical-align: middle;
+        }
+
+        .table td {
+            font-size: 0.85rem;
+            vertical-align: middle;
+        }
+        
+        .btn-icon {
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .table img {
+            max-width: 30px;
+            height: auto;
+            border-radius: 50%;
+        }
     </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-jc6qpZXu8h5V5m7p4U5xZx6NAl/LbD9FZT8K+2mbOUX+SRts6cfMmDe0fPIMxEa+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-0C8F5W4QWZ6MSisOkby+mqplV4MDQZnTXtAk5oKCbSp1I6xzyIC9k3E9vpXAR5jEC+NYFj4Vh25nshJ8RV5Q4Q==" crossorigin="anonymous" />
 </head>
 <body>
-    <div class="container">
-        <br />
-        <div class="row">
-            <div class="col-12 text-end me-3">
-                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-dark" id="register">
-                    Add New Employee  <i class="bi bi-person-add"></i>
+    <div class="container mt-4">
+        <div class="row mb-3">
+            <div class="col-12 text-end">
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-dark btn-sm" id="register">
+                    Add New Employee <i class="fas fa-user-plus"></i>
                 </a>
             </div>
-        </div><br />
-        <table id="example1" class="table table-striped table-sm table-bordered table-hover">
-            <thead>
-                <tr class="text-capitalize text-center">
-                    <th style="font-weight:600;">First Name</th>
-                    <th style="font-weight:600;">Last Name</th>
-                    <th style="font-weight:600;">Image</th>
-                    <th style="font-weight:600;">Email</th>
-                    <th style="font-weight:600;">Address</th>
-                    <th style="font-weight:600;">DOB</th>
-                    <th style="font-weight:600;">Join Date</th>
-                    <th style="font-weight:600;">Mobile No</th>
-                    <th style="font-weight:600;">Edit</th>
+        </div>
+        <table id="example1" class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr class="text-center">
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Image</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>DOB</th>
+                    <th>Join Date</th>
+                    <th>Mobile No</th>
+                    <th>Department</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,25 +68,36 @@
                         <td>@obj.FirstName</td>
                         <td>@obj.LastName</td>
                         <td>
-                            <img src="~/images/@obj.ProfileImage" width="30px" height="auto" class="rounded-circle" alt="user" />
+                            <img src="~/images/@obj.ProfileImage" alt="user" />
                         </td>
                         <td>@obj.Email</td>
                         <td>@obj.Address</td>
                         <td>@(obj.DOB?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
                         <td>@(obj.join_date?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
                         <td>@obj.PhoneNumber</td>
+                        <td>@obj.Department?.DepartmentName</td>
                         <td>
-                            <a asp-controller="EmployeeManagement" asp-action="Edit" asp-route-Id="@obj.Id" class="btn-sm btn btn-outline-dark">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a asp-controller="EmployeeManagement" asp-action="Delete" asp-route-Id="@obj.Id" class="btn-sm btn btn-outline-dark mx-4">
-                                <i class="fa fa-trash"> </i> Delete
-                            </a>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton-@obj.Id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-@obj.Id">
+                                    <a class="dropdown-item" href="@Url.Action("Edit", "EmployeeManagement", new { Id = obj.Id })">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a class="dropdown-item" href="@Url.Action("Delete", "EmployeeManagement", new { Id = obj.Id })">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"></script>
 </body>
 </html>
