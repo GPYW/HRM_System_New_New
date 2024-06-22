@@ -40,7 +40,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             ApplicationDbContext context,
@@ -60,34 +60,24 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
+            [Required]
+            [StringLength(31, ErrorMessage = "The first name field should have a maximum of 31 characters")]
+            [DataType(DataType.Text)]
+            [Display(Name = "EmployeeID")]
+            public string EmployeeID { get; set; }
 
             [Required]
             [StringLength(255, ErrorMessage = "The first name field should have a maximum of 255 characters")]
@@ -102,29 +92,17 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -174,8 +152,9 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
             }
 
-            Input = new()
+            Input = new InputModel
             {
+                EmployeeID = await GenerateEmployeeIDAsync(),
                 RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
                 {
                     Text = i,
@@ -206,6 +185,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 user.PhoneNumber = Input.PhoneNumber;
                 user.DOB = Input.DOB;
                 user.join_date = Input.join_date;
+                user.CompanyID = Input.EmployeeID;
                 user.DepartmentID = Input.DepartmentID;
 
 
@@ -269,6 +249,22 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private async Task<string> GenerateEmployeeIDAsync()
+        {
+            var maxEmployeeID = await _context.ApplicationUser
+                .OrderByDescending(e => e.CompanyID)
+                .Select(e => e.CompanyID)
+                .FirstOrDefaultAsync();
+
+            int nextId = 1;
+
+            if (!string.IsNullOrEmpty(maxEmployeeID) && int.TryParse(maxEmployeeID.Substring(2), out int currentId))
+            {
+                nextId = currentId + 1;
+            }
+
+            return $"OS{nextId:D4}"; // Formats the number as a 4-digit string, e.g., OS0001
         }
 
         private ApplicationUser CreateUser()
