@@ -1,0 +1,600 @@
+﻿@*  @model HRMS_Web.Models.ApplicationUser
+@using HRMS_Web.ViewModel;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-timeline/dist/chartjs-chart-timeline.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History </a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
+        </div>
+    </nav>
+
+    <div class="content-header">
+        <div class="container-lg">
+            <div class="row mb-1">
+                <h5 class="mt-5" style="margin-left:-15px">Performance/Dashboard</h5>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid container-xl">
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-lightblue">
+                        <div class="inner">
+                            <h3>150</h3>
+                            <p>Projects</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-ios-people"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="Projects" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-lightblue">
+                        <div class="inner">
+                            <h3>5</h3>
+                            <p>Tasks</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-calendar"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="Tasks" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-info">
+                        <div class="inner">
+                            <h3>44</h3>
+                            <p>View History</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="ViewHistory" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-info">
+                        <div class="inner">
+                            <h3>5</h3>
+                            <p>Assign</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-document-text"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="Assign" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-8 p-5">
+                    <div class="chart">
+                        <h3> Performance Trend</h3>
+                        <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+                <div class="col-4 p-5">
+                    <div class="chart">
+                        <h3> Feedback Analysis</h3>
+                        <canvas id="feedbackAnalysisChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="row">
+            <h3 class="mt-5 mb-5">Milestones</h3>
+            <div class="col-md-6">
+
+                <div class="card card-widget widget-user">
+
+                    <div class="widget-user-header bg-info">
+                        <h3 class="widget-user-username">Milestones</h3>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-4 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header">3,200</h5>
+                                    <span class="description-text">Milestone 1</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-4 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header">13,000</h5>
+                                    <span class="description-text">Milestone 2</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="description-block">
+                                    <h5 class="description-header">35</h5>
+                                    <span class="description-text">Milestone 3</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+                <h3 class="mt-5">Employee of the Month</h3>
+                <div class="card card-widget widget-user-2">
+
+                    <div class="widget-user-header bg-warning">
+                        <div class="widget-user-image">
+                            <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                        </div>
+
+                        <h3 class="widget-user-username">Nadia Carmichael</h3>
+                        <h5 class="widget-user-desc">Lead Developer</h5>
+                    </div>
+                    <div class="card-footer p-0">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Projects <span class="float-right badge bg-primary">31</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Tasks <span class="float-right badge bg-info">5</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Completed Projects <span class="float-right badge bg-success">12</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Milestones <span class="float-right badge bg-danger">4</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+           
+
+        </div>
+
+        
+            
+
+    </section>
+
+    <script>
+        $(document).ready(function () {
+            // Performance Trend Area Chart
+            var areaChartCanvas = $('#areaChart').get(0).getContext('2d');
+            var areaChartData = {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [
+                    {
+                        label: 'Digital Goods',
+                        backgroundColor: 'rgba(60,141,188,0.9)',
+                        borderColor: 'rgba(60,141,188,0.8)',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: 'rgba(60,141,188,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data: [28, 48, 40, 19, 86, 27, 90]
+                    },
+                    {
+                        label: 'Electronics',
+                        backgroundColor: 'rgba(210, 214, 222, 1)',
+                        borderColor: 'rgba(210, 214, 222, 1)',
+                        pointRadius: false,
+                        pointColor: 'rgba(210, 214, 222, 1)',
+                        pointStrokeColor: '#c1c7d1',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data: [65, 59, 80, 81, 56, 55, 40]
+                    },
+                ]
+            };
+
+            var areaChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            };
+
+            new Chart(areaChartCanvas, {
+                type: 'line',
+                data: areaChartData,
+                options: areaChartOptions
+            });
+
+            // Feedback Analysis Pie Chart
+            var pieChartCanvas = $('#feedbackAnalysisChart').get(0).getContext('2d');
+            var pieData = {
+                labels: ['Positive', 'Neutral', 'Negative'],
+                datasets: [{
+                    data: [60, 25, 15], // Example proportions of feedback categories
+                    backgroundColor: [
+                        'rgba(255, 255, 0, 0.2)',    // Positive
+                        'rgba(255, 0, 0, 0.2)',      // Neutral
+                        'rgba(0, 0, 255, 0.2)'       // (updated to blue)
+
+                    ],
+                    borderColor: [
+                        'rgba(255, 255, 0, 1)',    // Positive
+                        'rgba(255, 0, 0, 1)',      // Neutral
+                        'rgba(0, 0, 255, 1)'       // (updated to blue)
+
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            var pieOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.raw + '%';
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: pieData,
+                options: pieOptions
+            });
+
+         
+        });
+    </script>
+
+   
+</body>
+</html>
+
+
+ *@
+
+                                    @model HRMS_Web.Models.ApplicationUser
+@using HRMS_Web.ViewModel;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-timeline/dist/chartjs-chart-timeline.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History </a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
+        </div>
+    </nav>
+
+    <div class="content-header">
+        <div class="container-lg">
+            <div class="row mb-1">
+                <h5 class="mt-5" style="margin-left:-15px">Performance/Dashboard</h5>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid container-xl">
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-lightblue">
+                        <div class="inner">
+                            <h3>150</h3>
+                            <p>Projects</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-ios-people"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="Projects" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-lightblue">
+                        <div class="inner">
+                            <h3>5</h3>
+                            <p>Tasks</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-calendar"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="Tasks" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-info">
+                        <div class="inner">
+                            <h3>44</h3>
+                            <p>View History</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="ViewHistory" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="info-box bg-gradient-info">
+                        <div class="inner">
+                            <h3>5</h3>
+                            <p>Assign</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-document-text"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Performance" asp-action="Assign" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8 col-md-12 p-5">
+                    <div class="chart">
+                        <h3> Performance Trend</h3>
+                        <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 p-5">
+                    <div class="chart">
+                        <h3> Feedback Analysis</h3>
+                        <canvas id="feedbackAnalysisChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h3 class="mb-4">Milestones</h3>
+                <div class="card card-widget widget-user">
+                    <div class="widget-user-header bg-info">
+                        <h3 class="widget-user-username">Milestones</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-4 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header">3,200</h5>
+                                    <span class="description-text">Milestone 1</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header">13,000</h5>
+                                    <span class="description-text">Milestone 2</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="description-block">
+                                    <h5 class="description-header">35</h5>
+                                    <span class="description-text">Milestone 3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h3 class="mb-4">Employee of the Month</h3>
+                <div class="card card-widget widget-user-2">
+                    <div class="widget-user-header bg-warning">
+                        <div class="widget-user-image">
+                            <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                        </div>
+                        <h3 class="widget-user-username">Nadia Carmichael</h3>
+                        <h5 class="widget-user-desc">Lead Developer</h5>
+                    </div>
+                    <div class="card-footer p-0">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Projects <span class="float-right badge bg-primary">31</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Tasks <span class="float-right badge bg-info">5</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Completed Projects <span class="float-right badge bg-success">12</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Milestones <span class="float-right badge bg-danger">4</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        $(document).ready(function () {
+            // Performance Trend Area Chart
+            var areaChartCanvas = $('#areaChart').get(0).getContext('2d');
+            var areaChartData = {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [
+                    {
+                        label: 'Digital Goods',
+                        backgroundColor: 'rgba(60,141,188,0.9)',
+                        borderColor: 'rgba(60,141,188,0.8)',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: 'rgba(60,141,188,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data: [28, 48, 40, 19, 86, 27, 90]
+                    },
+                    {
+                        label: 'Electronics',
+                        backgroundColor: 'rgba(210, 214, 222, 1)',
+                        borderColor: 'rgba(210, 214, 222, 1)',
+                        pointRadius: false,
+                        pointColor: 'rgba(210, 214, 222, 1)',
+                        pointStrokeColor: '#c1c7d1',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data: [65, 59, 80, 81, 56, 55, 40]
+                    },
+                ]
+            };
+
+            var areaChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            };
+
+            new Chart(areaChartCanvas, {
+                type: 'line',
+                data: areaChartData,
+                options: areaChartOptions
+            });
+
+            // Feedback Analysis Pie Chart
+            var pieChartCanvas = $('#feedbackAnalysisChart').get(0).getContext('2d');
+            var pieData = {
+                labels: ['Positive', 'Neutral', 'Negative'],
+                datasets: [{
+                    data: [60, 25, 15], // Example proportions of feedback categories
+                    backgroundColor: [
+                        'rgba(255, 255, 0, 0.2)',    // Positive
+                        'rgba(255, 0, 0, 0.2)',      // Neutral
+                        'rgba(0, 0, 255, 0.2)'       // (updated to blue)
+                    ],
+                    borderColor: [
+                        'rgba(255, 255, 0, 1)',    // Positive
+                        'rgba(255, 0, 0, 1)',      // Neutral
+                        'rgba(0, 0, 255, 1)'       // (updated to blue)
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            var pieOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.raw + '%';
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: pieData,
+                options: pieOptions
+            });
+        });
+    </script>
+</body>
+</html>
