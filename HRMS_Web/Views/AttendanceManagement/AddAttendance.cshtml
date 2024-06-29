@@ -4,7 +4,7 @@
 <form method="post">
     <div class="=boarder p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Add Employee Attendance </h2>
+            <h2 class="text-dark text-capitalize">Add Employee Attendance </h2>
             <hr/>
         </div>
 
@@ -42,13 +42,13 @@
                 <input asp-for="OverTime" class="form-control" required>
             </div>
         </div>
-
+        <br />
         <div class="row">
             <div class="col-3 pb-5 row">
-               <button type="submit" class="btn btn-primary form-control">Add</button>
+               <button type="submit" class="btn btn-dark form-control">Add</button>
             </div>
             <div class="col-3">
-                <a asp-controller="AttendanceManagement" asp-action="ViewHistory" class="btn btn-secondary form-control">Back to List</a>
+                <a asp-controller="AttendanceManagement" asp-action="ViewHistory" class="btn btn-outline-dark form-control">Back to List</a>
             </div>
         </div>
 
