@@ -1,28 +1,39 @@
-﻿<nav class="navbar navbar-expand-lg bg-body-tertiary">
+﻿<style>
+
+    .nav_link {
+        color: #000000 !important;
+        font-weight: 500;
+        margin-right: 20px;
+    }
+
+        .nav_link:hover {
+            color: #17a2b8 !important;
+        }
+
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #fff;">
     <div class="container-fluid">
-        @* <ul class="nav nav-pills">
-        <li class="nav-item"> *@
-
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">Home</a>
-
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Reports">Reports</a>
-
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="">View History</a>
-
-        <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Home">Mark Attendance</a>
-
-        @*  <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle"  data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Attendance Report</a>
-        <div class="dropdown-menu" style="">
-        <a class="dropdown-item" href="#">Daily Report</a>
-        <a class="dropdown-item" href="#">Monthly Report</a>
-        <a class="dropdown-item" href="#">Yearly Report</a>
-
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="AttendanceManagement" asp-action="Reports">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="AttendanceManagement" asp-action="ViewHistory">View History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="AttendanceManagement" asp-action="MarkAttendance">Mark Attendance</a>
+                </li>
+            </ul>
         </div>
-        </li> *@
-
-        @*   </ul> *@
-        <div />
+    </div>
 </nav>
 
-<h1>Reports</h1>
+<h3 class="text-capitalize">Reports</h3>
