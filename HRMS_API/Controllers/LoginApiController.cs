@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HRMS_Web.Controllers
+namespace HRMS_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
