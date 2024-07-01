@@ -13,7 +13,7 @@ namespace HRMS_Web.Models
     {
         [Key]
         //[Range(1,100, ErrorMessage = "Employee Id must be between 1-100")]
-        [DisplayName("Employee Id:")]
+        //[DisplayName("Employee Id:")]
         public int RecordId { get; set; }
 
         [Required]

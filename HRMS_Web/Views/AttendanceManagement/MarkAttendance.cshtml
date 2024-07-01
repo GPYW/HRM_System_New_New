@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@* @{
+    ViewData["Title"] = "Mark Attendance";
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Attendance Management</title>
@@ -111,3 +115,110 @@
 
 
 
+ *@
+
+@{
+    ViewData["Title"] = "Mark Attendance";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Management</title>
+    <!-- Include Bootstrap CSS and Bootswatch Lux theme -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Include Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .form-control {
+            margin-bottom: 20px;
+        }
+
+        .btn-submit {
+            background-color: #20c997;
+            color: #fff;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+            .btn-submit:hover {
+                background-color: #17a2b8;
+            }
+
+        .profile-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .profile-icon {
+            font-size: 60px;
+            color: #20c997;
+        }
+
+        .graph-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .calendar-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ml-4">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">Home</a>
+                <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="Reports">Reports</a>
+                <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="ViewHistory">View History</a>
+                <a class="nav-link active" asp-area="" asp-controller="AttendanceManagement" asp-action="MarkAttendance">Mark Attendance</a>
+            </div>
+        </nav>
+
+        <div class="row pt-4 pb-5">
+            <div class="col-6">
+                <h2 class="text-primary">Mark Employee Attendance</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="AttendanceManagement" asp-action="AddAttendance" class="btn btn-info">
+                    <i class="bi bi-plus-circle"></i> Add Attendance
+                </a>
+            </div>
+        </div>
+
+        <form method="post" action="submitAttendance" class="row g-3">
+            <div class="col-md-3">
+                <label for="EmployeeId" class="form-label">Employee Id:</label>
+                <input type="text" class="form-control" id="EmployeeId" name="EmployeeId" required>
+            </div>
+            <div class="col-md-3">
+                <label for="date" class="form-label">Date:</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+            <div class="col-md-3">
+                <label for="checkInTime" class="form-label">Check-In Time:</label>
+                <input type="time" class="form-control" id="checkInTime" name="checkInTime" required>
+            </div>
+            <div class="col-md-3">
+                <label for="checkOutTime" class="form-label">Check-Out Time:</label>
+                <input type="time" class="form-control" id="checkOutTime" name="checkOutTime" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-info">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

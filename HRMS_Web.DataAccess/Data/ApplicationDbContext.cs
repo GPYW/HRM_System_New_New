@@ -16,8 +16,12 @@ namespace HRMS_Web.DataAccess.Data
         //public DbSet<Employee> Employee { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
-        
-        
+        public DbSet<AttendanceManagement> Attendances{ get; set; }
+
+       
+
+
+
 
     }
 }
