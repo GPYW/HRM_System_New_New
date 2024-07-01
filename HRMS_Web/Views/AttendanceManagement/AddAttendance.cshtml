@@ -2,55 +2,55 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <form method="post">
-    <div class="=boarder p-3 mt-4">
+    <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-dark text-capitalize">Add Employee Attendance </h2>
-            <hr/>
+            <h2 class="text-dark text-capitalize">Add Employee Attendance</h2>
+            <hr />
         </div>
 
         <div class="row">
-            <div class="col-6 pb-4 row">
-                <label asp-for="RecordId"></label>
-                <input asp-for="RecordId" class="form-control" required>
-                <span asp-validation-for="RecordId" class="text-danger"></span>
-            </div>
-            <div class="col-6">
+            <div class="col-6 pb-4">
                 <label asp-for="Date"></label>
-                <input asp-for="Date" class="form-control" id="date" name="date" type="date" required>
+                <input asp-for="Date" class="form-control" type="date" required>
+                <span asp-validation-for="Date" class="text-danger"></span>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="col-6 pb-4 row">
-                <label for="checkInTime" class="form-label">Check-In Time:</label>
-                <input type="time" class="form-control" id="checkInTime" name="checkInTime" required>
+            <div class="col-6 pb-4">
+                <label asp-for="CheckIn"></label>
+                <input asp-for="CheckIn" class="form-control" type="time" required>
+                <span asp-validation-for="CheckIn" class="text-danger"></span>
             </div>
 
-            <div class="col-6">
-                <label for="checkOutTime" class="form-label">Check-Out Time:</label>
-                <input type="time" class="form-control" id="checkOutTime" name="checkOutTime" required>
+            <div class="col-6 pb-4">
+                <label asp-for="CheckOut"></label>
+                <input asp-for="CheckOut" class="form-control" type="time" required>
+                <span asp-validation-for="CheckOut" class="text-danger"></span>
             </div>
         </div>
-  
+
         <div class="row">
-            <div class="col-6 pb-4 row">
+            <div class="col-6 pb-4">
                 <label asp-for="Break"></label>
                 <input asp-for="Break" class="form-control" required>
+                <span asp-validation-for="Break" class="text-danger"></span>
             </div>
-            <div class="col-6">
+
+            <div class="col-6 pb-4">
                 <label asp-for="OverTime"></label>
                 <input asp-for="OverTime" class="form-control" required>
+                <span asp-validation-for="OverTime" class="text-danger"></span>
             </div>
         </div>
-        <br />
+
         <div class="row">
-            <div class="col-3 pb-5 row">
-               <button type="submit" class="btn btn-dark form-control">Add</button>
+            <div class="col-3 pb-5">
+                <button type="submit" class="btn btn-dark form-control">Add</button>
             </div>
             <div class="col-3">
                 <a asp-controller="AttendanceManagement" asp-action="ViewHistory" class="btn btn-outline-dark form-control">Back to List</a>
             </div>
         </div>
-
     </div>
 </form>

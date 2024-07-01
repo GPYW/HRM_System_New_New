@@ -18,6 +18,8 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<Department> Department { get; set; }
 
         public DbSet<AttendanceManagement> AttendanceTimeTable { get; set; }
+        public DbSet<AttendanceManagement> Attendances { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

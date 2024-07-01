@@ -66,13 +66,11 @@ namespace HRMS_Web.Controllers
         [HttpPost]
         public IActionResult AddAttendance(AttendanceManagement obj)
         {
-            if (ModelState.IsValid)
-            {
+            
                 _db.AttendanceTimeTable.Add(obj);
                 _db.SaveChanges();
                 return RedirectToAction("ViewHistory");
-            }
-            return View(obj);
+            
         }
     }
 }
