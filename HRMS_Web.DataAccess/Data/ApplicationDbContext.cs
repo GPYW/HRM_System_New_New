@@ -20,10 +20,12 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<LeaveRequestModel> LeaveRequests { get; set; }
 
         public DbSet<LeaveManagement> LeaveManagement { get; set; }
-        public object LeaveRequestTable { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<LeaveRequestModel>()
                 .HasOne(lr => lr.LeaveManagement)
                 .WithMany(lm => lm.LeaveRequests)
