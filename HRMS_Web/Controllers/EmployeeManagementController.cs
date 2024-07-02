@@ -27,12 +27,14 @@ namespace HRMS_Web.Controllers
         public IActionResult Register()
         {
             ViewData["Breadcrumb"] = new List<BreadcrumbItem>
-        {
-            new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
-            //new BreadcrumbItem { Title = "Add a New Employee", Url = Url.Action("Register","EmployeeManagement") }
-        };
+    {
+        new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+        new BreadcrumbItem { Title = "Register Employee", Url = "/Identity/Account/Register" }
+    };
+
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Register(ApplicationUser obj)
@@ -54,6 +56,12 @@ namespace HRMS_Web.Controllers
             {
                 return NotFound();
             }
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+                new BreadcrumbItem { Title = "Edit", Url = Url.Action("Edit", "EmployeeManagement") },
+
+            };
             return View(applicationUserFromDb);
         }
 
@@ -111,6 +119,12 @@ namespace HRMS_Web.Controllers
             {
                 return NotFound();
             }
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+                new BreadcrumbItem { Title = "Delete", Url = Url.Action("Delete", "EmployeeManagement") },
+
+            };
             return View(ApplicationUserFromDb);
         }
 
