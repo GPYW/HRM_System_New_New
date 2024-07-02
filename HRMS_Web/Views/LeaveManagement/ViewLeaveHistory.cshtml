@@ -12,18 +12,21 @@
     </div>
 </nav>
 
-@model LeaveHistoryViewModel
-
-@{
-    ViewBag.Title = "Leave History";
-}
-
-<h2 class="text-primary">Requested Leaves</h2>
+<h2 class="text-primary"> Requested Leaves </h2>
 
 <table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">Leave Type</th>
+            <th scope="col">
+                <label for="leaveType">Select Leave Type:</label>
+                <select id="leaveType" name="leaveType">
+                    <option value="sick">Sick Leave</option>
+                    <option value="casual">Casual Leave</option>
+                    <option value="maternity">Maternity Leave</option>
+                    <option value="paternity">Paternity Leave</option>
+                </select>
+
+            </th>
             <th scope="col">From</th>
             <th scope="col">To</th>
             <th scope="col">No of Days</th>
@@ -31,43 +34,110 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var leave in Model.PendingRequests)
-        {
-            <tr class="table-active">
-                <td>@leave.LeaveType</td>
-                <td>@leave.FromDate.ToShortDateString()</td>
-                <td>@leave.ToDate.ToShortDateString()</td>
-                <td>@leave.NumberOfDays</td>
-                <td>@leave.LeaveReason</td>
-            </tr>
-        }
+        <tr class="table-active">
+            <td>Casual Leave</td>
+            <td>8 Jan 2024</td>
+            <td>9 Jan 2024</td>
+            <td>2 days</td>
+            <td>Going to Hospital</td>
+        </tr>
+        <tr class="table-active">
+            <td>Sick Leave</td>
+            <td>11 Feb 2024</td>
+            <td>13 feb 2024</td>
+            <td>2 days</td>
+            <td>Going to Hospital</td>
+        </tr>
+        <tr class="table-active">
+            <td>Casual Leave</td>
+            <td>1 Mar 2024</td>
+            <td>1 Mar 2024</td>
+            <td>Second Half</td>
+            <td>Personal</td>
+        </tr>
+
     </tbody>
 </table>
 
-<h2 class="text-primary">Leave History</h2>
+<h2 class="text-primary"> Leave History</h2>
+
+@{
+    var leaveTypes = ViewBag.LeaveTypes as List<string>;
+}
 
 <table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">Leave Type</th>
+            <th scope="col">
+                <label for="leaveType">Select Leave Type:</label>
+                <select id="leaveType" name="leaveType">
+                    <option value="sick">Sick Leave</option>
+                    <option value="casual">Casual Leave</option>
+                    <option value="maternity">Maternity Leave</option>
+                    <option value="paternity">Paternity Leave</option>
+                </select>
+               @*  <select id="leaveTypeDropdown" name="leaveTypeDropdown" class="dropdown-arrow-only">
+                    <option>Leave Type</option>
+                      @foreach (var leaveType in leaveTypes)
+                    {
+                    <option value="@leaveType">@leaveType</option>
+                    }
+                </select> *@
+            </th>
             <th scope="col">From</th>
             <th scope="col">To</th>
             <th scope="col">No of Days</th>
             <th scope="col">Reason</th>
             <th scope="col">Status</th>
+            <th scope="col">Approved By</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var leave in Model.LeaveHistory)
-        {
-            <tr class="table-active">
-                <td>@leave.LeaveType</td>
-                <td>@leave.FromDate.ToShortDateString()</td>
-                <td>@leave.ToDate.ToShortDateString()</td>
-                <td>@leave.NumberOfDays</td>
-                <td>@leave.LeaveReason</td>
-                <td>@leave.Status</td>
-            </tr>
-        }
+        <tr class="table-active">
+            <td>Casual Leave</td>
+            <td>8 Jan 2024</td>
+            <td>9 Jan 2024</td>
+            <td>2 days</td>
+            <td>Going to Hospital</td>
+            <td>Approved</td>
+            <td>Janaka Perera</td>
+        </tr>
+        <tr class="table-active">
+            <td>Sick Leave</td>
+            <td>11 Feb 2024</td>
+            <td>13 feb 2024</td>
+            <td>2 days</td>
+            <td>Going to Hospital</td>
+            <td>Approved</td>
+            <td>Janaka Perera</td>
+        </tr>
+        <tr class="table-active">
+            <td>Casual Leave</td>
+            <td>1 Mar 2024</td>
+            <td>1 Mar 2024</td>
+            <td>Second Half</td>
+            <td>Personal</td>
+            <td>Declined</td>
+            <td>Janaka Perera</td>
+        </tr>
+        <tr class="table-active">
+            <td>Paternity Leave</td>
+            <td>7 Mar 2024</td>
+            <td>10 Mar 2024</td>
+            <td>4 days</td>
+            <td>Going to Hospital</td>
+            <td>Pending</td>
+            <td>Janaka Perera</td>
+        </tr>
+        <tr class="table-active">
+            <td>Maternity Leave</td>
+            <td>1 May 2024</td>
+            <td>30 Mar 2024</td>
+            <td>30 days</td>
+            <td>Going to Hospital</td>
+            <td>Approved</td>
+            <td>Janaka Perera</td>
+        </tr>
+
     </tbody>
 </table>

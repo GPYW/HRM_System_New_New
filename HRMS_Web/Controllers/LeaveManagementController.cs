@@ -34,35 +34,10 @@ namespace HRMS_Web.Controllers
             return View(objLeaveManagemetList);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = SD.Role_Admin)]
         public IActionResult LeaveRequest()
         {
-            var pendingRequests = _db.LeaveRequests.Where(l => l.Status == "Pending").ToList();
-            return View(pendingRequests);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult ApproveRequest(int id)
-        {
-            var leaveRequest = _db.LeaveRequests.Find(id);
-            if (leaveRequest != null)
-            {
-                leaveRequest.Status = "Approved";
-                _db.SaveChanges();
-            }
-            return RedirectToAction("RequestedLeaves");
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult DeclineRequest(int id)
-        {
-            var leaveRequest = _db.LeaveRequests.Find(id);
-            if (leaveRequest != null)
-            {
-                leaveRequest.Status = "Declined";
-                _db.SaveChanges();
-            }
-            return RedirectToAction("RequestedLeaves");
+            return View();
         }
 
         public IActionResult LeaveForm()
@@ -85,7 +60,7 @@ namespace HRMS_Web.Controllers
 
         private List<string> GetLeaveTypes()
         {
-            return new List<string> { "Sick Leave", "Casual Leave", "Maternity Leave", "Annual Leave" };
+            return new List<string> { "Sick Leave", "Casual Leave", "Maternity Leave", "Paternity Leave" };
         }
     }
 
