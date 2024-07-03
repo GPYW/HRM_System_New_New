@@ -26,7 +26,53 @@
 <script src="~/AdminLTE/dist/js/adminlte.min.js?v=3.2.0"></script>
 <script type="text/javascript" src="~/AdminLTE/hometemp/revolution/js/jquery.themepunch.tools.min.js"></script>
 <script type="text/javascript" src="~/AdminLTE/hometemp/revolution/js/jquery.themepunch.revolution.min.js"></script>
+<style>
+    .gradient-btn {
+        color: white;
+        border: 0.5px solid white;
+        background: transparent;
+        transition: background 0.3s, color 0.3s, border-color 0.3s;
+        border-radius: 100px;
+    }
 
+        .gradient-btn:hover {
+            background-color: #17a2b8;
+            border-color: white;
+            color: white;
+        }
+
+    .custom-input {
+        background-color: rgba(20, 20, 20, 0); /* Transparent background */
+        border: 1px solid #fff !important; /* White border */
+        border-radius: 0px 4px 4px 0px; /* Rounded corners on the right side */
+        color: white; /* Ensure the text is visible */
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+        .custom-input:focus {
+            background-color: rgba(20, 20, 20, 0.1); /* Slightly darker background on focus */
+            border-color: #17a2b8; /* Bootstrap info color on focus */
+            outline: none; /* Remove default outline */
+        }
+
+    .custom-checkbox-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-checkbox {
+        width: 16px; /* Adjust the size as needed */
+        height: 16px; /* Adjust the size as needed */
+        margin-right: 8px; /* Space between the checkbox and the label */
+    }
+
+        .custom-checkbox:checked {
+            background-color: #17a2b8; /* Bootstrap info color when checked */
+        }
+
+
+
+</style>
 <div>
     <img src="~/images/login3.png" style="position:absolute;"/>
 </div>
@@ -34,65 +80,65 @@
 <div class="row" >
     <div class="col-sm-6 d-flex align-items-center justify-content-center" style="height: 100vh;">
         <div class="row d-flex flex-column align-items-center">
-            <p style="color:white; font-size:30px; font-weight:600;">Welcome Back :)</p>
-            <img src="~/images/logo-nobg1.png" width="auto" height="250" />
-            <p style="color:#2993b8; font-size:30px; font-weight:600;">Outstanders</p>
-            <p style="margin-top:-5%; color:white; font-size:20px; font-weight:600;">Solutions</p>
-
         </div>
     </div>
 
-    <div class="col-sm-6 d-flex align-items-center justify-content-start" style="height: 100vh;">
+    <div class="col-sm-6 d-flex align-items-center justify-content-center"  >
         <div class="login-box">
-            <div class="card card-outline card-dark">
-                <div class="card-header text-center" style="background-color:#343a40;">
-                    <h2 style="color:white; font-weight:100;">Login</h2>
-                </div>
-                <div class="card-body" style="background-color: rgba(255, 255, 255, 0.5);">
-                    <form id="account" method="post">
-                            <div class="input-group mb-3">
-                                <input type="email" asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fas fa-envelope"></span>
-                                    </div>
-                                </div>
-                                <div class="text-danger">
-                                    @Html.ValidationMessageFor(m => m.Input.Email)
-                                </div>
-                            </div>
-                            <div class="input-group mb-3">
-                                <input type="password" asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fas fa-lock"></span>
-                                    </div>
-                                </div>
-                                <div class="text-danger">
-                                    @Html.ValidationMessageFor(m => m.Input.Password)
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="icheck-primary">
-                                        <input type="checkbox" id="remember" asp-for="Input.RememberMe" />
-                                        <label style="font-weight:100; font-size:12px;"for="remember">
-                                            Remember Me
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <br />
+            <div class="card-header text-center" style="background-color:rgba(255, 255, 255, 0);">
+                <h1 style="color:#17a2b8; font-weight:100;">Welcome</h1>
+                <h1 style="color:#fff; font-weight:100;">Back :)</h1>
 
-                            <button id="login-submit" type="submit" class="btn btn-dark btn-block">Login</button><br />
-                            <div class="text-sm text-center">
-                                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-orange-200">Resend email confirmation</a>
+            </div>
+            <div class="card-body" style="background-color: rgba(255, 255, 255, 0);">
+                <form id="account" method="post">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <input type="email" asp-for="Input.Email" class="form-control border-0 custom-input" autocomplete="username" aria-required="true" placeholder="Email" />
+                    </div>
+                    <div class="text-danger">
+                        @Html.ValidationMessageFor(m => m.Input.Email)
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input type="password" asp-for="Input.Password" class="form-control border-0 custom-input" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                    </div>
+                    <div class="text-danger">
+                        @Html.ValidationMessageFor(m => m.Input.Password)
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="icheck-polaris">
+                                <div class="custom-checkbox-container">
+                                    <input type="checkbox" id="remember" asp-for="Input.RememberMe" class="custom-checkbox" />
+                                </div>                                
+                                <label style="font-weight:100;color:#fff; font-size:12px; margin-top:-13%" for="remember">
+                                    Remember Me
+                                </label>
                             </div>
-                            <div class="text-sm text-center">
-                                <a id="forgot-password" asp-page="./ForgotPassword">Forgot password</a>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center" style="font-size:12px;">
+                                <a id="forgot-password" asp-page="./ForgotPassword" style="margin-top:10px; color:#fff">Forgot password</a>
                             </div>
-                    </form>
-                </div>
+                        </div>
+                    </div><br />
+                            
+                    <div class="row">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-4 d-flex align-items-end justify-content-end">
+                            <button id="login-submit" type="submit" class="btn btn-block gradient-btn">Login</button><br />
+                        </div>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
