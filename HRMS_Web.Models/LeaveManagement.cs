@@ -1,9 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
 
 namespace HRMS_Web.Models
 {
@@ -21,7 +17,4 @@ namespace HRMS_Web.Models
         // Navigation property to related LeaveRequestModels
         public ICollection<LeaveRequestModel>? LeaveRequests { get; set; }
     }
-
 }
-
-

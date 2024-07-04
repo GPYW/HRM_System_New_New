@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HRMS_Web.Models;
-
 
 namespace HRMS_Web.Models
 {
@@ -43,7 +38,7 @@ namespace HRMS_Web.Models
         public string Id { get; set; }
 
         // Navigation property to ApplicationUser
-        [ForeignKey("UserId")]
+        [ForeignKey("Id")]
         public ApplicationUser User { get; set; }
     }
 }

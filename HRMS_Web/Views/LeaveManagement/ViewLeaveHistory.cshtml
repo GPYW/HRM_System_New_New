@@ -1,18 +1,14 @@
-﻿<nav class="navbar navbar-expand-lg bg-body-tertiary">
+﻿@using HRMS_Web.ViewModels
+@model LeaveHistoryViewModel
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="Index">Home</a>
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="Reports">Reports</a>
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="ViewLeaveHistory">View Leave History</a>
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="LeaveRequest">Requested Leaves</a>
-
     </div>
 </nav>
-
-@model LeaveHistoryViewModel
 
 @{
     ViewBag.Title = "Leave History";
@@ -34,7 +30,7 @@
         @foreach (var leave in Model.PendingRequests)
         {
             <tr class="table-active">
-                <td>@leave.LeaveType</td>
+                <td>@leave.LeaveManagement.LeaveType</td> <!-- Assuming LeaveType is a property of LeaveManagement -->
                 <td>@leave.FromDate.ToShortDateString()</td>
                 <td>@leave.ToDate.ToShortDateString()</td>
                 <td>@leave.NumberOfDays</td>
@@ -61,7 +57,7 @@
         @foreach (var leave in Model.LeaveHistory)
         {
             <tr class="table-active">
-                <td>@leave.LeaveType</td>
+                <td>@leave.LeaveManagement.LeaveType</td> <!-- Assuming LeaveType is a property of LeaveManagement -->
                 <td>@leave.FromDate.ToShortDateString()</td>
                 <td>@leave.ToDate.ToShortDateString()</td>
                 <td>@leave.NumberOfDays</td>

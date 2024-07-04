@@ -1,18 +1,14 @@
-﻿<nav class="navbar navbar-expand-lg bg-body-tertiary">
+﻿@using HRMS_Web.Models
+@model List<LeaveRequestModel>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="Index">Home</a>
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="Reports">Reports</a>
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="ViewLeaveHistory">View Leave History</a>
-
         <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="LeaveRequest">Requested Leaves</a>
-
     </div>
 </nav>
-
-@model List<LeaveRequestModel>
 
 @{
     ViewBag.Title = "Requested Leaves";
@@ -35,18 +31,16 @@
         @foreach (var leave in Model)
         {
             <tr class="table-active">
-                <td>@leave.LeaveType</td>
+                <td>@leave.LeaveManagement.LeaveType</td> <!-- Accessing LeaveType through LeaveManagement -->
                 <td>@leave.FromDate.ToShortDateString()</td>
                 <td>@leave.ToDate.ToShortDateString()</td>
                 <td>@leave.NumberOfDays</td>
                 <td>@leave.LeaveReason</td>
                 <td>
-                    <a asp-action="ApproveRequest" asp-route-id="@leave.Id" class="btn btn-success">Approve</a>
-                    <a asp-action="DeclineRequest" asp-route-id="@leave.Id" class="btn btn-danger">Decline</a>
+                    <a asp-action="ApproveRequest" asp-route-id="@leave.RequestId" class="btn btn-success">Approve</a>
+                    <a asp-action="DeclineRequest" asp-route-id="@leave.RequestId" class="btn btn-danger">Decline</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-
