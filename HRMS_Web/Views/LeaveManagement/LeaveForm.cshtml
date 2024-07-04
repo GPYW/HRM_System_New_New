@@ -31,7 +31,7 @@
         @foreach (var leave in Model)
         {
             <tr class="table-active">
-                <td>@leave.LeaveManagement.LeaveType</td>
+                <td>@leave.LeaveManagement.LeaveType</td> <!-- Accessing LeaveType through LeaveManagement -->
                 <td>@leave.FromDate.ToShortDateString()</td>
                 <td>@leave.ToDate.ToShortDateString()</td>
                 <td>@leave.NumberOfDays</td>

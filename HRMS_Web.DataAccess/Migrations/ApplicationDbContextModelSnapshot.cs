@@ -101,6 +101,10 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.Property<DateTime>("ToDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("RequestId");
 
                     b.HasIndex("Id");
