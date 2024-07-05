@@ -191,7 +191,7 @@ namespace HRMS_Web.Controllers
         {
             _db.AttendanceTimeTable.Add(obj);
             _db.SaveChanges();
-            return RedirectToAction("ViewHistory");
+            return RedirectToAction("MarkAttendance");
         }
     }
 }
