@@ -10,6 +10,11 @@
 
         <div class="row">
             <div class="col-6 pb-4">
+                <label asp-for="EmpID"></label>
+                <input asp-for="EmpID" class="form-control" placeholder="OS0001" required>
+                <span asp-validation-for="EmpID" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
                 <label asp-for="Date"></label>
                 <input asp-for="Date" class="form-control" type="date" required>
                 <span asp-validation-for="Date" class="text-danger"></span>
@@ -33,7 +38,7 @@
         <div class="row">
             <div class="col-6 pb-4">
                 <label asp-for="Break"></label>
-                <input asp-for="Break" class="form-control" required>
+                <input asp-for="Break" class="form-control" placeholder="1 Hr" readonly>
                 <span asp-validation-for="Break" class="text-danger"></span>
             </div>
 

@@ -12,6 +12,10 @@ namespace HRMS_Web.Models
         public int RecordId { get; set; }
 
         [Required]
+        [DisplayName("Employee ID:")]
+        public string EmpID { get; set; }
+
+        [Required]
         [DisplayName("Date:")]
         [Column(TypeName = "date")]
         public DateTime Date { get; set; }
