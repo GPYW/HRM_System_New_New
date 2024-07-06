@@ -5,28 +5,29 @@ using HRMS_Web.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using HRMS_Web.ViewModel;
-using Microsoft.AspNetCore.Hosting;  // Ensure this using statement is present
-using System.IO;  // Ensure this using statement is present
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 using System;
+using System.Collections.Generic;
 
 public class ProfileSettingsController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
-    // Constructor to inject ApplicationDbContext and IWebHostEnvironment
     public ProfileSettingsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
     }
 
-    // Action to display all user details
     public IActionResult Index(string id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var userDetails = _context.ApplicationUser.FirstOrDefault(u => u.Id == userId);
+        var userDetails = _context.ApplicationUser
+            .Include(u => u.Department) // Ensure Department is included
+            .FirstOrDefault(u => u.Id == userId);
 
         if (userDetails == null)
         {
@@ -41,7 +42,6 @@ public class ProfileSettingsController : Controller
         return View(userDetails);
     }
 
-    // Action to update user details
     public IActionResult Update()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -51,7 +51,9 @@ public class ProfileSettingsController : Controller
             return NotFound();
         }
 
-        ApplicationUser applicationUserFromDb = _context.ApplicationUser.Find(userId);
+        var applicationUserFromDb = _context.ApplicationUser
+            .Include(u => u.Department) // Ensure Department is included
+            .FirstOrDefault(u => u.Id == userId);
 
         if (applicationUserFromDb == null)
         {
@@ -71,30 +73,29 @@ public class ProfileSettingsController : Controller
     public IActionResult Update(ApplicationUser model)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var obj = _context.ApplicationUser.Find(userId);
+        if (obj == null)
         {
-            ApplicationUser obj = _context.ApplicationUser.Find(userId);
-            if (obj == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
 
-            obj.FirstName = model.FirstName;
-            obj.LastName = model.LastName;
-            obj.Address = model.Address;
-            obj.DOB = model.DOB;
-            obj.PhoneNumber = model.PhoneNumber;
-            obj.join_date = model.join_date;
-            obj.UserName = model.UserName;
+        obj.FirstName = model.FirstName;
+        obj.LastName = model.LastName;
+        obj.Address = model.Address;
+        obj.DOB = model.DOB;
+        obj.PhoneNumber = model.PhoneNumber;
+        obj.join_date = model.join_date;
+        obj.UserName = model.UserName;
 
-            try
-            {
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                return RedirectToAction("ConcurrencyError", "Error");
-            }
+        try
+        {
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return RedirectToAction("ConcurrencyError", "Error");
         }
     }
 
@@ -114,28 +115,26 @@ public class ProfileSettingsController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         string stringFileName = UploadFile(vm);
+
+        var obj = _context.ApplicationUser.Find(userId);
+
+        if (obj == null)
         {
-            ApplicationUser obj = _context.ApplicationUser.Find(userId);
-
-            if (obj == null)
-            {
-                return NotFound();
-            }
-
-            obj.ProfileImage = stringFileName;
-
-            try
-            {
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                return RedirectToAction("ConcurrencyError", "Error");
-            }
+            return NotFound();
         }
-        
+
+        obj.ProfileImage = stringFileName;
+
+        try
+        {
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            return RedirectToAction("ConcurrencyError", "Error");
+        }
+    }
 
     private string UploadFile(EmployeeViewModel vm)
     {

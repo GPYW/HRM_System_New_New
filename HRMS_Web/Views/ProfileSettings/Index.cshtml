@@ -14,10 +14,9 @@
             </a>
         </div>
 
-
         <div class="col-sm-4 align-self-center">
             <p class='h1 text-capitalize'>@Model.FirstName @Model.LastName</p>
-            <p class='h4 text-capitalize'>(General Manager)</p>
+            <p class='h4 text-capitalize'>@Model.Department?.DepartmentName Department</p>
         </div>
         <div class="col-sm-5 d-flex">
             <div class="ms-auto">
