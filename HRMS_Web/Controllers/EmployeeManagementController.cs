@@ -1,8 +1,10 @@
 ﻿using HRMS_Web.DataAccess.Data;
 using HRMS_Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace HRMS_Web.Controllers
 {
@@ -12,15 +14,44 @@ namespace HRMS_Web.Controllers
         private readonly ApplicationDbContext _db = db;
         private object dbContext;
 
-        //Register
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var applicationUsers = _db.ApplicationUser.Include(u => u.Department).ToList();
+            // Step 1: Get the logged-in user ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            // Step 2: If user ID is null, redirect to the login page
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Step 3: Fetch the logged-in user's department ID
+            var user = await _db.ApplicationUser
+                .Include(u => u.Department)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            // Step 4: If department ID is null, handle the error appropriately
+            if (user?.DepartmentID == null)
+            {
+                // Handle the error appropriately, e.g., show an error message or redirect
+                return RedirectToAction("Error", "Home"); // Adjust as needed
+            }
+
+            var userDepId = user.DepartmentID;
+
+            // Step 5: Fetch all users who belong to the same department
+            var applicationUsers = await _db.ApplicationUser
+                .Include(u => u.Department)
+                .Where(u => u.DepartmentID == userDepId)
+                .ToListAsync();
+
+            // Set the breadcrumb
             ViewData["Breadcrumb"] = new List<BreadcrumbItem>
         {
             new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
         };
+
+            // Step 6: Return the view with the filtered list of users
             return View(applicationUsers);
         }
 
