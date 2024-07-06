@@ -30,7 +30,6 @@ namespace HRMS_Web.Models
         [Column(TypeName = "time")]
         public TimeSpan CheckOut { get; set; }
 
-        [Required]
         [DisplayName("Break:")]
         public string Break { get; set; }
 

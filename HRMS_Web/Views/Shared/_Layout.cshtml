@@ -39,6 +39,13 @@
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <style>
+        .nav-link.active {
+            background-color: #3c8dbc !important;
+            color: white !important;
+        }
+
+    </style>
 
     <script nonce="ae60b1a4-bbc8-493e-a700-9bf7c86886e8">try { (function (w, d) { !function (k, l, m, n) { k[m] = k[m] || {}; k[m].executed = []; k.zaraz = { deferred: [], listeners: [] }; k.zaraz.q = []; k.zaraz.f = function (o) { return async function () { var p = Array.prototype.slice.call(arguments); k.zaraz.q.push({ m: o, a: p }) } }; for (const q of ["track", "set", "debug"]) k.zaraz[q] = k.zaraz.f(q); k.zaraz.init = () => { var r = l.getElementsByTagName(n)[0], s = l.createElement(n), t = l.getElementsByTagName("title")[0]; t && (k[m].t = l.getElementsByTagName("title")[0].text); k[m].x = Math.random(); k[m].w = k.screen.width; k[m].h = k.screen.height; k[m].j = k.innerHeight; k[m].e = k.innerWidth; k[m].l = k.location.href; k[m].r = l.referrer; k[m].k = k.screen.colorDepth; k[m].n = l.characterSet; k[m].o = (new Date).getTimezoneOffset(); if (k.dataLayer) for (const x of Object.entries(Object.entries(dataLayer).reduce(((y, z) => ({ ...y[1], ...z[1] })), {}))) zaraz.set(x[0], x[1], { scope: "page" }); k[m].q = []; for (; k.zaraz.q.length;) { const A = k.zaraz.q.shift(); k[m].q.push(A) } s.defer = !0; for (const B of [localStorage, sessionStorage]) Object.keys(B || {}).filter((D => D.startsWith("zaraz"))).forEach((C => { try { k[m]["z" + C.slice(7)] = JSON.parse(B.getItem(C)) } catch { k[m]["z" + C.slice(7)] = B.getItem(C) } })); s.referrerPolicy = "origin"; s.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(k[m]))); r.parentNode.insertBefore(s, r) };["complete", "interactive"].includes(l.readyState) ? zaraz.init() : k.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document) } catch (e) { throw fetch("/cdn-cgi/zaraz/t"), e; };</script>
 </head>
@@ -66,86 +73,6 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-
-                            <div class="media">
-                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-
-                            <div class="media">
-                                <img src="~/AdminLTE/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-
-                            <div class="media">
-                                <img src="~/AdminLTE/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
-                </li>
-
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
@@ -205,7 +132,7 @@
 
             <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
                 <img src="~/images/2.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity:1">
-                <span class="brand-text font-weight-light">HRMS</span>
+                <span class="brand-text font-weight-light">Outstanders</span>
             </a>
 
             <div class="sidebar">
@@ -224,7 +151,7 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">
                                 <i class="bi bi-house-door"></i>
                                 <p>
                                     Home
@@ -233,7 +160,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="AttendanceManagement" asp-action="Index" class="nav-link">
+                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "AttendanceManagement") ? "active" : "")" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">
                                 <i class="bi bi-list-check"></i>
                                 <p>
                                     Attendance Management
@@ -242,19 +169,16 @@
                         </li>
 
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="Leave Management" asp-action="Index" class="nav-link ">
-                                <i class="bi bi-house-door"></i>
+                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "LeaveManagement") ? "active" : "")" asp-area="" asp-controller="LeaveManagement" asp-action="Index">
+                                <i class="bi bi-calendar"></i>
                                 <p>
                                     Leave Management
                                 </p>
                             </a>
                         </li>
 
-
-
-
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="ProfileSettings" asp-action="Index" class="nav-link ">
+                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "ProfileSettings") ? "active" : "")" asp-area="" asp-controller="ProfileSettings" asp-action="Index">
                                 <i class="bi bi-person-gear"></i>
                                 <p>
                                     Profile Settings
@@ -263,7 +187,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a asp-area="" asp-controller=Performance asp-action="Index" class="nav-link ">
+                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Performance") ? "active" : "")" asp-area="" asp-controller="Performance" asp-action="Index">
                                 <i class="bi bi-bullseye"></i>
                                 <p>
                                     Performance
@@ -271,18 +195,14 @@
                             </a>
                         </li>
 
-
-
-
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="EmployeeManagement" asp-action="Index" class="nav-link">
+                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "EmployeeManagement") ? "active" : "")" asp-area="" asp-controller="EmployeeManagement" asp-action="Index">
                                 <i class="bi bi-people"></i>
                                 <p>
                                     Employee Management
                                 </p>
                             </a>
                         </li>
-
                     </ul>
                 </nav>
 
