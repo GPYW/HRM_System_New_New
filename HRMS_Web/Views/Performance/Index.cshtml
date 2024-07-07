@@ -1,343 +1,114 @@
-﻿@*  @model HRMS_Web.Models.ApplicationUser
+﻿@model HRMS_Web.Models.ApplicationUser
 @using HRMS_Web.ViewModel;
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-timeline/dist/chartjs-chart-timeline.min.js"></script>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History </a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
-        </div>
-    </nav>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+    <style>
+        .nav_link {
+            color: #000000 !important;
+            font-weight: 500;
+            margin-right: 20px;
+        }
 
-    <div class="content-header">
-        <div class="container-lg">
-            <div class="row mb-1">
-                <h5 class="mt-5" style="margin-left:-15px">Performance/Dashboard</h5>
-            </div>
-        </div>
-    </div>
+            .nav_link:hover {
+                color: #17a2b8 !important;
+            }
 
-    <section class="content">
-        <div class="container-fluid container-xl">
-            <div class="row">
-                <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-lightblue">
-                        <div class="inner">
-                            <h3>150</h3>
-                            <p>Projects</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-ios-people"></i>
-                        </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="Projects" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-lightblue">
-                        <div class="inner">
-                            <h3>5</h3>
-                            <p>Tasks</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-calendar"></i>
-                        </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="Tasks" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-info">
-                        <div class="inner">
-                            <h3>44</h3>
-                            <p>View History</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="ViewHistory" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-info">
-                        <div class="inner">
-                            <h3>5</h3>
-                            <p>Assign</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-document-text"></i>
-                        </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="Assign" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        #calendar {
+            max-width: 900px;
+            max-height: 350px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
 
-        <div class="card-body">
-            <div class="row">
-                <div class="col-8 p-5">
-                    <div class="chart">
-                        <h3> Performance Trend</h3>
-                        <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                </div>
-                <div class="col-4 p-5">
-                    <div class="chart">
-                        <h3> Feedback Analysis</h3>
-                        <canvas id="feedbackAnalysisChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+        .fc .fc-button {
+            background-color: #212529;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            padding: 8px 16px;
+        }
 
-       
-        <div class="row">
-            <h3 class="mt-5 mb-5">Milestones</h3>
-            <div class="col-md-6">
+            .fc .fc-button:hover {
+                background-color: #1d2124;
+            }
 
-                <div class="card card-widget widget-user">
+        .fc .fc-daygrid-day {
+            border: 1px solid #eee;
+            padding: 10px;
+        }
 
-                    <div class="widget-user-header bg-info">
-                        <h3 class="widget-user-username">Milestones</h3>
-                    </div>
+        .fc .fc-day-today {
+            background-color: #f1f1f1;
+        }
 
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-sm-4 border-right">
-                                <div class="description-block">
-                                    <h5 class="description-header">3,200</h5>
-                                    <span class="description-text">Milestone 1</span>
-                                </div>
+        .fc .fc-event {
+            background-color: #17a2b8;
+            border: none;
+            border-radius: 4px;
+            padding: 5 px;
+            color: #fff;
+        }
 
-                            </div>
+        .fc-toolbar-title {
+            font-size: 1rem !important;
+            color: #212529;
+            font-weight: 600;
+        }
 
-                            <div class="col-sm-4 border-right">
-                                <div class="description-block">
-                                    <h5 class="description-header">13,000</h5>
-                                    <span class="description-text">Milestone 2</span>
-                                </div>
+        .fc-prev-button, .fc-next-button {
+            font-size: 0.5rem !important;
+            padding: 0.52rem 0.4rem !important;
+        }
 
-                            </div>
+        .fc-today-button {
+            padding: 0.15rem 0.5rem !important;
+        }
 
-                            <div class="col-sm-4">
-                                <div class="description-block">
-                                    <h5 class="description-header">35</h5>
-                                    <span class="description-text">Milestone 3</span>
-                                </div>
+        .fc-col-header-cell-cushion {
+            color: #212529;
+        }
 
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-                <h3 class="mt-5">Employee of the Month</h3>
-                <div class="card card-widget widget-user-2">
-
-                    <div class="widget-user-header bg-warning">
-                        <div class="widget-user-image">
-                            <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
-                        </div>
-
-                        <h3 class="widget-user-username">Nadia Carmichael</h3>
-                        <h5 class="widget-user-desc">Lead Developer</h5>
-                    </div>
-                    <div class="card-footer p-0">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Projects <span class="float-right badge bg-primary">31</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Tasks <span class="float-right badge bg-info">5</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Completed Projects <span class="float-right badge bg-success">12</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Milestones <span class="float-right badge bg-danger">4</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-           
-
-        </div>
-
-        
-            
-
-    </section>
-
-    <script>
-        $(document).ready(function () {
-            // Performance Trend Area Chart
-            var areaChartCanvas = $('#areaChart').get(0).getContext('2d');
-            var areaChartData = {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                    {
-                        label: 'Digital Goods',
-                        backgroundColor: 'rgba(60,141,188,0.9)',
-                        borderColor: 'rgba(60,141,188,0.8)',
-                        pointRadius: false,
-                        pointColor: '#3b8bba',
-                        pointStrokeColor: 'rgba(60,141,188,1)',
-                        pointHighlightFill: '#fff',
-                        pointHighlightStroke: 'rgba(60,141,188,1)',
-                        data: [28, 48, 40, 19, 86, 27, 90]
-                    },
-                    {
-                        label: 'Electronics',
-                        backgroundColor: 'rgba(210, 214, 222, 1)',
-                        borderColor: 'rgba(210, 214, 222, 1)',
-                        pointRadius: false,
-                        pointColor: 'rgba(210, 214, 222, 1)',
-                        pointStrokeColor: '#c1c7d1',
-                        pointHighlightFill: '#fff',
-                        pointHighlightStroke: 'rgba(220,220,220,1)',
-                        data: [65, 59, 80, 81, 56, 55, 40]
-                    },
-                ]
-            };
-
-            var areaChartOptions = {
-                maintainAspectRatio: false,
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            };
-
-            new Chart(areaChartCanvas, {
-                type: 'line',
-                data: areaChartData,
-                options: areaChartOptions
-            });
-
-            // Feedback Analysis Pie Chart
-            var pieChartCanvas = $('#feedbackAnalysisChart').get(0).getContext('2d');
-            var pieData = {
-                labels: ['Positive', 'Neutral', 'Negative'],
-                datasets: [{
-                    data: [60, 25, 15], // Example proportions of feedback categories
-                    backgroundColor: [
-                        'rgba(255, 255, 0, 0.2)',    // Positive
-                        'rgba(255, 0, 0, 0.2)',      // Neutral
-                        'rgba(0, 0, 255, 0.2)'       // (updated to blue)
-
-                    ],
-                    borderColor: [
-                        'rgba(255, 255, 0, 1)',    // Positive
-                        'rgba(255, 0, 0, 1)',      // Neutral
-                        'rgba(0, 0, 255, 1)'       // (updated to blue)
-
-                    ],
-                    borderWidth: 1
-                }]
-            };
-
-            var pieOptions = {
-                maintainAspectRatio: false,
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function (context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                label += context.raw + '%';
-                                return label;
-                            }
-                        }
-                    }
-                }
-            };
-
-            new Chart(pieChartCanvas, {
-                type: 'pie',
-                data: pieData,
-                options: pieOptions
-            });
-
-         
-        });
+    </style>
     </script>
-
-   
-</body>
-</html>
-
-
- *@
-
-                                    @model HRMS_Web.Models.ApplicationUser
-@using HRMS_Web.ViewModel;
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-timeline/dist/chartjs-chart-timeline.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fff;">
         <div class="container-fluid">
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History </a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
     <div class="content-header">
         <div class="container-lg">
@@ -348,145 +119,143 @@
     </div>
 
     <section class="content">
-        <div class="container-fluid container-xl">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-lightblue">
+                    <div class="small-box bg-lightblue">
                         <div class="inner">
-                            <h3>150</h3>
-                            <p>Projects</p>
+                            <h3>236</h3>
+                            <p>Remaining Working Days</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-ios-people"></i>
+                            <i class="ion ion-bag"></i>
                         </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="Projects" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-lightblue">
-                        <div class="inner">
-                            <h3>5</h3>
-                            <p>Tasks</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-calendar"></i>
-                        </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="Tasks" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-info">
+                    <div class="small-box bg-lightblue">
                         <div class="inner">
                             <h3>44</h3>
-                            <p>View History</p>
+                            <p>Present Employees</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>83<sup style="font-size: 20px">%</sup></h3>
+                            <p>Attendance Percentage</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
                         </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="ViewHistory" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
-                    <div class="info-box bg-gradient-info">
+                    <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>5</h3>
-                            <p>Assign</p>
+                            <h3>13</h3>
+                            <p>Absent Employees</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-document-text"></i>
+                            <i class="ion ion-pie-graph"></i>
                         </div>
-                        <a asp-area="" asp-controller="Performance" asp-action="Assign" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="card-body">
             <div class="row">
-                <div class="col-lg-8 col-md-12 p-5">
-                    <div class="chart">
-                        <h3> Performance Trend</h3>
-                        <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12 p-5">
-                    <div class="chart">
-                        <h3> Feedback Analysis</h3>
-                        <canvas id="feedbackAnalysisChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-5">
-            <div class="col-md-6">
-                <h3 class="mb-4">Milestones</h3>
-                <div class="card card-widget widget-user">
-                    <div class="widget-user-header bg-info">
-                        <h3 class="widget-user-username">Milestones</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-sm-4 border-right">
-                                <div class="description-block">
-                                    <h5 class="description-header">3,200</h5>
-                                    <span class="description-text">Milestone 1</span>
+                <div class="col-md-6">
+                    <h5 class="mb-4">Milestones</h5>
+                    <div class="card card-widget widget-user">
+                        <div class="widget-user-header bg-info">
+                            <h3 class="widget-user-username">Milestones</h3>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-4 border-right">
+                                    <div class="description-block">
+                                        <h5 class="description-header">3,200</h5>
+                                        <span class="description-text">Milestone 1</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-4 border-right">
-                                <div class="description-block">
-                                    <h5 class="description-header">13,000</h5>
-                                    <span class="description-text">Milestone 2</span>
+                                <div class="col-sm-4 border-right">
+                                    <div class="description-block">
+                                        <h5 class="description-header">13,000</h5>
+                                        <span class="description-text">Milestone 2</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="description-block">
-                                    <h5 class="description-header">35</h5>
-                                    <span class="description-text">Milestone 3</span>
+                                <div class="col-sm-4">
+                                    <div class="description-block">
+                                        <h5 class="description-header">35</h5>
+                                        <span class="description-text">Milestone 3</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <h3 class="mb-4">Employee of the Month</h3>
-                <div class="card card-widget widget-user-2">
-                    <div class="widget-user-header bg-warning">
-                        <div class="widget-user-image">
-                            <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                <div class="col-md-6">
+                    <h5 class="mb-4">Employee of the Month</h5>
+                    <div class="card card-widget widget-user-2">
+                        <div class="widget-user-header bg-warning">
+                            <div class="widget-user-image">
+                                <img class="img-circle elevation-2" src="../dist/img/user7-128x128.jpg">
+                            </div>
+                            <h5 class="widget-user-username">Nadia Carmichael</h5>
+                            <h6 class="widget-user-desc">Lead Developer</h6>
                         </div>
-                        <h3 class="widget-user-username">Nadia Carmichael</h3>
-                        <h5 class="widget-user-desc">Lead Developer</h5>
-                    </div>
-                    <div class="card-footer p-0">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Projects <span class="float-right badge bg-primary">31</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Tasks <span class="float-right badge bg-info">5</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Completed Projects <span class="float-right badge bg-success">12</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    Milestones <span class="float-right badge bg-danger">4</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="card-footer p-0">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Projects <span class="float-right badge bg-primary">31</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Tasks <span class="float-right badge bg-info">5</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Completed Projects <span class="float-right badge bg-success">12</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Milestones <span class="float-right badge bg-danger">4</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="chart">
+                            <h5> Performance Trend</h5>
+                            <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 ">
+                        <div class="chart">
+                            <h5> Feedback Analysis</h5>
+                            <canvas id="feedbackAnalysisChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 
     <script>
