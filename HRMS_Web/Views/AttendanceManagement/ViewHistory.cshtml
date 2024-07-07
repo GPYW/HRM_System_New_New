@@ -93,32 +93,7 @@
     </div>
 
 
-    <table class="table table-boarded table-striped">
-        <thead>
-            <tr>
-                <th class="bg-dark text-white">Employee Id</th>
-                <th class="bg-dark text-white">Date</th>
-                <th class="bg-dark text-white">Check-In</th>
-                <th class="bg-dark text-white">Check-Out</th>
-                <th class="bg-dark text-white">Break</th>
-                <th class="bg-dark text-white">Over Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var obj in Model)
-            {
-                <tr>
-                    <td>@obj.RecordId</td>
-                    <td>@obj.Date.ToString("yyyy-MM-dd")</td>
-                    <td>@obj.CheckIn</td>
-                    <td>@obj.CheckOut</td>
-                    <td>1 hrs</td>
-                    <td>@obj.OverTime</td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
+    
 </div>
 
 

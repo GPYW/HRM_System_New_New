@@ -1,6 +1,28 @@
 ﻿@model HRMS_Web.Models.AttendanceManagement
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Uplaod Attendance Files</h5>
+            <form method="post" enctype="multipart/form-data" action="AddAttendance" class="row g-3 align-items-start">
+                <div class="col-md-6 mb-3">
+                    <label for="attendanceDate">Date:</label>
+                    <input type="date" name="attendanceDate" id="attendanceDate" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="attendanceFile">Attendance File (Excel):</label>
+                    <input type="file" name="attendanceFile" id="attendanceFile" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3 d-flex align-items-center">
+                    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <form method="post">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
@@ -9,6 +31,12 @@
         </div>
 
         <div class="row">
+            <div class="col-6 pb-4">
+                <label asp-for="Id"></label>
+                <input asp-for="Id" class="form-control" type="string" required>
+                <span asp-validation-for="Id" class="text-string"></span>
+            </div>
+
             <div class="col-6 pb-4">
                 <label asp-for="Date"></label>
                 <input asp-for="Date" class="form-control" type="date" required>
@@ -49,7 +77,7 @@
                 <button type="submit" class="btn btn-dark form-control">Add</button>
             </div>
             <div class="col-3">
-                <a asp-controller="AttendanceManagement" asp-action="ViewHistory" class="btn btn-outline-dark form-control">Back to List</a>
+                <a asp-controller="AttendanceManagement" asp-action="Index" class="btn btn-outline-dark form-control">Back to List</a>
             </div>
         </div>
     </div>

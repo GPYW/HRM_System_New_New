@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 
 namespace HRMS_Web.DataAccess.Data
@@ -18,8 +19,7 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<Department> Department { get; set; }
 
         public DbSet<AttendanceManagement> AttendanceTimeTable { get; set; }
-        public DbSet<AttendanceManagement> Attendances { get; set; }
-
+       
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,7 +29,15 @@ namespace HRMS_Web.DataAccess.Data
                 .HasOne(c => c.Department)
                 .WithMany(u => u.ApplicationUsers)
                 .HasForeignKey(c => c.DepartmentID);
-           
+
+
+            builder.Entity<AttendanceManagement>()
+               .HasOne(u => u.ApplicationUser)
+               .WithMany(a => a.AttendanceTimeTable)
+               .HasForeignKey( u=> u.Id)
+               .IsRequired();
         }
+
+    
     }
 }

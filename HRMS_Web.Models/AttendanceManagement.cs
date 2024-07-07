@@ -26,12 +26,24 @@ namespace HRMS_Web.Models
         [Column(TypeName = "time")]
         public TimeSpan CheckOut { get; set; }
 
-        [Required]
+        
         [DisplayName("Break:")]
-        public string Break { get; set; }
+        
+        //public string Break { get; set; }
+        public string Break { get; set; } = "1 hrs";
 
         [Required]
         [DisplayName("Over Time:")]
         public string OverTime { get; set; }
+
+        // Foreign key for ApplicationUser
+        
+        [Required]
+        public string Id { get; set; }
+
+        //Navigate property to ApplicationUser
+        [ForeignKey("Id")]
+        public ApplicationUser ApplicationUser { get; set; }
+
     }
 }
