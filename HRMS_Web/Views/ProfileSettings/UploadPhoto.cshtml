@@ -1,25 +1,23 @@
 ﻿@model HRMS_Web.ViewModel.EmployeeViewModel
 @using HRMS_Web.Models;
 
-
 <br />
 <h2 class="text-capitalize">Upload Profile Picture</h2>
 <br />
 <h6 class="text-capitalize" style="color:red">*Upload 1:1 (Ex: 960px x 960px) image for better resolution.</h6>
-<br />  
+<br />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="UploadPhoto" enctype="multipart/form-data">
+        <form asp-action="SaveFile" enctype="multipart/form-data">
             <div class="form-control" style="margin-bottom: 10px;">
-                <input asp-for="ProfileImage" class="form-control" style="border: 1px solid #000; padding: 5px; border-radius: 4px; width: 100%;" />
+                <input asp-for="ProfileImage" type="file" class="form-control" style="border: 1px solid #000; padding: 5px; border-radius: 4px; width: 100%;" />
             </div><br />
-            <div style="display: flex;align-items:center">
+            <div style="display: flex; align-items: center">
                 <button type="submit" class="btn btn-dark text-capitalize" style="padding: 10px 20px; border-radius: 4px; display: flex; align-items: center;">
                     Upload Image <i class="fas fa-upload" style="margin-left: 8px;"></i>
                 </button>
                 <a asp-action="Index" style="margin-left: 15px; text-decoration: none; color: #000;">Discard</a>
             </div>
         </form>
-
     </div>
 </div>

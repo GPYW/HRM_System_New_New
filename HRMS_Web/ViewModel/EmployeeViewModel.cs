@@ -1,4 +1,6 @@
-﻿namespace HRMS_Web.ViewModel
+﻿using Microsoft.AspNetCore.Http;
+
+namespace HRMS_Web.ViewModel
 {
     public class EmployeeViewModel
     {

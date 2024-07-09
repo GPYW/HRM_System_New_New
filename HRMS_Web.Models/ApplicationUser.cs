@@ -13,5 +13,6 @@ namespace HRMS_Web.Models
         public string? CompanyID { get; set; }
         public string? DepartmentID { get; set; }
         public Department? Department { get; set; }
+        public byte[] Photo {  get; set; }
     }
 }
