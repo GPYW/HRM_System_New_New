@@ -175,6 +175,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("/EmployeeManagement/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -188,7 +189,6 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 user.CompanyID = Input.EmployeeID;
                 user.DepartmentID = Input.DepartmentID;
 
-
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -196,9 +196,9 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    //TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
+                    // TempData["TempPassword"] = Input.Password; // Store the password temporarily in TempData
 
-                    if (!String.IsNullOrEmpty(Input.Role))
+                    if (!string.IsNullOrEmpty(Input.Role))
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
@@ -217,30 +217,45 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     var subject = "Confirm your email";
-                    var body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." +
-                        $"Account Credentials" +
-                        $"Username:  {Input.Email}" +
-                        $"Password:  {Input.Password}";
+                    var body = $@"
+                <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>
+                    <h2 style='color: #17a2b8;'>Confirm Your Email</h2>
+                    <p>Thank you for creating an account with us. Please confirm your account by clicking the button below:</p>
+                    <p style='text-align: center;'>
+                        <a href='{HtmlEncoder.Default.Encode(callbackUrl)}' 
+                           style='background-color: #17a2b8; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Confirm Account</a>
+                    </p>
+                    <p>If the button above doesn't work, copy and paste the following link into your web browser:</p>
+                    <p><a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{HtmlEncoder.Default.Encode(callbackUrl)}</a></p>
+                    <hr>
+                    <h3>Account Credentials</h3>
+                    <p><strong>Username:</strong> {Input.Email}</p>
+                    <p><strong>Password:</strong> {Input.Password}</p>
+                    <p>Please change your password after your first login for security purposes.</p>
+                    <hr>
+                    <p style='font-size: 12px; color: #999;'>If you did not create this account, please ignore this email.</p>
+                </div>";
 
                     await _emailSender.SendEmailAsync(Input.Email, subject, body);
 
-
-                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    //{
-                    //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    //}
-                    //else
-                    //{
-                    //    await _signInManager.SignInAsync(user, isPersistent: false);
-                    //    return LocalRedirect(returnUrl);
-                    //}
+                    // if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    // {
+                    //     return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    // }
+                    // else
+                    // {
+                    //     await _signInManager.SignInAsync(user, isPersistent: false);
+                    //     return LocalRedirect(returnUrl);
+                    // }
                     return LocalRedirect(returnUrl); // Redirect to the current user's home page
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
             Input.DepartmentList = _context.Department.Select(d => new SelectListItem
             {
                 Text = d.DepartmentName,
@@ -250,6 +265,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
         private async Task<string> GenerateEmployeeIDAsync()
         {
             var maxEmployeeID = await _context.ApplicationUser
