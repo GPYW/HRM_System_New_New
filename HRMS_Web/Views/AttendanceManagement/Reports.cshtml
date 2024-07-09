@@ -1,5 +1,8 @@
-﻿<style>
+﻿@{
+    ViewData["Title"] = "Reports";
+}
 
+<style>
     .nav_link {
         color: #000000 !important;
         font-weight: 500;
@@ -9,12 +12,12 @@
         .nav_link:hover {
             color: #17a2b8 !important;
         }
-
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #fff;">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fff;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -36,4 +39,36 @@
     </div>
 </nav>
 
-<h3 class="text-capitalize">Reports</h3>
+<h3 class="text-capitalize">@ViewData["Title"]</h3>
+
+<div class="container mt-3">
+    <form method="post" asp-controller="AttendanceManagement" asp-action="PDF">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="year" class="form-label">Year</label>
+                <select class="form-select" id="year" name="year" required>
+                    @{
+                        for (int year = DateTime.Now.Year; year >= 2023; year--)
+                        {
+                            <option value="@year">@year</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="month" class="form-label">Month</label>
+                <select class="form-select" id="month" name="month" required>
+                    @{
+                        for (int month = 1; month <= 12; month++)
+                        {
+                            <option value="@month">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-dark p-2">Download Report</button>
+            </div>
+        </div>
+    </form>
+</div>

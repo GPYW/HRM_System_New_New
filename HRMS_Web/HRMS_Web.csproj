@@ -9,6 +9,7 @@
   <ItemGroup>
     <Content Remove="Views\EmployeeManagement\Create.cshtml" />
     <Content Remove="Views\EmployeeManagement\Index1.cshtml" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.4" />
   
 
 	
