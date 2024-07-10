@@ -8,29 +8,31 @@ namespace HRMS_Web.Models
     public class LeaveRequestModel
     {
         [Key]
-        [Required]
-        public int? RequestId { get; set; }
+        public int RequestId { get; set; }
+
+        public string? LeaveDuration { get; set; }
 
         [Required]
-        public DateTime FromDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         [Required]
-        public DateTime ToDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public int NumberOfDays => (ToDate - FromDate).Days + 1;
+        public int NumberOfLeaveDays { get; set; }
 
         [Required]
         [StringLength(500)]
-        public string? LeaveReason { get; set; }
+        public string LeaveReason { get; set; }
 
         [Required]
-        public string? Status { get; set; } // "Pending", "Approved", "Declined"
+        public string Status { get; set; } // "Pending", "Approved", "Declined"
 
         // Foreign key to LeaveManagement
         [Required]
-        public int LeaveId { get; set; }
+        public int? LeaveId { get; set; }
 
         // Navigation property to LeaveManagement
+        [ForeignKey("LeaveId")]
         public LeaveManagement? LeaveManagement { get; set; }
 
         // Foreign key to ApplicationUser
@@ -39,6 +41,8 @@ namespace HRMS_Web.Models
 
         // Navigation property to ApplicationUser
         [ForeignKey("Id")]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser? User { get; set; }
+        [Required]
+        public string? LeaveType { get; set; }
     }
 }
