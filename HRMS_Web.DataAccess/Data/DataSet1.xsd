@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Data Source=THESAKI\SQLEXPRESS;Initial Catalog=HRMS_leave1;Integrated Security=True;TrustServerCertificate=True" IsAppSettingsProperty="false" Modifier="Assembly" Name="thesaki\sqlexpress.HRMS_leave1.dbo" ParameterPrefix="@" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="thesaki\sqlexpress.HRMS_leave1.dbo" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT LeaveManagement.LeaveType AS Expr1, LeaveManagement.RemainingLeaves, LeaveRequests.LeaveDuration, LeaveRequests.Status
+FROM   LeaveManagement INNER JOIN
+             LeaveRequests ON LeaveManagement.LeaveId = LeaveRequests.LeaveId</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Expr1" DataSetColumn="Expr1" />
+              <Mapping SourceColumn="RemainingLeaves" DataSetColumn="RemainingLeaves" />
+              <Mapping SourceColumn="LeaveDuration" DataSetColumn="LeaveDuration" />
+              <Mapping SourceColumn="Status" DataSetColumn="Status" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="DataSet1" msprop:Generator_DataSetName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_UserTableName="DataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Expr1" msprop:Generator_ColumnPropNameInRow="Expr1" msprop:Generator_ColumnPropNameInTable="Expr1Column" msprop:Generator_ColumnVarNameInTable="columnExpr1" msprop:Generator_UserColumnName="Expr1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RemainingLeaves" msprop:Generator_ColumnPropNameInRow="RemainingLeaves" msprop:Generator_ColumnPropNameInTable="RemainingLeavesColumn" msprop:Generator_ColumnVarNameInTable="columnRemainingLeaves" msprop:Generator_UserColumnName="RemainingLeaves" type="xs:int" />
+              <xs:element name="LeaveDuration" msprop:Generator_ColumnPropNameInRow="LeaveDuration" msprop:Generator_ColumnPropNameInTable="LeaveDurationColumn" msprop:Generator_ColumnVarNameInTable="columnLeaveDuration" msprop:Generator_UserColumnName="LeaveDuration" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Status" msprop:Generator_ColumnPropNameInRow="Status" msprop:Generator_ColumnPropNameInTable="StatusColumn" msprop:Generator_ColumnVarNameInTable="columnStatus" msprop:Generator_UserColumnName="Status">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

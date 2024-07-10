@@ -15,11 +15,27 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="ReportViewerForMvc14" Version="140.1000.523" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HRMS_Web.Models\HRMS_Web.Models.csproj" />
     <ProjectReference Include="..\HRMS_Web.Utility\HRMS_Web.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Data\DataSet1.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
