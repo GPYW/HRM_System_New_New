@@ -1,5 +1,5 @@
-﻿@using HRMS_Web.ViewModels
-@model LeaveHistoryViewModel
+﻿@using HRMS_Web.Models
+@model List<LeaveRequestModel>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -12,6 +12,8 @@
 
 @{
     ViewBag.Title = "Leave History";
+    var currentMonthLeaveRequests = ViewBag.CurrentMonthLeaveRequests as List<LeaveRequestModel>;
+    var leaveTypes = ViewBag.LeaveTypes as List<string>;
 }
 
 <h2 class="text-primary">Requested Leaves</h2>
@@ -24,17 +26,21 @@
             <th scope="col">To</th>
             <th scope="col">No of Days</th>
             <th scope="col">Reason</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Status</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var leave in Model.PendingRequests)
+        @foreach (var leave in currentMonthLeaveRequests)
         {
             <tr class="table-active">
-                <td>@leave.LeaveManagement.LeaveType</td> <!-- Assuming LeaveType is a property of LeaveManagement -->
-                <td>@leave.FromDate.ToShortDateString()</td>
-                <td>@leave.ToDate.ToShortDateString()</td>
-                <td>@leave.NumberOfDays</td>
+                <td>@leave.LeaveManagement.LeaveType</td>
+                <td>@leave.StartDate.ToShortDateString()</td>
+                <td>@leave.EndDate.ToShortDateString()</td>
+                <td>@leave.NumberOfLeaveDays</td>
                 <td>@leave.LeaveReason</td>
+                <td>@leave.LeaveDuration</td>
+                <td>@leave.Status</td>
             </tr>
         }
     </tbody>
@@ -42,7 +48,33 @@
 
 <h2 class="text-primary">Leave History</h2>
 
-<table class="table table-hover">
+<form method="get" asp-action="ViewLeaveHistory">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="month">Month</label>
+            <input type="number" id="month" name="month" class="form-control" min="1" max="12" />
+        </div>
+        <div class="col-md-3">
+            <label for="year">Year</label>
+            <input type="number" id="year" name="year" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="leaveType">Leave Type</label>
+            <select id="leaveType" name="leaveType" class="form-control">
+                <option value="">All</option>
+                @foreach (var leaveType in leaveTypes)
+                {
+                    <option value="@leaveType">@leaveType</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 mt-4">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-hover mt-4">
     <thead>
         <tr>
             <th scope="col">Leave Type</th>
@@ -50,18 +82,20 @@
             <th scope="col">To</th>
             <th scope="col">No of Days</th>
             <th scope="col">Reason</th>
+            <th scope="col">Duration</th>
             <th scope="col">Status</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var leave in Model.LeaveHistory)
+        @foreach (var leave in Model)
         {
             <tr class="table-active">
-                <td>@leave.LeaveManagement.LeaveType</td> <!-- Assuming LeaveType is a property of LeaveManagement -->
-                <td>@leave.FromDate.ToShortDateString()</td>
-                <td>@leave.ToDate.ToShortDateString()</td>
-                <td>@leave.NumberOfDays</td>
+                <td>@leave.LeaveManagement.LeaveType</td>
+                <td>@leave.StartDate.ToShortDateString()</td>
+                <td>@leave.EndDate.ToShortDateString()</td>
+                <td>@leave.NumberOfLeaveDays</td>
                 <td>@leave.LeaveReason</td>
+                <td>@leave.LeaveDuration</td>
                 <td>@leave.Status</td>
             </tr>
         }

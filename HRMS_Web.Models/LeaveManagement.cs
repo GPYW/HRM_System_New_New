@@ -7,14 +7,18 @@ namespace HRMS_Web.Models
     {
         [Key]
         [Required]
-        public int? LeaveId { get; set; }
+        public int LeaveId { get; set; }
 
         [Required]
         public string? LeaveType { get; set; }
 
-        public int RemainingLeaves { get; set; }
+        public int NoOfLeaves_Year { get; set; }
 
         // Navigation property to related LeaveRequestModels
         public ICollection<LeaveRequestModel>? LeaveRequests { get; set; }
+
+        // Navigation property to related LeaveRequestModels
+        public ICollection<RemainingLeaves>? RemainingLeaves { get; set; }
+
     }
 }
