@@ -1,0 +1,87 @@
+﻿@using HRMS_Web.Models
+@model IEnumerable<HRMS_Web.Models.LeaveRequestModel>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="Index">Home</a>
+        <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="Reports">Reports</a>
+        <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="ViewLeaveHistory">View Leave History</a>
+        <a class="nav-link active" asp-area="" asp-controller="LeaveManagement" asp-action="LeaveRequest">Requested Leaves</a>
+    </div>
+</nav>
+
+@{
+    ViewBag.Title = "Requested Leaves";
+    var nonPendingRequests = ViewBag.NonPendingRequests as IEnumerable<HRMS_Web.Models.LeaveRequestModel>;
+}
+
+<h2 class="text-primary">Pending Requested Leaves</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Employee Id</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Leave Type</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Leave Duration</th>
+            <th scope="col">No of Days</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leave in Model)
+        {
+            <tr class="table-active">
+                <td>@leave.User?.CompanyID</td>
+                <td>@leave.User?.FirstName</td>
+                <td>@leave.LeaveManagement?.LeaveType</td>
+                <td>@leave.StartDate.ToShortDateString()</td>
+                <td>@leave.EndDate.ToShortDateString()</td>
+                <td>@leave.LeaveDuration</td>
+                <td>@leave.NumberOfLeaveDays</td>
+                <td>@leave.LeaveReason</td>
+                <td>
+                    <a asp-action="ApproveRequest" asp-route-id="@leave.RequestId" class="btn btn-success">Approve</a>
+                    <a asp-action="DeclineRequest" asp-route-id="@leave.RequestId" class="btn btn-danger">Decline</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2 class="text-primary">Requested Leaves</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Employee Id</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Leave Type</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Leave Duration</th>
+            <th scope="col">No of Days</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leave in nonPendingRequests)
+        {
+            <tr class="table-active">
+                <td>@leave.User?.CompanyID</td>
+                <td>@leave.User?.FirstName</td>
+                <td>@leave.LeaveManagement?.LeaveType</td>
+                <td>@leave.StartDate.ToShortDateString()</td>
+                <td>@leave.EndDate.ToShortDateString()</td>
+                <td>@leave.LeaveDuration</td>
+                <td>@leave.NumberOfLeaveDays</td>
+                <td>@leave.LeaveReason</td>
+                <td>@leave.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

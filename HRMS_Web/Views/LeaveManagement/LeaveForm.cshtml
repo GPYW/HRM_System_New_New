@@ -1,0 +1,136 @@
+﻿@using HRMS_Web.Models
+@model LeaveRequestModel
+
+@{
+    var leaveTypes = ViewBag.LeaveTypes as List<string>;
+}
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <div class="col-12">
+                <h2 class="text-primary">Leave Request Form</h2>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="leaveTypeDropdown">Leave Type:</label>
+                <select id="leaveTypeDropdown" name="LeaveType" class="form-control" required>
+                    <option value="" disabled selected>Select Leave Type</option>
+                    @foreach (var leaveType in leaveTypes)
+                    {
+                        <option value="@leaveType">@leaveType</option>
+                    }
+                </select>
+                <span asp-validation-for="LeaveType" class="text-danger"></span>
+            </div>
+
+            <div class="col-6 pb-4">
+                <label for="remainingLeaves">Leaves Per Year</label>
+                <input type="number" id="remainingLeaves" name="NoOfRemainingLeave" class="form-control" readonly />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="fromDate">From</label>
+                <input type="date" id="fromDate" name="StartDate" class="form-control" required />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-6 pb-4">
+                <label for="toDate">To</label>
+                <input type="date" id="toDate" name="EndDate" class="form-control" required />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="leaveDuration">Leave Duration</label>
+                <select id="leaveDuration" name="LeaveDuration" class="form-control" required>
+                    <option value="" disabled selected>Select Leave Duration</option>
+                    <option value="Full Day">Full Day</option>
+                    <option value="First Half">First Half</option>
+                    <option value="Second Half">Second Half</option>
+                </select>
+                <span asp-validation-for="LeaveDuration" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 pb-4">
+                <label for="leaveReason">Leave Reason</label>
+                <textarea id="leaveReason" name="LeaveReason" class="form-control" required></textarea>
+                <span asp-validation-for="LeaveReason" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3 pb-5">
+                <button type="submit" class="btn btn-primary form-control">Request</button>
+            </div>
+            <div class="col-3 pb-5">
+                <a asp-controller="LeaveManagement" asp-action="Index" class="btn btn-secondary form-control">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function updateLeaveDurationOptions(leaveType) {
+                var leaveDuration = $('#leaveDuration');
+                leaveDuration.empty(); // Clear current options
+
+                if (leaveType === "Half Day") {
+                    leaveDuration.append('<option value="First Half">First Half</option>');
+                    leaveDuration.append('<option value="Second Half">Second Half</option>');
+                } else {
+                    leaveDuration.append('<option value="Full Day">Full Day</option>');
+                }
+            }
+
+            $('#leaveTypeDropdown').change(function () {
+                var leaveType = $(this).val();
+                if (leaveType) {
+                    $.ajax({
+                        url: '@Url.Action("GetRemainingLeaves", "LeaveManagement")',
+                        data: { leaveType: leaveType },
+                        success: function (result) {
+                            if (result.success) {
+                                $('#remainingLeaves').val(result.remainingLeaves);
+                            } else {
+                                alert(result.message);
+                                window.location.href = '@Url.Action("LeaveForm", "LeaveManagement")';
+                            }
+                        }
+                    });
+
+                    updateLeaveDurationOptions(leaveType);
+
+                    if (leaveType === "Half Day") {
+                        $('#fromDate').change(function () {
+                            var startDate = $(this).val();
+                            $('#toDate').val(startDate);
+                        });
+                    } else {
+                        $('#fromDate').off('change'); // Remove any previous event handler
+                        $('#toDate').val(''); // Clear the toDate if not Half Day
+                    }
+                } else {
+                    $('#remainingLeaves').val('');
+                    $('#leaveDuration').empty(); // Clear Leave Duration options
+                }
+            });
+
+            // Set initial state for Leave Duration options
+            var initialLeaveType = $('#leaveTypeDropdown').val();
+            updateLeaveDurationOptions(initialLeaveType);
+        });
+    </script>
+}
