@@ -207,7 +207,28 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, SD.Role_Employee);
                     }
 
+                    // Fetch the user ID
                     var userId = await _userManager.GetUserIdAsync(user);
+
+                    // Fetch all leave types
+                    var leaveTypes = await _context.LeaveManagement.ToListAsync();
+
+                    // Create RemainingLeaves entries for each leave type
+                    foreach (var leaveType in leaveTypes)
+                    {
+                        var remainingLeave = new RemainingLeaves
+                        {
+                            Id = userId,
+                            LeaveId = leaveType.LeaveId,
+                            NoOfRemainingLeave = leaveType.NoOfLeaves_Year
+                        };
+
+                        _context.RemainingLeaves.Add(remainingLeave);
+                    }
+
+                    // Save the changes to the database
+                    await _context.SaveChangesAsync();
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

@@ -13,5 +13,9 @@ namespace HRMS_Web.Models
         public string? CompanyID { get; set; }
         public string? DepartmentID { get; set; }
         public Department? Department { get; set; }
+        // Navigation property to LeaveRequestModel
+        public ICollection<LeaveRequestModel> LeaveRequests { get; set; } = new List<LeaveRequestModel>();
+        // Navigation property to LeaveRequestModel
+        public ICollection<RemainingLeaves> RemainingLeaves { get; set; } = new List<RemainingLeaves>();
     }
 }

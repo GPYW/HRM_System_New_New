@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 
 namespace HRMS_Web.DataAccess.Data
@@ -19,6 +20,9 @@ namespace HRMS_Web.DataAccess.Data
 
         public DbSet<AttendanceManagement> AttendanceTimeTable { get; set; }
         public DbSet<AttendanceManagement> Attendances { get; set; }
+        public DbSet<LeaveRequestModel> LeaveRequests { get; set; }
+        public DbSet<LeaveManagement> LeaveManagement { get; set; }
+        public DbSet<RemainingLeaves> RemainingLeaves { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,7 +33,35 @@ namespace HRMS_Web.DataAccess.Data
                 .HasOne(c => c.Department)
                 .WithMany(u => u.ApplicationUsers)
                 .HasForeignKey(c => c.DepartmentID);
-           
+
+            builder.Entity<LeaveRequestModel>()
+                .HasOne(lr => lr.LeaveManagement)
+                .WithMany(lm => lm.LeaveRequests)
+                .HasForeignKey(lr => lr.LeaveId)
+            .IsRequired();
+
+            builder.Entity<LeaveRequestModel>()
+               .HasOne(l => l.User)
+               .WithMany(u => u.LeaveRequests)
+               .HasForeignKey(l => l.Id)
+            .IsRequired();
+
+            builder.Entity<RemainingLeaves>()
+            .Property(rl => rl.RemainingLeaveId)
+            .ValueGeneratedOnAdd();
+
+            builder.Entity<RemainingLeaves>()
+                .HasOne(lr => lr.LeaveManagement)
+                .WithMany(lm => lm.RemainingLeaves)
+                .HasForeignKey(lr => lr.LeaveId)
+            .IsRequired();
+
+            builder.Entity<RemainingLeaves>()
+               .HasOne(l => l.User)
+               .WithMany(u => u.RemainingLeaves)
+               .HasForeignKey(l => l.Id)
+                .IsRequired();
+
         }
     }
 }
