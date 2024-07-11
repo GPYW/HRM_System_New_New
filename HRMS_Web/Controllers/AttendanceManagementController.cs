@@ -10,6 +10,7 @@ using System.Security.Claims;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Globalization;
+using System.Diagnostics.Metrics;
 
 namespace HRMS_Web.Controllers
 {
@@ -246,7 +247,127 @@ namespace HRMS_Web.Controllers
             }
         }
 
+        public IActionResult GenerateReport(DateTime date)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
 
+            if (applicationUser == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var department = _db.Department.FirstOrDefault(d => d.DepartmentID == applicationUser.DepartmentID);
+
+            if (department == null)
+            {
+                return NotFound("Department not found");
+            }
+
+            var employees = _db.ApplicationUser
+                .Where(u => u.DepartmentID == applicationUser.DepartmentID && u.Id != loggedInUserId)
+                .ToList();
+
+            var attendanceList = _db.AttendanceTimeTable
+                .Where(a => a.Date.Date == date.Date && employees.Select(e => e.CompanyID).Contains(a.EmpID))
+                .OrderBy(a => a.EmpID)
+                .ToList();
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4, 25, 25, 30, 30))
+                {
+                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                    document.Open();
+
+                    var image = iTextSharp.text.Image.GetInstance("wwwroot/images/LetterHead.png");
+                    float pageWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
+                    image.ScaleToFit(pageWidth, image.Height * (pageWidth / image.Width));
+                    image.Alignment = Element.ALIGN_CENTER;
+                    document.Add(image);
+
+                    var footer = FontFactory.GetFont("Arial", 8, Font.NORMAL);
+                    var subTitleFont = FontFactory.GetFont("Arial", 10, Font.BOLD);
+                    var regularFont = FontFactory.GetFont("Arial", 10, Font.NORMAL);
+
+                    document.Add(new Paragraph($"Attendance Report - {date.ToString("yyyy-MM-dd")}", subTitleFont));
+                    document.Add(new Paragraph(" "));
+                    document.Add(new Paragraph($"Department: {department.DepartmentName}", regularFont));
+                    document.Add(new Paragraph(" "));
+
+                    PdfPTable table = new PdfPTable(5);
+                    table.WidthPercentage = 100;
+                    table.DefaultCell.Border = PdfPCell.NO_BORDER;
+
+                    void AddHeaderCell(PdfPTable t, string text)
+                    {
+                        var font = FontFactory.GetFont("Arial", 10, Font.BOLD, BaseColor.WHITE);
+                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
+                        {
+                            HorizontalAlignment = Element.ALIGN_CENTER,
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            BackgroundColor = new BaseColor(25, 161, 184),
+                            Border = PdfPCell.NO_BORDER
+                        };
+                        t.AddCell(cell);
+                    }
+
+                    void AddBodyCell(PdfPTable t, string text, bool isOdd)
+                    {
+                        var font = FontFactory.GetFont("Arial", 8, Font.NORMAL);
+                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
+                        {
+                            HorizontalAlignment = Element.ALIGN_CENTER,
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            Border = PdfPCell.NO_BORDER
+                        };
+                        if (isOdd)
+                        {
+                            cell.BackgroundColor = BaseColor.WHITE;
+                        }
+                        else
+                        {
+                            cell.BackgroundColor = new BaseColor(185, 212, 217);
+                        }
+                        t.AddCell(cell);
+                    }
+
+                    AddHeaderCell(table, "No");
+                    AddHeaderCell(table, "EmployeeID");
+                    AddHeaderCell(table, "Check-In");
+                    AddHeaderCell(table, "Check-Out");
+                    AddHeaderCell(table, "Overtime");
+
+                    bool isOddRow = true;
+                    int counter = 1;
+
+                    foreach (var attendance in attendanceList)
+                    {
+                        AddBodyCell(table, counter.ToString(), isOddRow);
+                        AddBodyCell(table, attendance.EmpID, isOddRow);
+                        AddBodyCell(table, attendance.CheckIn.ToString(@"hh\:mm"), isOddRow);
+                        AddBodyCell(table, attendance.CheckOut.ToString(@"hh\:mm"), isOddRow);
+                        AddBodyCell(table, attendance.OverTime, isOddRow);
+
+                        isOddRow = !isOddRow;
+                        counter++;
+                    }
+
+                    document.Add(table);
+                    document.Add(new Paragraph(" "));
+
+                    document.Add(new Paragraph("----End of the document----", footer));
+
+                    document.Add(new Paragraph("*This document is system-generated and does not require a signature.", footer));
+                    document.Add(new Paragraph(" "));
+
+                    document.Close();
+
+                    byte[] byteArray = ms.ToArray();
+                    return File(byteArray, "application/pdf", $"Report_{date:yyyy-MM-dd}.pdf");
+                }
+            }
+        }
         // Helper method to fetch attendance list based on filters
         private List<AttendanceManagement> GetAttendanceList(DateTime? fromDate = null, DateTime? toDate = null)
         {

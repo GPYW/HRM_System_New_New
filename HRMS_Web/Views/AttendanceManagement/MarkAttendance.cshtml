@@ -90,6 +90,8 @@
         </div>
     </div>
     <hr />
+    <h5 class="text-capitalize">View Employee Attendance Details</h5><br />
+
     <form method="post" action="SearchFromAll" class="row g-3">
         <div class="col-md-3">
             <label for="EmployeeId" class="form-label">Employee Id:</label>
@@ -139,4 +141,20 @@
             </table>
         </div>
     }
+</div>
+<br />
+<div class="container mt-3 ml-3">
+    <h5 class="text-capitalize">Generate Department Daily attendance Report</h5><br />
+
+    <form method="post" asp-controller="AttendanceManagement" asp-action="GenerateReport">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" id="date" name="date" required />
+            </div>
+            <div class="col-md-4 d-flex align-items-center" style="margin-top:13px;">
+                <button type="submit" class="btn btn-dark">Generate Report</button>
+            </div>
+        </div>
+    </form>
 </div>
