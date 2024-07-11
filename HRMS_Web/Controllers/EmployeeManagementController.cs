@@ -60,20 +60,30 @@ namespace HRMS_Web.Controllers
             ViewData["Breadcrumb"] = new List<BreadcrumbItem>
     {
         new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
-        new BreadcrumbItem { Title = "Register Employee", Url = "/Identity/Account/Register" }
+        new BreadcrumbItem { Title = "Register", Url = Url.Action("Register", "EmployeeManagement") }
     };
-
             return View();
         }
-
 
         [HttpPost]
         public IActionResult Register(ApplicationUser obj)
         {
-            _db.ApplicationUser.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _db.ApplicationUser.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            // If ModelState is not valid, set the breadcrumb again
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+        new BreadcrumbItem { Title = "Register", Url = Url.Action("Register", "EmployeeManagement") }
+    };
+            return View(obj);
         }
+
 
         public IActionResult Edit(string? Id)
         {
@@ -174,6 +184,28 @@ namespace HRMS_Web.Controllers
 
 
         }
+
+        public IActionResult View(string id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var userDetails = _db.ApplicationUser.FirstOrDefault(u => u.Id == id);
+
+            if (userDetails == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+            new BreadcrumbItem { Title = "View Profile", Url = Url.Action("View", "EmployeeManagement") }
+
+        };
+
+            return View(userDetails);
+        }
+
 
 
     }

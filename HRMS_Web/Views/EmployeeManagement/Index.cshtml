@@ -82,6 +82,9 @@
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-@obj.Id">
+                                    <a class="dropdown-item" href="@Url.Action("View", "EmployeeManagement", new { Id = obj.Id })">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
                                     <a class="dropdown-item" href="@Url.Action("Edit", "EmployeeManagement", new { Id = obj.Id })">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>

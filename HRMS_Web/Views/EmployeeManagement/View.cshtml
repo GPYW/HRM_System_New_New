@@ -1,0 +1,98 @@
+﻿@model HRMS_Web.Models.ApplicationUser
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10"></div>
+        <div class="col-sm-2">Employee ID : @Model.CompanyID</div>
+    </div>
+    <div class="row"><br /></div>
+    <div class="row">
+        <div class="col-sm-3" style="position: relative;">
+            <img src="~/images/@Model.ProfileImage" width="150px" height="auto" class="rounded-circle" alt="user" />
+        </div>
+
+        <div class="col-sm-4 align-self-center">
+            <p class='h1 text-capitalize'>@Model.FirstName @Model.LastName</p>
+            <p class='h4 text-capitalize'>@Model.Department?.DepartmentName Department</p>
+        </div>
+        <div class="col-sm-5 d-flex">
+            <div class="ms-auto">
+                <a asp-area="" asp-controller="EmployeeManagement" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-dark">
+                    Edit Details <i class="fas fa-pencil-alt"></i>
+                </a>
+            </div>
+        </div>
+
+    </div><br />
+    <div class="row">
+        <p class="h4">Personal Details</p>
+    </div>
+    <div class="row">
+        <br />
+        <div class="col-sm-6">
+            <div class="container mt-3">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>First Name</td>
+                            <td>:</td>
+                            <td>@Model.FirstName </td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td>:</td>
+                            <td>@Model.LastName</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>:</td>
+                            <td>@Model.Address</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="container mt-3">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Date of Birth</td>
+                            <td>:</td>
+                            <td>@(Model.DOB?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
+                        </tr>
+                        <tr>
+                            <td>Join Date</td>
+                            <td>:</td>
+                            <td>@(Model.join_date?.ToString("yyyy-MM-dd") ?? string.Empty)</td>
+                        </tr>
+                        <tr>
+                            <td>User Name</td>
+                            <td>:</td>
+                            <td>@Model.UserName</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><br />
+        <div class="row">
+            <p class="h4">Contact Details</p>
+        </div>
+        <div class="container mt-3">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Email</td>
+                        <td>:</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Number</td>
+                        <td>:</td>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
