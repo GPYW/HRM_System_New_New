@@ -1,0 +1,30 @@
+﻿@model HRMS_Web.Models.ConfigurationViewModel
+
+<h2>Configuration Module</h2>
+
+<div>
+    <h3>Leave Types</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.LeaveTypes)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="AddLeaveType" method="post">
+        <div class="form-group">
+            <label for="leaveTypeName">Leave Type Name</label>
+            <input type="text" class="form-control" id="leaveTypeName" name="Name" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Leave Type</button>
+    </form>
+</div>
