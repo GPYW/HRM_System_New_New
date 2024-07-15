@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HRMS_Web.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HRMS_Web.DataAccess.Data;
-using HRMS_Web.Models;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace HRMS_Web.Controllers
 {
@@ -20,6 +21,12 @@ namespace HRMS_Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Configuration", Url = Url.Action("Index", "Configuration") },
+            };
+
             var viewModel = new ConfigurationViewModel
             {
                 LeaveTypes = await _context.LeaveTypes.ToListAsync(),
@@ -42,6 +49,13 @@ namespace HRMS_Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Configuration", Url = Url.Action("Index", "Configuration") },
+            };
+
             var viewModel = new ConfigurationViewModel
             {
                 LeaveTypes = await _context.LeaveTypes.ToListAsync(),
@@ -63,6 +77,13 @@ namespace HRMS_Web.Controllers
                 await _roleManager.CreateAsync(role);
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Configuration", Url = Url.Action("Index", "Configuration") },
+            };
+
             var viewModel = new ConfigurationViewModel
             {
                 LeaveTypes = await _context.LeaveTypes.ToListAsync(),
@@ -79,11 +100,19 @@ namespace HRMS_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDepartment([Bind("DepartmentID,DepartmentName,NoOfEmployees")] Department department)
         {
-
+            if (ModelState.IsValid)
+            {
                 _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            
+            }
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Configuration", Url = Url.Action("Index", "Configuration") },
+            };
+
             var viewModel = new ConfigurationViewModel
             {
                 LeaveTypes = await _context.LeaveTypes.ToListAsync(),
