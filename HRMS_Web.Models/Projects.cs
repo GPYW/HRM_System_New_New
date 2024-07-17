@@ -27,8 +27,8 @@ namespace HRMS_Web.Models
         [Required]
         public string Project_Manager{ get; set; }
 
-        [Required]
-        public string Project_Team{ get; set; }
+        //[Required]
+        //public string Project_Team{ get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -52,7 +52,17 @@ namespace HRMS_Web.Models
         public IFormFile FileUpload { get; set; }
         public string UploadFile { get; set; }
 
-        //public ICollection<Tasks> Tasks { get; set; }
+        public ICollection<Tasks> Tasks { get; set; }
+
+        //Foreign Key
+
+        public string LeaderID { get; set; }
+
+        // Navigation property to ApplicationUser
+
+        [ForeignKey("LeaderID")]
+        public ApplicationUser? User { get; set; }
+       
     }
                            
                             

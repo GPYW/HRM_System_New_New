@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace HRMS_Web.Controllers
@@ -29,7 +30,7 @@ namespace HRMS_Web.Controllers
         {
             return View();
         }
-        
+
         public IActionResult CreateProject()
         {
             return View();
@@ -42,6 +43,12 @@ namespace HRMS_Web.Controllers
         }
 
         public IActionResult Tasks()
+        {
+            var tasks = _db.Tasks.ToList();
+            return View(tasks);
+        }
+
+        public IActionResult CreateTask()
         {
             return View();
         }
@@ -57,6 +64,8 @@ namespace HRMS_Web.Controllers
             var projects = _db.Projects.ToList();
             return View(projects);
         }
+
+        //edit project details
 
         public IActionResult Edit(int? id)
         {
@@ -85,7 +94,6 @@ namespace HRMS_Web.Controllers
             obj.Project_Description = model.Project_Description;
             obj.Client = model.Client;
             obj.Project_Manager = model.Project_Manager;
-            obj.Project_Team = model.Project_Team;
             obj.StartDate = model.StartDate;
             obj.EndDate = model.EndDate;
             obj.P_Status = model.P_Status;
@@ -96,6 +104,42 @@ namespace HRMS_Web.Controllers
             return RedirectToAction("Assign");
         }
 
+        //edit task details
+
+        public IActionResult EditTask(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Tasks? TasksFromDb = _db.Tasks.Find(id);
+
+            if (TasksFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(TasksFromDb);
+        }
+
+        [HttpPost]
+        public IActionResult EditTask(Tasks model)
+        {
+            Tasks? obj = _db.Tasks.Find(model.TaskID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            obj.Task_Name = model.Task_Name;
+            obj.Task_Description = model.Task_Description;
+            obj.Due_Date = model.Due_Date;
+            obj.T_Priority = model.T_Priority;
+            obj.T_Status = model.T_Status;
+
+            _db.SaveChanges();
+            return RedirectToAction("Tasks");
+        }
+
+        //create project
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -135,11 +179,130 @@ namespace HRMS_Web.Controllers
                 project.UploadFile = uniqueFileName;
             }
 
+            // Split LeaderFullName into first name and last name
+            var names = project.Project_Manager.Split(' ');
+            if (names.Length < 2)
+            {
+                // Handle error if name is not in expected format
+                ModelState.AddModelError("LeaderFullName", "Please select a valid leader.");
+                return View(project);
+            }
+
+            var firstName = names[0];
+            var lastName = names[1];
+
+            // Query the ApplicationUser table to get the LeaderID
+            var user = await _db.ApplicationUser
+                .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
+
+            if (user == null)
+            {
+                // Handle error if leader is not found
+                ModelState.AddModelError("LeaderFullName", "Leader not found.");
+                return View(project);
+            }
+
+            // Set the LeaderID for the project
+            project.LeaderID = user.CompanyID;
+
             _db.Projects.Add(project);
-            await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
 
             return RedirectToAction("Projects");
         }
+
+        //create task
+
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //public async Task<IActionResult> CreateTask(Tasks task)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        foreach (var state in ModelState)
+        //        {
+        //            foreach (var error in state.Value.Errors)
+        //            {
+        //                Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
+        //            }
+        //        }
+
+        //        //return View(project);
+        //    }
+
+
+        //    _db.Tasks.Add(task);
+        //    await _db.SaveChangesAsync();
+
+        //    return RedirectToAction("Tasks");
+        //}
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> CreateTask(Tasks task)
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
+                    }
+                }
+               //eturn View(task);
+            }
+
+            // Split TeamMember into first name and last name
+            var names = task.TeamMember.Split(' ');
+            if (names.Length < 2)
+            {
+                ModelState.AddModelError("TeamMember", "Please enter both first name and last name for the team member.");
+                return View(task);
+            }
+
+            var firstName = names[0];
+            var lastName = names[1];
+
+            // Query the ApplicationUser table to get the User
+            var user = await _db.ApplicationUser
+                .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("TeamMember", "Team member not found.");
+                return View(task);
+            }
+
+            // Retrieve the ProjectID based on the assigned project name
+            var project = await _db.Projects
+                .FirstOrDefaultAsync(p => p.Project_Name == task.Projects.Project_Name);
+
+            if (project == null)
+            {
+                ModelState.AddModelError("ProjectID", "Project not found.");
+                return View(task);
+            }
+
+            // Set the UserId and ProjectID in the task
+            task.UserId = user.Id;
+            task.ProjectID = project.ProjectID;
+
+            // Add and save the task to the database
+            _db.Tasks.Add(task);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Performance");
+        }
+
+
+
+
+
+
+
+
 
 
         //Delete project details
@@ -169,6 +332,35 @@ namespace HRMS_Web.Controllers
             _db.Projects.Remove(obj);
             _db.SaveChanges();
             return RedirectToAction("Assign");
+        }
+
+        //Delete task details
+
+        public IActionResult DeleteTask(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Tasks? TasksFromDb = _db.Tasks.Find(id);
+
+            if (TasksFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(TasksFromDb);
+        }
+        [HttpPost, ActionName("DeleteTask")]
+        public IActionResult DeleteTaskPOST(int? id)
+        {
+            Tasks? obj = _db.Tasks.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.Tasks.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Tasks");
         }
 
 

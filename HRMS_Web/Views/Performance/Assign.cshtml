@@ -1,10 +1,10 @@
 ﻿@* @model HRMS_Web.Models.Projects
 
- @using HRMS_Web.ViewModel; *@  
+ @using HRMS_Web.ViewModel; *@
 
- @using HRMS_Web.Models;  
+ @using HRMS_Web.Models;
 
- @model IEnumerable<HRMS_Web.Models.Projects> 
+ @model IEnumerable<HRMS_Web.Models.Projects>
 
 @{
     ViewData["Title"] = "Assign Projects";
@@ -41,20 +41,20 @@
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History </a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">Reports </a>
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
         </div>
     </nav>
 
     @* <div class="row pt-4 pb-5">
-        <div class="col-6">
-            <h3 class="text-dark text-capitalize">Current Project Assignments</h3>
-        </div>
-        <div class="col-6 d-flex justify-content-end">
-            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createProjectModal">
-                <i class="bi bi-plus-circle"></i> Create Project
-            </button>
-        </div>
+    <div class="col-6">
+    <h3 class="text-dark text-capitalize">Current Project Assignments</h3>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+    <i class="bi bi-plus-circle"></i> Create Project
+    </button>
+    </div>
     </div> *@
 
     <div class="row pt-4  pb-5">
@@ -77,7 +77,6 @@
 
                 <th>Project Name</th>
                 <th>Project Leader</th>
-                <th>Project Team</th>
                 <th>Deadline</th>
                 <th>Priority</th>
                 <th>Status</th>
@@ -85,13 +84,12 @@
             </tr>
         </thead>
         <tbody>
-       
+
             @foreach (var projects in Model)
             {
                 <tr>
                     <td>@projects.Project_Name</td>
                     <td>@projects.Project_Manager</td>
-                    <td>@projects.Project_Team</td>
                     <td>@projects.EndDate.ToString("yyyy-MM-dd")</td>
                     <td>@projects.P_Priority</td>
                     <td>@projects.P_Status</td>
@@ -104,21 +102,12 @@
                         </a>
                     </td>
 
-                 @*    <td>
-                        <a href="@Url.Action("Edit", "Performance", new { ProjectID = projects.ProjectID })" class="btn btn-dark">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <form action="@Url.Action("Delete", "Performance", new { ProjectID = projects.ProjectID })" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-dark">Remove</button>
-                        </form>
-                    </td> *@
-
                 </tr>
             }
 
         </tbody>
     </table>
- 
+
 
 
 

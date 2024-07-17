@@ -1,0 +1,90 @@
+﻿@model HRMS_Web.Models.Tasks
+
+
+@{
+    var priorities = new List<string> { "High", "Medium", "Low" };
+    var managers = new List<string> { "Amith", "Pooja", "Pasindi" };
+    var statuses = new List<string> { "Ongoing", "Completed", "On Hold" };
+}
+
+
+<form method="post">
+    <input asp-for="TaskID" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <div class="col-12">
+                <h2 class="text-primary">Delete Task</h2>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="taskName">Task Name</label>
+                <input type="text" id="taskName" name="Task_Name" class="form-control" required />
+                <span asp-validation-for="Task_Name" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label for="TeamMember">Team Member</label>
+                <input type="text" id="TeamMember" name="TeamMember" class="form-control" required />
+                <span asp-validation-for="TeamMember" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-12 pb-4">
+                <label for="description">Description</label>
+                <textarea id="description" name="Task_Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Task_Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 pb-4">
+                <label for="priority">Priority</label>
+                <select id="priority" name="T_Priority" class="form-control" required>
+                    <option value="" disabled selected>Select Priority</option>
+                    @foreach (var priority in priorities)
+                    {
+                        <option value="@priority">@priority</option>
+                    }
+                </select>
+                <span asp-validation-for="T_Priority" class="text-danger"></span>
+            </div>
+            <div class="col-4 pb-4">
+                <label for="status">Status</label>
+                <select id="status" name="T_Status" class="form-control" required>
+                    <option value="" disabled selected>Select Status</option>
+                    @foreach (var status in statuses)
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+                <span asp-validation-for="T_Status" class="text-danger"></span>
+            </div>
+            <div class="col-4 pb-4">
+                <label for="dueDate">Due Date</label>
+                <input type="date" id="dueDate" name="Due_Date" class="form-control" required />
+                <span asp-validation-for="Due_Date" class="text-danger"></span>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-3 pb-5">
+                <button type="submit" class="btn btn-primary form-control">Delete</button>
+            </div>
+            <div class="col-3 pb-5">
+                <a asp-controller="Performance" asp-action="Index" class="btn btn-secondary form-control">Cancel</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,6 +1,4 @@
-﻿
-
-@model HRMS_Web.Models.Projects
+﻿@model HRMS_Web.Models.Projects
 
 
 @{
@@ -66,23 +64,9 @@
         <div class="row">
             <div class="col-6 pb-4">
                 <label for="leader">Leader</label>
-                <select id="leader" name="Project_Manager" class="form-control" required>
-                    <option value="" disabled selected>Select Leader</option>
-                    @foreach (var manager in managers)
-                    {
-                        <option value="@manager">@manager</option>
-                    }
-                </select>
+                <input type="text" id="leader" name="Project_Manager" class="form-control" required />
                 <span asp-validation-for="Project_Manager" class="text-danger"></span>
             </div>
-            <div class="col-6 pb-4">
-                <label for="team">Project Team</label>
-                <input type="text" id="team" name="Project_Team" class="form-control" required />
-                <span asp-validation-for="Project_Team" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-6 pb-4">
                 <label for="status">Status</label>
                 <select id="status" name="P_Status" class="form-control" required>
@@ -128,4 +112,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-

@@ -45,7 +45,7 @@
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Index">Home</a>
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Projects">Projects</a>
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Tasks">Tasks</a>
-            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History </a>
+            <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="ViewHistory">Reports </a>
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Project Assign</a>
         </div>
     </nav>
@@ -61,29 +61,33 @@
                         <tr>
                             <th>Project Name</th>
                             <th>Project Leader</th>
-                            <th>Project Team</th>
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Priority</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @*   @if (Model != null && Model.Any())
+                        @*   @if (Model != null && Model.Any())
                         { *@
-                            @foreach (var project in Model)
-                            {
-                                <tr>
-                                    <td>@project.Project_Name</td>
-                                    <td>@project.Project_Manager</td>
-                                    <td>@project.Project_Team</td>
-                                    <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
-                                    <td>@project.EndDate.ToString("yyyy-MM-dd")</td>
-                                    <td>@project.P_Priority</td>
-                                    <td>@project.P_Status</td>
-                                </tr>
-                            }
-                        
+                        @foreach (var project in Model)
+                        {
+                            <tr>
+                                <td>@project.Project_Name</td>
+                                <td>@project.Project_Manager</td>
+                                <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                                <td>@project.EndDate.ToString("yyyy-MM-dd")</td>
+                                <td>@project.P_Priority</td>
+                                <td>@project.P_Status</td>
+                                <td>
+                                    <a asp-controller="Performance" asp-action="CreateTask" class="btn btn-info">
+                                        <i class="bi bi-plus-circle"></i>  Create Task
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
                     </tbody>
                 </table>
             </div>
@@ -95,7 +99,7 @@
 
 
 
-@*         
+@*
 
 @using HRMS_Web.ViewModel;
 
@@ -181,7 +185,7 @@
             </div>
         </div>
  *@
-       @*  <!-- Project Progress Section -->
+@*  <!-- Project Progress Section -->
         <div id="progress">
             <div class="project-progress">
                 <h2>Project Progress</h2>
@@ -246,4 +250,4 @@
     </script> *@
 @* </body>
 </html>
- *@
+ *@
