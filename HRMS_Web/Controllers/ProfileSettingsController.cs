@@ -1,24 +1,28 @@
 ﻿using HRMS_Web.DataAccess.Data;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using HRMS_Web.IService;
 using HRMS_Web.Models;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 using HRMS_Web.ViewModel;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
 
 public class ProfileSettingsController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IUserService _userService = null;
 
-    public ProfileSettingsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+    public ProfileSettingsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IUserService userService)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
+        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
 
     public IActionResult Index(string id)
@@ -26,7 +30,7 @@ public class ProfileSettingsController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var userDetails = _context.ApplicationUser
-            .Include(u => u.Department) // Ensure Department is included
+            .Include(u => u.Department)
             .FirstOrDefault(u => u.Id == userId);
 
         if (userDetails == null)
@@ -52,7 +56,7 @@ public class ProfileSettingsController : Controller
         }
 
         var applicationUserFromDb = _context.ApplicationUser
-            .Include(u => u.Department) // Ensure Department is included
+            .Include(u => u.Department)
             .FirstOrDefault(u => u.Id == userId);
 
         if (applicationUserFromDb == null)
@@ -111,45 +115,47 @@ public class ProfileSettingsController : Controller
     }
 
     [HttpPost]
-    public ActionResult UploadPhoto(EmployeeViewModel vm, ApplicationUser model)
+    public IActionResult SaveFile(IFormFile ProfileImage)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        string stringFileName = UploadFile(vm);
+        var user = _context.ApplicationUser.Find(userId);
 
-        var obj = _context.ApplicationUser.Find(userId);
-
-        if (obj == null)
+        if (user == null)
         {
             return NotFound();
         }
 
-        obj.ProfileImage = stringFileName;
-
-        try
+        if (ProfileImage != null && ProfileImage.Length > 0)
         {
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            return RedirectToAction("ConcurrencyError", "Error");
-        }
-    }
-
-    private string UploadFile(EmployeeViewModel vm)
-    {
-        string fileName = null;
-        if (vm.ProfileImage != null)
-        {
-            string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-            fileName = Guid.NewGuid().ToString() + "_" + vm.ProfileImage.FileName;
-            string filePath = Path.Combine(uploadDir, fileName);
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            using (var ms = new MemoryStream())
             {
-                vm.ProfileImage.CopyTo(fileStream);
+                ProfileImage.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                user.Photo = fileBytes;
+
+                _context.SaveChanges();
             }
         }
 
-        return fileName;
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public JsonResult GetSavedUser()
+    {
+        var user = _userService.GetSavedUser();
+        user.Photo = this.GetImage(Convert.ToBase64String(user.Photo));
+
+        return Json(user);
+    }
+
+    public byte[] GetImage(string sBase64String)
+    {
+        byte[] bytes = null;
+        if (!string.IsNullOrEmpty(sBase64String))
+        {
+            bytes = Convert.FromBase64String(sBase64String);
+        }
+        return bytes;
     }
 }

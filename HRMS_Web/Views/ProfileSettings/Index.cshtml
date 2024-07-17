@@ -8,8 +8,20 @@
     <div class="row"><br /></div>
     <div class="row">
         <div class="col-sm-3" style="position: relative;">
-            <img src="~/images/@Model.ProfileImage" width="150px" height="auto" class="rounded-circle" alt="user" />
-            <a asp-action="UploadPhoto">
+            @if (Model.Photo != null && Model.Photo.Length > 0)
+            {
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)"
+                     width="150px" height="auto"
+                     class="rounded-circle"
+                     alt="user" />
+            }
+            else
+            {
+                <img src="~/images/default-profile.jpg"
+                     width="150px" height="auto"
+                     class="rounded-circle"
+                     alt="Default user" />
+            }            <a asp-action="UploadPhoto">
                 <i class="fas fa-camera" style="position: absolute; bottom: 10%; right: 40%; font-size: 22px; color: white; background-color: rgba(0, 0, 0, 0.8); border-radius: 100%; padding: 10px;"></i>
             </a>
         </div>

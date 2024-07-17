@@ -86,8 +86,20 @@
             <div class="row g-3 align-items-center">
                 <div class="col-md-8 ">
                     <label asp-for="ProfileImage" class="ms-2 text-dark">Profile Picture  :&nbsp;&nbsp;&nbsp;</label>
-                    <img src="~/images/@Model.ProfileImage" width="50px" height="auto" class="rounded-circle" alt="user" />&nbsp;&nbsp;
-                    <a asp-action="UploadPhoto" class="w-100 ">Update<i class="fas fa-camera color-black ml-1"></i></a>
+                    @if (Model.Photo != null && Model.Photo.Length > 0)
+                    {
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)"
+                             width="50px" height="auto"
+                             class="rounded-circle"
+                             alt="user" />
+                    }
+                    else
+                    {
+                        <img src="~/images/default-profile.jpg"
+                             width="50px" height="auto"
+                             class="rounded-circle"
+                             alt="user" />
+                    }                    <a asp-action="UploadPhoto" class="w-100 ">Update<i class="fas fa-camera color-black ml-1"></i></a>
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-dark w-100">Update</button>

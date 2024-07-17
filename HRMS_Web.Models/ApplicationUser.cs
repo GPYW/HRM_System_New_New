@@ -10,6 +10,7 @@ namespace HRMS_Web.Models
         public DateTime? DOB { get; set; }
         public DateTime? join_date { get; set; }
         public string? ProfileImage { get; set; }
+        public byte[] Photo { get; set; }
         public string? CompanyID { get; set; }
         public string? DepartmentID { get; set; }
         public Department? Department { get; set; }
