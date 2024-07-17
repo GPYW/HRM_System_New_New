@@ -45,6 +45,7 @@ namespace HRMS_Web.Models
         public string P_Priority { get; set; }
 
         [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "Please enter a valid rate")]
         public decimal Rate { get; set; }
 
         [NotMapped]

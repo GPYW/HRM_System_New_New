@@ -7,6 +7,8 @@ using HRMS_Web.DataAccess.Data;
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 
 namespace HRMS_Web.Controllers
@@ -56,45 +58,44 @@ namespace HRMS_Web.Controllers
             return View(projects);
         }
 
-        //[Authorize(Roles = "Admin")]
-        //[HttpPost]
-        //public async Task<IActionResult> CreateProject(Projects project)
-        //{
-        //    if (!projectState.IsValid)
-        //    {
-        //        foreach (var state in projectState)
-        //        {
-        //            foreach (var error in state.Value.Errors)
-        //            {
-        //                Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
-        //            }
-        //        }
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Projects? ProjectsFromDb = _db.Projects.Find(id);
 
+            if (ProjectsFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(ProjectsFromDb);
+        }
 
-        //        //return Json(new { success = false, message = "project validation failed.", errors = projectState.Values.SelectMany(v => v.Errors) });
-        //    }
-        //    //Handle file upload
-        //    string uniqueFileName = null;
-        //    if (project.FileUpload != null)
-        //    {
-        //        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-        //        uniqueFileName = Guid.NewGuid().ToString() + "_" + project.FileUpload.FileName;
-        //        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-        //        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //        {
-        //            await project.FileUpload.CopyToAsync(fileStream);
-        //        }
-        //        project.UploadFile = uniqueFileName;
-        //    }
+        [HttpPost]
+        public IActionResult Edit(Projects model)
+        {
+            Projects? obj = _db.Projects.Find(model.ProjectID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            obj.Project_Name = model.Project_Name;
+            obj.Project_Description = model.Project_Description;
+            obj.Client = model.Client;
+            obj.Project_Manager = model.Project_Manager;
+            obj.Project_Team = model.Project_Team;
+            obj.StartDate = model.StartDate;
+            obj.EndDate = model.EndDate;
+            obj.P_Status = model.P_Status;
+            obj.P_Priority = model.P_Priority;
+            obj.Rate = model.Rate;
 
-        //    _dbContext.Projects.Add(project);
-        //    await _dbContext.SaveChangesAsync();
+            _db.SaveChanges();
+            return RedirectToAction("Assign");
+        }
 
-        //    return Json(new { success = true, message = "Project created successfully!" });
-
-
-
-        //}
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -140,6 +141,35 @@ namespace HRMS_Web.Controllers
             return RedirectToAction("Projects");
         }
 
+
+        //Delete project details
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Projects? ProjectsFromDb = _db.Projects.Find(id);
+
+            if (ProjectsFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(ProjectsFromDb);
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
+        {
+            Projects? obj = _db.Projects.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.Projects.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Assign");
+        }
 
 
     }

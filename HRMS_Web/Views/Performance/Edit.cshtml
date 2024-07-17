@@ -1,0 +1,125 @@
+﻿@model HRMS_Web.Models.Projects
+
+
+@{
+    var priorities = new List<string> { "High", "Medium", "Low" };
+    var managers = new List<string> { "Amith", "Pooja", "Pasindi" };
+    var statuses = new List<string> { "Ongoing", "Completed", "On Hold" };
+}
+<form method="post">
+    <input asp-for="ProjectID" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Project</h2>
+            <hr />
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label asp-for="Project_Name" class="p-0"></label>
+                <input asp-for="Project_Name" class="form-control" />
+                <span asp-validation-for="Project_Name" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label asp-for="Client" class="p-0"></label>
+                <input asp-for="Client" class="form-control" />
+                <span asp-validation-for="Client" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label asp-for="StartDate" class="p-0"></label>
+                <input asp-for="StartDate" type="text" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label asp-for="EndDate" class="p-0"></label>
+                <input asp-for="EndDate" type="text" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label asp-for="Rate" class="p-0"></label>
+                <input asp-for="Rate" class="form-control" />
+                <span asp-validation-for="Rate" class="text-danger"></span>
+            </div>
+
+            <div class="col-6 pb-4">
+                <label for="priority">Priority</label>
+                <select id="priority" name="P_Priority" class="form-control" required>
+
+                @foreach (var priority in priorities)
+                {
+                    <option value="@priority">@priority</option>
+                }
+                </select>
+                <span asp-validation-for="P_Priority" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label asp-for="Project_Manager" class="p-0"></label>
+                <select id="leader" name="Project_Manager" class="form-control" required>
+
+                @foreach (var manager in managers)
+                {
+                    <option value="@manager">@manager</option>
+                }
+                </select>
+                <span asp-validation-for="Project_Manager" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label asp-for="Project_Team" class="p-0"></label>
+                <input asp-for="Project_Team" type="text" class="form-control" />
+                <span asp-validation-for="Project_Team" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label asp-for="P_Status" class="p-0"></label>
+                <select id="status" name="P_Status" class="form-control" required>
+                   
+
+                @foreach (var status in statuses)
+                {
+                    <option value="@status">@status</option>
+                }
+
+
+                </select>
+                <span asp-validation-for="P_Status" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 pb-4">
+                <label asp-for="Project_Description" class="p-0"></label>
+                <input asp-for="Project_Description" class="form-control" />
+                <span asp-validation-for="Project_Description" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-3 pb-5">
+                <button type="submit" class="btn btn-primary form-control">Update</button>
+            </div>
+            <div class="col-3 pb-5">
+                <a asp-controller="Performance" asp-action="Assign" class="btn btn-secondary border form-control">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial"   />
+    }
+}

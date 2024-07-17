@@ -96,9 +96,23 @@
                     <td>@projects.P_Priority</td>
                     <td>@projects.P_Status</td>
                     <td>
-                        <button type="submit" class="btn btn-dark">Edit</button>
-                        <button type="submit" class="btn btn-dark">Remove</button>
+                        <a asp-controller="Performance" asp-action="Edit" asp-route-id="@projects.ProjectID" class="btn btn-primary mx-2">
+                            <i class="bi bi-pencil-square"></i>Edit
+                        </a>
+                        <a asp-controller="Performance" asp-action="Delete" asp-route-id="@projects.ProjectID" class="btn btn-danger mx-2">
+                            <i class="bi bi-trash-fill"></i>Delete
+                        </a>
                     </td>
+
+                 @*    <td>
+                        <a href="@Url.Action("Edit", "Performance", new { ProjectID = projects.ProjectID })" class="btn btn-dark">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="@Url.Action("Delete", "Performance", new { ProjectID = projects.ProjectID })" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-dark">Remove</button>
+                        </form>
+                    </td> *@
+
                 </tr>
             }
 
@@ -106,36 +120,6 @@
     </table>
  
 
-
-@* 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Project Name</th>
-                <th>Project Leader</th>
-                <th>Project Team</th>
-                <th>Deadline</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a asp-area="" asp-controller="Performance" asp-action="ProjectDetails" asp-route-id="1">Project Alpha</a></td>
-                <td>Td Weeramanthrie</td>
-                <td>ef</td>
-                <td>2024-06-01</td>
-                <td>High</td>
-                <td>Ongoing</td>
-                <td>
-                    <button type="submit" class="btn btn-dark">Edit</button>
-                    <button type="submit" class="btn btn-dark">Remove</button>
-                </td>
-            </tr>
-            <!-- Additional rows -->
-        </tbody>
-    </table> *@
 
 
 </body>
