@@ -19,6 +19,5 @@ namespace HRMS_Web.Models
 
         // Navigation property to related LeaveRequestModels
         public ICollection<RemainingLeaves>? RemainingLeaves { get; set; }
-
     }
 }

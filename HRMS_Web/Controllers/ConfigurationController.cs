@@ -29,8 +29,8 @@ namespace HRMS_Web.Controllers
 
             var viewModel = new ConfigurationViewModel
             {
-                LeaveTypes = await _context.LeaveTypes.ToListAsync(),
-                NewLeaveType = new LeaveType(),
+                LeaveTypes = await _context.LeaveManagement.ToListAsync(),
+                NewLeaveType = new LeaveManagement(),
                 Roles = await _roleManager.Roles.ToListAsync(),
                 NewRole = new IdentityRole(),
                 Departments = await _context.Departments.ToListAsync(),
@@ -41,11 +41,11 @@ namespace HRMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddLeaveType([Bind("Id,Name")] LeaveType leaveType)
+        public async Task<IActionResult> AddLeaveType([Bind("LeaveId,LeaveType,NoOfLeaves_Year")] LeaveManagement leaveManagement)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(leaveType);
+                _context.Add(leaveManagement);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -58,8 +58,8 @@ namespace HRMS_Web.Controllers
 
             var viewModel = new ConfigurationViewModel
             {
-                LeaveTypes = await _context.LeaveTypes.ToListAsync(),
-                NewLeaveType = leaveType,
+                LeaveTypes = await _context.LeaveManagement.ToListAsync(),
+                NewLeaveType = leaveManagement,
                 Roles = await _roleManager.Roles.ToListAsync(),
                 NewRole = new IdentityRole(),
                 Departments = await _context.Departments.ToListAsync(),
@@ -86,8 +86,8 @@ namespace HRMS_Web.Controllers
 
             var viewModel = new ConfigurationViewModel
             {
-                LeaveTypes = await _context.LeaveTypes.ToListAsync(),
-                NewLeaveType = new LeaveType(),
+                LeaveTypes = await _context.LeaveManagement.ToListAsync(),
+                NewLeaveType = new LeaveManagement(),
                 Roles = await _roleManager.Roles.ToListAsync(),
                 NewRole = role,
                 Departments = await _context.Departments.ToListAsync(),
@@ -115,8 +115,8 @@ namespace HRMS_Web.Controllers
 
             var viewModel = new ConfigurationViewModel
             {
-                LeaveTypes = await _context.LeaveTypes.ToListAsync(),
-                NewLeaveType = new LeaveType(),
+                LeaveTypes = await _context.LeaveManagement.ToListAsync(),
+                NewLeaveType = new LeaveManagement(),
                 Roles = await _roleManager.Roles.ToListAsync(),
                 NewRole = new IdentityRole(),
                 Departments = await _context.Departments.ToListAsync(),
