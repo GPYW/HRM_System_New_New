@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 
 namespace HRMS_Web.Models
 {
@@ -11,5 +10,8 @@ namespace HRMS_Web.Models
         public IdentityRole NewRole { get; set; }
         public List<Department> Departments { get; set; }
         public Department NewDepartment { get; set; }
+        public List<Admin> Admins { get; set; }
+        public Admin NewAdmin { get; set; }
+
     }
 }

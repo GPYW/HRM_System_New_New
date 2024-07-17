@@ -23,8 +23,9 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<LeaveRequestModel> LeaveRequests { get; set; }
         public DbSet<LeaveManagement> LeaveManagement { get; set; }
         public DbSet<RemainingLeaves> RemainingLeaves { get; set; }
-        public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<LeaveManagement> LeaveTypes { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

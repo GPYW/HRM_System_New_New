@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 mb-5">
             <div class="card h-100">
                 <div class="card-body">
                     <h3 class="card-title">Departments</h3>
@@ -125,5 +125,76 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-12 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Admin SMTP Settings</h3>
+                    <form asp-action="UpdateAdminDetails" method="post" class="mt-4">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="AdminId" class="form-label">Admin ID</label>
+                                <input type="text" class="form-control" id="AdminId" name="Id" required />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="Email" class="form-label">SMTP User Name (Email)</label>
+                                <input type="email" class="form-control" id="Email" name="Email" required />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="SmtpPassword" class="form-label">SMTP Password</label>
+                                <input type="password" class="form-control" id="SmtpPassword" name="SmtpPassword" required />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="SmtpPort" class="form-label">SMTP Port</label>
+                                <input type="number" class="form-control" id="SmtpPort" name="SmtpPort" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Admin Settings</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Admins</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>SMTP Password</th>
+                                    <th>SMTP Port</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Admins != null && Model.Admins.Any())
+                                {
+                                    foreach (var admin in Model.Admins)
+                                    {
+                                        <tr>
+                                            <td>@admin.AdminId</td>
+                                            <td>@admin.Email</td>
+                                            <td>@admin.SmtpPassword</td>
+                                            <td>@admin.SmtpPort</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">No admins found</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>

@@ -98,31 +98,38 @@ namespace HRMS_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDepartment([Bind("DepartmentID,DepartmentName,NoOfEmployees")] Department department)
+        public IActionResult UpdateAdminDetails(Admin admin)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(department);
-                await _context.SaveChangesAsync();
+                _context.Admins.Add(admin);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
-            {
-                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
-                new BreadcrumbItem { Title = "Configuration", Url = Url.Action("Index", "Configuration") },
-            };
-
+            // If ModelState is not valid, re-render the view with appropriate data
             var viewModel = new ConfigurationViewModel
             {
-                LeaveTypes = await _context.LeaveManagement.ToListAsync(),
+                LeaveTypes = _context.LeaveManagement.ToList(),
                 NewLeaveType = new LeaveManagement(),
-                Roles = await _roleManager.Roles.ToListAsync(),
+                Roles = _roleManager.Roles.ToList(),
                 NewRole = new IdentityRole(),
-                Departments = await _context.Departments.ToListAsync(),
-                NewDepartment = department
+                Departments = _context.Departments.ToList(),
+                NewDepartment = new Department(),
+                Admins = _context.Admins.ToList()  // Retrieve admins again to ensure they are passed to the view
             };
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+        new BreadcrumbItem { Title = "Configuration", Url = Url.Action("Index", "Configuration") },
+    };
+
             return View("Index", viewModel);
         }
+
     }
 }
+
+
+
