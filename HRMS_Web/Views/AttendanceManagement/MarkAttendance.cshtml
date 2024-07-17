@@ -83,32 +83,42 @@
         <div class="col-6">
             <h3 class="text-dark text-capitalize">Mark Employee Attendance</h3>
         </div>
-        <div class="col-6 d-flex justify-content-end" text-end>
+        <div class="col-3 d-flex justify-content-end" text-end>
+            <a asp-controller="AttendanceManagement" asp-action="AddDailyAttendance" class="btn btn-dark">
+                <i class="bi bi-plus-circle"></i> Add Daily Attendance
+            </a>
+        </div>
+        <div class="col-3 d-flex justify-content-end" text-end>
             <a asp-controller="AttendanceManagement" asp-action="AddAttendance" class="btn btn-dark">
-                <i class="bi bi-plus-circle"></i> Add Attendance
+                <i class="bi bi-plus-circle"></i> Mark Attendance
             </a>
         </div>
     </div>
     <hr />
     <h5 class="text-capitalize">View Employee Attendance Details</h5><br />
 
-    <form method="post" action="SearchFromAll" class="row g-3">
+    <form method="post" action="submitAttendance" class="row g-3">
         <div class="col-md-3">
             <label for="EmployeeId" class="form-label">Employee Id:</label>
-            <input type="text" class="form-control" id="EmployeeId" name="EmployeeId">
+            <input type="text" class="form-control" required>
         </div>
         <div class="col-md-3">
-            <label for="FromDate" class="form-label">From:</label>
-            <input type="date" class="form-control" id="FromDate" name="FromDate">
+            <label for="date" class="form-label">Date:</label>
+            <input type="date" class="form-control" id="date" name="date" required>
         </div>
         <div class="col-md-3">
-            <label for="ToDate" class="form-label">To:</label>
-            <input type="date" class="form-control" id="ToDate" name="ToDate">
+            <label for="checkInTime" class="form-label">Check-In Time:</label>
+            <input type="time" class="form-control" id="checkInTime" name="checkInTime" required>
         </div>
-        <div class="col-md-3" style="margin-top:48px;">
-            <button type="submit" class="btn btn-dark">Search</button>
+        <div class="col-md-3">
+            <label for="checkOutTime" class="form-label">Check-Out Time:</label>
+            <input type="time" class="form-control" id="checkOutTime" name="checkOutTime" required>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-dark">Submit</button>
         </div>
     </form>
+
 
     @if (Model != null && Model.Count > 0)
     {
@@ -123,6 +133,7 @@
                         <th class="bg-dark text-white">Check-Out</th>
                         <th class="bg-dark text-white">Break</th>
                         <th class="bg-dark text-white">Over Time</th>
+                        <th class="bg-dark text-white">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -135,6 +146,7 @@
                             <td>@obj.CheckOut</td>
                             <td>1 hrs</td>
                             <td>@obj.OverTime</td>
+                            <td>Present</td>
                         </tr>
                     }
                 </tbody>

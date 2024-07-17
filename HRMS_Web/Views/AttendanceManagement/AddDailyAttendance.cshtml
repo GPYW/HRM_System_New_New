@@ -1,0 +1,268 @@
+﻿@model IEnumerable<HRMS_Web.Models.AttendanceManagement>
+
+@{
+    ViewData["Title"] = "Add Daily Attendance";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Mark Daily Attendance</h2>
+    <div class="form-group">
+        <label for="selectedDate">Select Date:</label>
+        <div class="form-row align-items-center">
+            <div class="col-auto">
+                <input type="date" id="selectedDate" name="selectedDate" class="form-control mb-2" required>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-info mb-2" id="showEmployeeList">Show Employee List</button>
+            </div>
+            <div class="col-auto">
+                <button type="reset" class="btn btn-secondary mb-2" id="reset">Reset</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-info mb-2" id="exportToExcel" style="float: right;">Export to Excel</button>
+            </div>
+            <div class="col-auto">
+                <input type="file" id="uploadExcel" class="form-control-file mb-2" accept=".xlsx">
+                <button type="button" class="btn btn-info mb-2" id="importFromExcel">Import from Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-right mb-3">
+        <button type="button" class="btn btn-info" id="presentAll">Present All</button>
+        <button type="button" class="btn btn-danger" id="absentAll">Absent All</button>
+    </div>
+
+    <form id="attendanceForm" class="mt-4" method="post" enctype="multipart/form-data" asp-action="SaveDailyAttendance">
+        <input type="hidden" id="hiddenSelectedDate" name="hiddenSelectedDate" value="" />
+        <div id="employeeList">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Update the Daily Attendance</h3>
+                </div>
+                <div class="card-body">
+                    <div id="noEmployeesMessage" style="display:none;" class="alert alert-warning">
+                        No employees found for the selected date. You can mark attendance for new employees.
+                    </div>
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var employee in Model)
+                                {
+                                    <tr>
+                                        <td>@employee.ApplicationUser?.CompanyID</td>
+                                        <td>@employee.ApplicationUser?.FirstName @employee.ApplicationUser?.LastName</td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status[@employee.Id]" value="Present" @if (employee.IsPresent)
+                                                {
+                                                    <text>checked</text>
+                                                } required>
+                                                <label class="form-check-label">Present</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status[@employee.Id]" value="Absent" @if (!employee.IsPresent)
+                                                {
+                                                    <text>checked</text>
+                                                } required>
+                                                <label class="form-check-label">Absent</label>
+                                            </div>
+                                            <input type="hidden" name="attendances[@employee.Id].Id" value="@employee.Id">
+                                            <input type="hidden" name="attendances[@employee.Id].Date" value="@DateTime.Now.Date">
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3">No employees found.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-dark" id="saveButton">Save Attendance</button>
+                    <a asp-controller="AttendanceManagement" asp-action="Index" class="btn btn-outline-dark ml-2">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function fetchEmployeeList(selectedDate) {
+            if (selectedDate) {
+                $('#hiddenSelectedDate').val(selectedDate);
+                $.ajax({
+                    url: '@Url.Action("GetEmployeeList", "AttendanceManagement")',
+                    type: 'GET',
+                    data: { date: selectedDate },
+                    success: function (data) {
+                        $('#example2  tbody').empty();
+                        if (data && data.length > 0) {
+                            $('#noEmployeesMessage').hide();
+                            $.each(data, function (index, employee) {
+                                $('#example2  tbody').append(`
+                                            <tr>
+                                                <td>${employee.companyID}</td>
+                                                <td>${employee.firstName} ${employee.lastName}</td>
+                                                <td>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="status[${employee.id}]" value="Present" ${employee.isPresent ? 'checked' : ''} required>
+                                                        <label class="form-check-label">Present</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="status[${employee.id}]" value="Absent" ${!employee.isPresent ? 'checked' : ''} required>
+                                                        <label class="form-check-label">Absent</label>
+                                                    </div>
+                                                    <input type="hidden" name="attendances[${employee.id}].Id" value="${employee.id}">
+                                                    <input type="hidden" name="attendances[${employee.id}].Date" value="${selectedDate}">
+                                                    <input type="hidden" name="attendances[${employee.id}].EmpID" value="${employee.companyID}">
+                                                </td>
+                                            </tr>
+                                        `);
+                            });
+                        } else {
+                            $('#noEmployeesMessage').show();
+                            $('#example2 tbody').append('<tr><td colspan="3">No mark attendances found for the selected date. </td></tr>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching employee list:", status, error);
+                        alert('Error fetching employee list.');
+                    }
+                });
+            } else {
+                alert('Please select a date.');
+            }
+        }
+
+        $('#showEmployeeList').click(function () {
+            var selectedDate = $('#selectedDate').val();
+            fetchEmployeeList(selectedDate);
+        });
+
+       
+
+            $('#saveButton').click(function () {
+                var selectedDate = $('#selectedDate').val();
+                var formData = [];
+                $('#example2 tbody tr').each(function () {
+                    var row = $(this);
+                    var id = row.find('input[type="hidden"][name^="attendances["][name$=".Id"]').val();
+                    var empID = row.find('input[type="hidden"][name^="attendances["][name$=".EmpID"]').val();
+                    var date = row.find('input[type="hidden"][name^="attendances["][name$=".Date"]').val();
+                    var isPresent = row.find('input[type="radio"]:checked').val() === 'Present';
+
+                    formData.push({
+                        Id: id,
+                        EmpID: empID,
+                        Date: selectedDate,
+                        IsPresent: isPresent,
+                        CheckIn: isPresent ? new Date().toTimeString().split(' ')[0] : null,
+                        CheckOut: isPresent ? new Date().toTimeString().split(' ')[0] : null,
+                        OverTime: isPresent ? "00:00:00" : null,
+                        Break: isPresent ? "1 hrs" : null
+                    });
+                });
+
+                $.ajax({
+                    url: '@Url.Action("SaveDailyAttendance", "AttendanceManagement")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Attendance saved successfully!');
+                        } else {
+                            alert('Error saving attendance: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error saving attendance:", status, error);
+                        alert('Error saving attendance.');
+                    }
+                });
+            });
+
+
+
+        $('#reset').click(function () {
+            $('#selectedDate').val('');
+            $('#noEmployeesMessage').hide();
+            $('#example2 tbody').empty();
+        });
+
+        $('#presentAll').click(function () {
+            $('input[type="radio"][value="Present"]').prop('checked', true);
+        });
+
+        $('#absentAll').click(function () {
+            $('input[type="radio"][value="Absent"]').prop('checked', true);
+        });
+
+        $('#exportToExcel').click(function () {
+            var selectedDate = $('#selectedDate').val();
+            if (selectedDate) {
+                window.location.href = '@Url.Action("ExportAttendanceToExcel", "AttendanceManagement")' + '?selectedDate=' + selectedDate;
+            } else {
+                alert('Please select a date.');
+            }
+        });
+
+        $('#importFromExcel').click(function () {
+            var file = $('#uploadExcel')[0].files[0];
+            var selectedDate = $('#selectedDate').val();
+
+            if (!selectedDate) {
+                alert('Please select a date.');
+                return;
+            }
+
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('Date', selectedDate); // Append the date to the form data
+
+                $.ajax({
+                    url: '@Url.Action("ImportAttendanceFromExcel", "AttendanceManagement")',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Attendance imported successfully!');
+                            $('#showEmployeeList').click();
+                        } else {
+                            alert('Error importing attendance: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error importing attendance:", status, error);
+                        alert('Error importing attendance.');
+                    }
+                });
+            } else {
+                alert('Please select a file.');
+            }
+        });
+
+    });
+</script>
