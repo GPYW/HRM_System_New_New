@@ -23,18 +23,30 @@ namespace HRMS_Web.Models
         [Required]
         [DisplayName("Check-In Time:")]
         [Column(TypeName = "time")]
-        public TimeSpan CheckIn { get; set; }
+        public TimeSpan? CheckIn { get; set; }
 
         [Required]
         [DisplayName("Check-Out Time:")]
         [Column(TypeName = "time")]
-        public TimeSpan CheckOut { get; set; }
+        public TimeSpan? CheckOut { get; set; }
 
         [DisplayName("Break:")]
-        public string Break { get; set; }
+        public string? Break { get; set; }
 
         [Required]
         [DisplayName("Over Time:")]
-        public string OverTime { get; set; }
+        public string? OverTime { get; set; }
+
+        public bool IsPresent { get; set; }
+
+        // Foreign key for ApplicationUser
+
+        [Required]
+        public string Id { get; set; }
+
+        //Navigate property to ApplicationUser
+        [ForeignKey("Id")]
+        public ApplicationUser ApplicationUser { get; set; }
+
     }
 }

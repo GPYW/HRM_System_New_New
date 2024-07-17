@@ -17,5 +17,7 @@ namespace HRMS_Web.Models
         public ICollection<LeaveRequestModel> LeaveRequests { get; set; } = new List<LeaveRequestModel>();
         // Navigation property to LeaveRequestModel
         public ICollection<RemainingLeaves> RemainingLeaves { get; set; } = new List<RemainingLeaves>();
+        // Navigation property to AttendanceMangementModel
+        public ICollection<AttendanceManagement> AttendanceTimeTable { get; set; }
     }
 }

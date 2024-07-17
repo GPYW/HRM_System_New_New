@@ -24,7 +24,7 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<LeaveManagement> LeaveManagement { get; set; }
         public DbSet<RemainingLeaves> RemainingLeaves { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
-        public DbSet<Department> Departments { get; set; } // Add this line
+        public DbSet<Department> Departments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -63,6 +63,12 @@ namespace HRMS_Web.DataAccess.Data
                .WithMany(u => u.RemainingLeaves)
                .HasForeignKey(l => l.Id)
                 .IsRequired();
+
+            builder.Entity<AttendanceManagement>()
+             .HasOne(u => u.ApplicationUser)
+             .WithMany(a => a.AttendanceTimeTable)
+             .HasForeignKey(u => u.Id)
+            .IsRequired();
 
         }
     }

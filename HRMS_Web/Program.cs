@@ -4,6 +4,7 @@ using HRMS_Web.DataAccess.Data;
 using HRMS_Web.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,10 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddRazorPages();
+
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
 
 // Add HttpClient for making API requests
 builder.Services.AddHttpClient();

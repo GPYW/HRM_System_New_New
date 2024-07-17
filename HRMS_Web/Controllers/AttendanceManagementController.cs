@@ -1,21 +1,36 @@
 ﻿using HRMS_Web.DataAccess.Data;
 using HRMS_Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Globalization;
+using System.Diagnostics.Metrics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Mvc;
 using ExcelDataReader;
 using OfficeOpenXml.Style;
-using System.IO;
-using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.InkML;
+
 
 namespace HRMS_Web.Controllers
 {
@@ -51,44 +66,44 @@ namespace HRMS_Web.Controllers
             return View();
         }
 
-    //    public IActionResult ViewHistory(DateTime? date)
-    //    {
-    //        // Get the logged-in user's ID
-    //        var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    public IActionResult ViewHistory(DateTime? date)
+        //    {
+        //        // Get the logged-in user's ID
+        //        var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-    //        // Fetch the applicationUser record using the logged-in user's ID
-    //        var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
+        //        // Fetch the applicationUser record using the logged-in user's ID
+        //        var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
 
-    //        // Check if applicationUser is not null
-    //        if (applicationUser == null)
-    //        {
-    //            return NotFound("User not found");
-    //        }
+        //        // Check if applicationUser is not null
+        //        if (applicationUser == null)
+        //        {
+        //            return NotFound("User not found");
+        //        }
 
-    //        // Query the AttendanceManagement table where EmpID equals the logged-in user's ID
-    //        IQueryable<AttendanceManagement> query = _db.AttendanceTimeTable
-    //            .Where(a => a.Id == loggedInUserId);
+        //        // Query the AttendanceManagement table where EmpID equals the logged-in user's ID
+        //        IQueryable<AttendanceManagement> query = _db.AttendanceTimeTable
+        //            .Where(a => a.Id == loggedInUserId);
 
-    //        // Filter by date if a date is provided
-    //        if (date.HasValue)
-    //        {
-    //            query = query.Where(a => a.Date == date.Value);
-    //            ViewData["SelectedDate"] = date.Value.ToString("yyyy-MM-dd");
-    //        }
+        //        // Filter by date if a date is provided
+        //        if (date.HasValue)
+        //        {
+        //            query = query.Where(a => a.Date == date.Value);
+        //            ViewData["SelectedDate"] = date.Value.ToString("yyyy-MM-dd");
+        //        }
 
-    //        // Execute the query and get the results
-    //        List<AttendanceManagement> objAttendanceManagemetList = query.ToList();
+        //        // Execute the query and get the results
+        //        List<AttendanceManagement> objAttendanceManagemetList = query.ToList();
 
-    //        //// Set breadcrumb data
-    //        ViewData["Breadcrumb"] = new List<BreadcrumbItem>
-    //{
-    //    new BreadcrumbItem { Title = "Attendance Management", Url = Url.Action("Index", "AttendanceManagement") },
-    //    new BreadcrumbItem { Title = "View History", Url = Url.Action("ViewHistory", "AttendanceManagement") },
-    //};
+        //        //// Set breadcrumb data
+        //        ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        //{
+        //    new BreadcrumbItem { Title = "Attendance Management", Url = Url.Action("Index", "AttendanceManagement") },
+        //    new BreadcrumbItem { Title = "View History", Url = Url.Action("ViewHistory", "AttendanceManagement") },
+        //};
 
-    //        // Return the filtered list to the view
-    //       /return View(objAttendanceManagemetList);
-    //    }
+        //        // Return the filtered list to the view
+        //       /return View(objAttendanceManagemetList);
+        //    }
 
 
         [Authorize(Roles = SD.Role_Admin)]
@@ -118,7 +133,7 @@ namespace HRMS_Web.Controllers
             return View(objAttendanceManagementList);
         }
 
-        
+
 
         [HttpGet]
         public IActionResult AddAttendance()
@@ -151,9 +166,9 @@ namespace HRMS_Web.Controllers
                 return BadRequest("Employee not found");
             }
 
-                obj.IsPresent = true;
-                obj.Break = "1 hrs";
-           
+            obj.IsPresent = true;
+            obj.Break = "1 hrs";
+
             _db.AttendanceTimeTable.Add(obj);
             _db.SaveChanges();
             return RedirectToAction("MarkAttendance");
@@ -180,7 +195,7 @@ namespace HRMS_Web.Controllers
                 CheckOut = DateTime.Now.TimeOfDay,
                 OverTime = "0 hrs",
                 Id = user.Id,
-                EmpID=user.CompanyID
+                EmpID = user.CompanyID
 
             }).ToList();
 
@@ -225,6 +240,80 @@ namespace HRMS_Web.Controllers
             .ToList();
 
             return Json(employees);
+        }
+
+        public IActionResult ViewHistory()
+        {
+            var objAttendanceManagemetList = GetAttendanceList();
+
+            ViewData["Breadcrumb"] = GetDefaultBreadcrumb("Attendance Management", "ViewHistory");
+            return View("ViewHistory", objAttendanceManagemetList);
+        }
+
+        [HttpPost]
+        public IActionResult SearchAttendance(DateTime FromDate, DateTime ToDate)
+        {
+            var objAttendanceManagemetList = GetAttendanceList(FromDate, ToDate);
+
+            ViewData["Breadcrumb"] = GetDefaultBreadcrumb("Attendance Management", "ViewHistory");
+            return View("ViewHistory", objAttendanceManagemetList);
+        }
+
+        [HttpPost]
+        public IActionResult ShowAllAttendance()
+        {
+            var objAttendanceManagemetList = GetAttendanceList();
+
+            ViewData["Breadcrumb"] = GetDefaultBreadcrumb("Attendance Management", "ViewHistory");
+            return View("ViewHistory", objAttendanceManagemetList);
+        }
+
+        [HttpPost]
+        public IActionResult SearchFromAll(string EmployeeId, DateTime? FromDate, DateTime? ToDate)
+        {
+            var query = _db.Attendances.AsQueryable();
+
+            if (!string.IsNullOrEmpty(EmployeeId))
+            {
+                query = query.Where(a => a.EmpID == EmployeeId);
+            }
+
+            if (FromDate.HasValue && ToDate.HasValue)
+            {
+                query = query.Where(a => a.Date >= FromDate && a.Date <= ToDate);
+            }
+            else if (FromDate.HasValue)
+            {
+                query = query.Where(a => a.Date >= FromDate);
+            }
+            else if (ToDate.HasValue)
+            {
+                query = query.Where(a => a.Date <= ToDate);
+            }
+
+            var results = query.ToList();
+
+            return View("MarkAttendance", results);
+        }
+
+        [HttpPost]
+        public IActionResult SubmitAttendance(string EmployeeId, DateTime? FromDate, DateTime? ToDate)
+        {
+            var attendanceQuery = _db.AttendanceTimeTable.AsQueryable();
+
+            if (!string.IsNullOrEmpty(EmployeeId))
+            {
+                attendanceQuery = attendanceQuery.Where(a => a.EmpID == EmployeeId);
+            }
+
+            if (FromDate.HasValue && ToDate.HasValue)
+            {
+                attendanceQuery = attendanceQuery.Where(a => a.Date >= FromDate.Value && a.Date <= ToDate.Value);
+            }
+
+            var attendanceRecords = attendanceQuery.OrderByDescending(a => a.Date).ToList();
+
+            return View("AttendanceRecords", attendanceRecords);
         }
 
 
@@ -417,7 +506,6 @@ namespace HRMS_Web.Controllers
 
 
         //To generate and download the excel file
-
         public IActionResult ExportAttendanceToExcel(DateTime selectedDate)
         {
             var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -468,8 +556,6 @@ namespace HRMS_Web.Controllers
 
 
         //To upload and process the excel file
-
-
         [HttpPost]
         public async Task<IActionResult> ImportAttendanceFromExcel(IFormFile file)
         {
@@ -555,9 +641,279 @@ namespace HRMS_Web.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult PDF(int month, int year)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
+
+            if (applicationUser == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var employeeId = applicationUser.CompanyID;
+            var employeeName = $"{applicationUser.FirstName} {applicationUser.LastName}";
+
+            List<AttendanceManagement> attendanceList = _db.AttendanceTimeTable
+                .Where(a => a.EmpID == employeeId && a.Date.Month == month && a.Date.Year == year)
+                .OrderByDescending(a => a.Date)
+                .ToList();
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (Document document = new Document(PageSize.A4, 25, 25, 30, 30))
+                {
+                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                    document.Open();
+
+                    var image = Image.GetInstance("wwwroot/images/LetterHead.png");
+                    float pageWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
+                    image.ScaleToFit(pageWidth, image.Height * (pageWidth / image.Width));
+                    image.Alignment = Element.ALIGN_CENTER;
+                    document.Add(image);
+
+                    var footer = FontFactory.GetFont("Arial", 8, Font.NORMAL);
+                    var subTitleFont = FontFactory.GetFont("Arial", 10, Font.BOLD);
+                    var regularFont = FontFactory.GetFont("Arial", 10, Font.NORMAL);
+
+                    document.Add(new Paragraph($"Attendance Report - {year} {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)}", subTitleFont));
+                    document.Add(new Paragraph(" "));
+                    document.Add(new Paragraph($"Employee ID: {employeeId}", regularFont));
+                    document.Add(new Paragraph($"Employee Name: {employeeName}", regularFont));
+                    document.Add(new Paragraph($"Month : {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)}", regularFont));
+                    document.Add(new Paragraph(" "));
+
+                    PdfPTable table = new PdfPTable(6)
+                    {
+                        WidthPercentage = 100,
+                        DefaultCell = { Border = PdfPCell.NO_BORDER }
+                    };
+
+                    void AddHeaderCell(PdfPTable t, string text)
+                    {
+                        var font = FontFactory.GetFont("Arial", 10, Font.BOLD, BaseColor.WHITE);
+                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
+                        {
+                            HorizontalAlignment = Element.ALIGN_CENTER,
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            BackgroundColor = new BaseColor(25, 161, 184),
+                            Border = PdfPCell.NO_BORDER
+                        };
+                        t.AddCell(cell);
+                    }
+
+                    void AddBodyCell(PdfPTable t, string text, bool isOdd)
+                    {
+                        var font = FontFactory.GetFont("Arial", 8, Font.NORMAL);
+                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
+                        {
+                            HorizontalAlignment = Element.ALIGN_CENTER,
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            Border = PdfPCell.NO_BORDER
+                        };
+                        cell.BackgroundColor = isOdd ? BaseColor.WHITE : new BaseColor(185, 212, 217);
+                        t.AddCell(cell);
+                    }
+
+                    AddHeaderCell(table, "No");
+                    AddHeaderCell(table, "Date");
+                    AddHeaderCell(table, "Check-In");
+                    AddHeaderCell(table, "Check-Out");
+                    AddHeaderCell(table, "Overtime");
+                    AddHeaderCell(table, "Break");
+
+                    bool isOddRow = true;
+                    int counter = 1;
+                    foreach (var attendance in attendanceList)
+                    {
+                        AddBodyCell(table, counter.ToString(), isOddRow);
+                        AddBodyCell(table, attendance.Date.ToString("yyyy-MM-dd"), isOddRow);
+                        AddBodyCell(table, attendance.CheckIn.HasValue ? attendance.CheckIn.Value.ToString(@"hh\:mm") : "", isOddRow);
+                        AddBodyCell(table, attendance.CheckOut.HasValue ? attendance.CheckOut.Value.ToString(@"hh\:mm") : "", isOddRow);
+                        AddBodyCell(table, attendance.OverTime ?? "", isOddRow);
+                        AddBodyCell(table, attendance.Break ?? "", isOddRow);
+
+                        isOddRow = !isOddRow;
+                        counter++;
+                    }
+
+                    document.Add(table);
+                    document.Add(new Paragraph(" "));
+
+                    document.Add(new Paragraph("----End of the document----", footer));
+                    document.Add(new Paragraph("*This document is system-generated and does not require a signature.", footer));
+                    document.Add(new Paragraph(" "));
+
+                    document.Close();
+
+                    byte[] byteArray = ms.ToArray();
+                    return File(byteArray, "application/pdf", $"Report_{year}_{month}.pdf");
+                }
+            }
+        }
+
+        public IActionResult GenerateReport(DateTime date)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
+
+            if (applicationUser == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var department = _db.Department.FirstOrDefault(d => d.DepartmentID == applicationUser.DepartmentID);
+
+            if (department == null)
+            {
+                return NotFound("Department not found");
+            }
+
+            var employees = _db.ApplicationUser
+                .Where(u => u.DepartmentID == applicationUser.DepartmentID && u.Id != loggedInUserId)
+                .ToList();
+
+            var attendanceList = _db.AttendanceTimeTable
+                .Where(a => a.Date.Date == date.Date && employees.Select(e => e.CompanyID).Contains(a.EmpID))
+                .OrderBy(a => a.EmpID)
+                .ToList();
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (Document document = new Document(PageSize.A4, 25, 25, 30, 30))
+                {
+                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                    document.Open();
+
+                    var image = Image.GetInstance("wwwroot/images/LetterHead.png");
+                    float pageWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
+                    image.ScaleToFit(pageWidth, image.Height * (pageWidth / image.Width));
+                    image.Alignment = Element.ALIGN_CENTER;
+                    document.Add(image);
+
+                    var footer = FontFactory.GetFont("Arial", 8, Font.NORMAL);
+                    var subTitleFont = FontFactory.GetFont("Arial", 10, Font.BOLD);
+                    var regularFont = FontFactory.GetFont("Arial", 10, Font.NORMAL);
+
+                    document.Add(new Paragraph($"Attendance Report - {date:yyyy-MM-dd}", subTitleFont));
+                    document.Add(new Paragraph(" "));
+                    document.Add(new Paragraph($"Department: {department.DepartmentName}", regularFont));
+                    document.Add(new Paragraph(" "));
+
+                    PdfPTable table = new PdfPTable(5)
+                    {
+                        WidthPercentage = 100,
+                        DefaultCell = { Border = PdfPCell.NO_BORDER }
+                    };
+
+                    void AddHeaderCell(PdfPTable t, string text)
+                    {
+                        var font = FontFactory.GetFont("Arial", 10, Font.BOLD, BaseColor.WHITE);
+                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
+                        {
+                            HorizontalAlignment = Element.ALIGN_CENTER,
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            BackgroundColor = new BaseColor(25, 161, 184),
+                            Border = PdfPCell.NO_BORDER
+                        };
+                        t.AddCell(cell);
+                    }
+
+                    void AddBodyCell(PdfPTable t, string text, bool isOdd)
+                    {
+                        var font = FontFactory.GetFont("Arial", 8, Font.NORMAL);
+                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
+                        {
+                            HorizontalAlignment = Element.ALIGN_CENTER,
+                            VerticalAlignment = Element.ALIGN_MIDDLE,
+                            Border = PdfPCell.NO_BORDER
+                        };
+                        cell.BackgroundColor = isOdd ? BaseColor.WHITE : new BaseColor(185, 212, 217);
+                        t.AddCell(cell);
+                    }
+
+                    AddHeaderCell(table, "No");
+                    AddHeaderCell(table, "EmployeeID");
+                    AddHeaderCell(table, "Check-In");
+                    AddHeaderCell(table, "Check-Out");
+                    AddHeaderCell(table, "Overtime");
+
+                    bool isOddRow = true;
+                    int counter = 1;
+
+                    foreach (var attendance in attendanceList)
+                    {
+                        AddBodyCell(table, counter.ToString(), isOddRow);
+                        AddBodyCell(table, attendance.EmpID, isOddRow);
+                        AddBodyCell(table, attendance.CheckIn.HasValue ? attendance.CheckIn.Value.ToString(@"hh\:mm") : "", isOddRow);
+                        AddBodyCell(table, attendance.CheckOut.HasValue ? attendance.CheckOut.Value.ToString(@"hh\:mm") : "", isOddRow);
+                        AddBodyCell(table, attendance.OverTime ?? "", isOddRow);
+
+                        isOddRow = !isOddRow;
+                        counter++;
+                    }
+
+                    document.Add(table);
+                    document.Add(new Paragraph(" "));
+
+                    document.Add(new Paragraph("----End of the document----", footer));
+                    document.Add(new Paragraph("*This document is system-generated and does not require a signature.", footer));
+                    document.Add(new Paragraph(" "));
+
+                    document.Close();
+
+                    byte[] byteArray = ms.ToArray();
+                    return File(byteArray, "application/pdf", $"Report_{date:yyyy-MM-dd}.pdf");
+                }
+            }
+        }
 
 
+        private List<AttendanceManagement> GetAttendanceList(DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
 
+            if (applicationUser == null)
+            {
+                return new List<AttendanceManagement>(); // Or handle appropriately
+            }
 
+            var companyId = applicationUser.CompanyID;
+
+            var query = _db.AttendanceTimeTable.Where(a => a.EmpID == companyId);
+
+            if (fromDate.HasValue && toDate.HasValue)
+            {
+                query = query.Where(a => a.Date >= fromDate && a.Date <= toDate);
+            }
+
+            var objAttendanceManagemetList = query.OrderByDescending(a => a.Date).ToList();
+
+            return objAttendanceManagemetList;
+        }
+
+        private List<BreadcrumbItem> GetDefaultBreadcrumb(string mainTitle, string currentAction, string currentController = "AttendanceManagement")
+        {
+            return new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem { Title = mainTitle, Url = Url.Action("Index", currentController) },
+            new BreadcrumbItem { Title = GetBreadcrumbTitle(currentAction), Url = Url.Action(currentAction, currentController) },
+        };
+        }
+
+        private string GetBreadcrumbTitle(string action)
+        {
+            return action switch
+            {
+                "Index" => "Home",
+                "Reports" => "Reports",
+                "MarkAttendance" => "Mark Attendance",
+                "ViewHistory" => "View History",
+                "AddAttendance" => "Add Attendance",
+                _ => action,
+            };
+        }
     }
 }
