@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -29,16 +30,23 @@ namespace HRMS_Web.Controllers
                 .Include(lm => lm.RemainingLeaves)
                 .ToList();
 
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Leave Management", Url = Url.Action("Index", "LeaveManagement") }
+            };
+
             return View(leaveManagements);
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
         public IActionResult Reports()
         {
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Reports", Url = Url.Action("Reports", "LeaveManagement") }
+            };
+
             return View();
         }
 
@@ -69,6 +77,12 @@ namespace HRMS_Web.Controllers
 
             var leaveHistory = await leaveHistoryRequests.ToListAsync();
 
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "View Leave History", Url = Url.Action("ViewLeaveHistory", "LeaveManagement") }
+            };
+
             ViewBag.CurrentMonthLeaveRequests = currentMonthLeaveRequests;
             ViewBag.LeaveTypes = await GetLeaveTypesAsync();
 
@@ -92,13 +106,14 @@ namespace HRMS_Web.Controllers
 
             ViewBag.NonPendingRequests = nonPendingRequests;
 
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Leave Requests", Url = Url.Action("LeaveRequestAsync", "LeaveManagement") }
+            };
+
             return View(pendingRequests);
         }
-
-        //{
-        //    var pendingRequests = _db.LeaveRequests.Where(l => l.Status == "Pending").ToList();
-        //    return View(pendingRequests);
-        //}
 
         [Authorize(Roles = "Admin")]
         public IActionResult ApproveRequest(int id)
@@ -109,6 +124,7 @@ namespace HRMS_Web.Controllers
                 leaveRequest.Status = "Approved";
                 _db.SaveChanges();
             }
+
             return RedirectToAction("LeaveRequest");
         }
 
@@ -148,25 +164,17 @@ namespace HRMS_Web.Controllers
             return RedirectToAction("LeaveRequest");
         }
 
-
-        //[Authorize(Roles = "Admin")]
-        //public IActionResult DeclineRequest(int id)
-        //{
-        //    var leaveRequest = _db.LeaveRequests.Find(id);
-        //    if (leaveRequest != null)
-        //    {
-        //        leaveRequest.Status = "Declined";
-        //        _db.SaveChanges();
-        //    }
-        //    return RedirectToAction("LeaveRequest");
-        //}
-
         public IActionResult LeaveForm()
         {
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Leave Form", Url = Url.Action("LeaveForm", "LeaveManagement") }
+            };
+
             ViewBag.LeaveTypes = GetLeaveTypesAsync().Result;
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> LeaveForm(LeaveRequestModel model)
@@ -182,7 +190,7 @@ namespace HRMS_Web.Controllers
                 }
 
                 ViewBag.LeaveTypes = await GetLeaveTypesAsync();
-                //return View(model);
+                return View(model);
             }
 
             model.Status = "Pending";
@@ -212,7 +220,7 @@ namespace HRMS_Web.Controllers
 
             // Fetch the RemainingLeaves instance for the user and the selected leave type
             var remainingLeaves = await _db.RemainingLeaves
-            .FirstOrDefaultAsync(rl => rl.Id == model.Id && rl.LeaveId == leaveManagement.LeaveId);
+                .FirstOrDefaultAsync(rl => rl.Id == model.Id && rl.LeaveId == leaveManagement.LeaveId);
 
             if (remainingLeaves != null)
             {
@@ -283,242 +291,49 @@ namespace HRMS_Web.Controllers
             return Json(new { success = true, remainingLeaves = remainingLeaves.NoOfRemainingLeave });
         }
 
-
         private async Task<List<string>> GetLeaveTypesAsync()
         {
             return await _db.LeaveManagement.Select(lm => lm.LeaveType).Distinct().ToListAsync();
         }
 
-        //[HttpPost]
-        //public IActionResult GenerateReport(DateTime date)
-        //{
-        //    try
-        //    {
-        //        var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //        var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
-
-        //        if (applicationUser == null)
-        //        {
-        //            return NotFound("User not found");
-        //        }
-
-        //        var department = _db.Department.FirstOrDefault(d => d.DepartmentID == applicationUser.DepartmentID);
-
-        //        if (department == null)
-        //        {
-        //            return NotFound("Department not found");
-        //        }
-
-        //        var employees = _db.ApplicationUser
-        //            .Where(u => u.DepartmentID == applicationUser.DepartmentID && u.Id != loggedInUserId)
-        //            .Select(u => new { u.Id, u.CompanyID })
-        //            .ToList();
-
-        //        var employeeIds = employees.Select(e => e.CompanyID).ToList();
-
-        //        var attendanceList = _db.AttendanceTimeTable
-        //            .Where(a => a.Date.Date == date.Date && employeeIds.Contains(a.EmpID))
-        //            .OrderBy(a => a.EmpID)
-        //            .ToList();
-
-        //        using (MemoryStream ms = new MemoryStream())
-        //        {
-        //            using (Document document = new Document(PageSize.A4, 25, 25, 30, 30))
-        //            {
-        //                PdfWriter writer = PdfWriter.GetInstance(document, ms);
-        //                document.Open();
-
-        //                var image = iTextSharp.text.Image.GetInstance("wwwroot/images/LetterHead.png");
-        //                float pageWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
-        //                image.ScaleToFit(pageWidth, image.Height * (pageWidth / image.Width));
-        //                image.Alignment = Element.ALIGN_CENTER;
-        //                document.Add(image);
-
-        //                var footer = FontFactory.GetFont("Arial", 8, Font.NORMAL);
-        //                var subTitleFont = FontFactory.GetFont("Arial", 10, Font.BOLD);
-        //                var regularFont = FontFactory.GetFont("Arial", 10, Font.NORMAL);
-
-        //                document.Add(new Paragraph($"Attendance Report - {date:yyyy-MM-dd}", subTitleFont));
-        //                document.Add(new Paragraph(" "));
-        //                document.Add(new Paragraph($"Department: {department.DepartmentName}", regularFont));
-        //                document.Add(new Paragraph(" "));
-
-        //                PdfPTable table = new PdfPTable(5);
-        //                table.WidthPercentage = 100;
-        //                table.DefaultCell.Border = PdfPCell.NO_BORDER;
-
-        //                void AddHeaderCell(PdfPTable t, string text)
-        //                {
-        //                    var font = FontFactory.GetFont("Arial", 10, Font.BOLD, BaseColor.WHITE);
-        //                    PdfPCell cell = new PdfPCell(new Phrase(text, font))
-        //                    {
-        //                        HorizontalAlignment = Element.ALIGN_CENTER,
-        //                        VerticalAlignment = Element.ALIGN_MIDDLE,
-        //                        BackgroundColor = new BaseColor(25, 161, 184),
-        //                        Border = PdfPCell.NO_BORDER
-        //                    };
-        //                    t.AddCell(cell);
-        //                }
-
-        //                void AddBodyCell(PdfPTable t, string text, bool isOdd)
-        //                {
-        //                    var font = FontFactory.GetFont("Arial", 8, Font.NORMAL);
-        //                    PdfPCell cell = new PdfPCell(new Phrase(text, font))
-        //                    {
-        //                        HorizontalAlignment = Element.ALIGN_CENTER,
-        //                        VerticalAlignment = Element.ALIGN_MIDDLE,
-        //                        Border = PdfPCell.NO_BORDER
-        //                    };
-        //                    cell.BackgroundColor = isOdd ? BaseColor.WHITE : new BaseColor(185, 212, 217);
-        //                    t.AddCell(cell);
-        //                }
-
-        //                AddHeaderCell(table, "No");
-        //                AddHeaderCell(table, "EmployeeID");
-        //                AddHeaderCell(table, "Check-In");
-        //                AddHeaderCell(table, "Check-Out");
-        //                AddHeaderCell(table, "Overtime");
-
-        //                bool isOddRow = true;
-        //                int counter = 1;
-
-        //                foreach (var attendance in attendanceList)
-        //                {
-        //                    AddBodyCell(table, counter.ToString(), isOddRow);
-        //                    AddBodyCell(table, attendance.EmpID, isOddRow);
-        //                    AddBodyCell(table, attendance.CheckIn.ToString(@"hh\:mm"), isOddRow);
-        //                    AddBodyCell(table, attendance.CheckOut.ToString(@"hh\:mm"), isOddRow);
-        //                    AddBodyCell(table, attendance.OverTime, isOddRow);
-
-        //                    isOddRow = !isOddRow;
-        //                    counter++;
-        //                }
-
-        //                document.Add(table);
-        //                document.Add(new Paragraph(" "));
-
-        //                document.Add(new Paragraph("----End of the document----", footer));
-        //                document.Add(new Paragraph("*This document is system-generated and does not require a signature.", footer));
-        //                document.Add(new Paragraph(" "));
-
-        //                document.Close();
-
-        //                byte[] byteArray = ms.ToArray();
-        //                return File(byteArray, "application/pdf", $"Report_{date:yyyy-MM-dd}.pdf");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception (not shown here for brevity)
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
-
-    [HttpPost]
-        public IActionResult PDF(int month, int year)
+        [HttpPost]
+        public IActionResult GetTotalRemainingLeaves()
         {
-            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == loggedInUserId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<object> data = new List<object>();
 
-            if (applicationUser == null)
-            {
-                return NotFound("User not found");
-            }
+            // Fetch leave types
+            List<string> labels = _db.LeaveManagement.Select(l => l.LeaveType).ToList();
 
-            var leaveRequests = _db.LeaveRequests
-                .Include(l => l.LeaveManagement)
-                .Where(l => l.User.Id == loggedInUserId && l.StartDate.Month == month && l.StartDate.Year == year)
-                .OrderByDescending(l => l.StartDate)
-                .ToList();
+            // Fetch remaining leaves for the logged-in user
+            List<int> total = _db.RemainingLeaves
+                                 .Where(r => r.Id == userId)
+                                 .Select(r => r.NoOfRemainingLeave ?? 0)
+                                 .ToList();
 
-            using (MemoryStream ms = new MemoryStream())
-            {
-                using (iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4, 25, 25, 30, 30))
-                {
-                    PdfWriter writer = PdfWriter.GetInstance(document, ms);
-                    document.Open();
+            data.Add(labels);
+            data.Add(total);
 
-                    var image = iTextSharp.text.Image.GetInstance("wwwroot/images/LetterHead.png");
-                    float pageWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
-                    image.ScaleToFit(pageWidth, image.Height * (pageWidth / image.Width));
-                    image.Alignment = Element.ALIGN_CENTER;
-                    document.Add(image);
-
-                    var footer = FontFactory.GetFont("Arial", 8, Font.NORMAL);
-                    var subTitleFont = FontFactory.GetFont("Arial", 10, Font.BOLD);
-                    var regularFont = FontFactory.GetFont("Arial", 10, Font.NORMAL);
-
-                    document.Add(new Paragraph($"Leave Report - {year} {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)}", subTitleFont));
-                    document.Add(new Paragraph(" "));
-                    document.Add(new Paragraph($"Employee Name: {applicationUser.FirstName} {applicationUser.LastName}", regularFont));
-                    document.Add(new Paragraph($"Month: {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)}", regularFont));
-                    document.Add(new Paragraph(" "));
-
-                    PdfPTable table = new PdfPTable(5);
-                    table.WidthPercentage = 100;
-                    table.DefaultCell.Border = PdfPCell.NO_BORDER;
-
-                    void AddHeaderCell(PdfPTable t, string text)
-                    {
-                        var font = FontFactory.GetFont("Arial", 10, Font.BOLD, BaseColor.WHITE);
-                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
-                        {
-                            HorizontalAlignment = Element.ALIGN_CENTER,
-                            VerticalAlignment = Element.ALIGN_MIDDLE,
-                            BackgroundColor = new BaseColor(25, 161, 184),
-                            Border = PdfPCell.NO_BORDER
-                        };
-                        t.AddCell(cell);
-                    }
-
-                    void AddBodyCell(PdfPTable t, string text, bool isOdd)
-                    {
-                        var font = FontFactory.GetFont("Arial", 8, Font.NORMAL);
-                        PdfPCell cell = new PdfPCell(new Phrase(text, font))
-                        {
-                            HorizontalAlignment = Element.ALIGN_CENTER,
-                            VerticalAlignment = Element.ALIGN_MIDDLE,
-                            Border = PdfPCell.NO_BORDER
-                        };
-                        cell.BackgroundColor = isOdd ? BaseColor.WHITE : new BaseColor(185, 212, 217);
-                        t.AddCell(cell);
-                    }
-
-                    AddHeaderCell(table, "No");
-                    AddHeaderCell(table, "Start Date");
-                    AddHeaderCell(table, "End Date");
-                    AddHeaderCell(table, "Leave Type");
-                    AddHeaderCell(table, "Status");
-
-                    bool isOddRow = true;
-                    int counter = 1;
-
-                    foreach (var leave in leaveRequests)
-                    {
-                        AddBodyCell(table, counter.ToString(), isOddRow);
-                        AddBodyCell(table, leave.StartDate.ToString("yyyy-MM-dd"), isOddRow);
-                        AddBodyCell(table, leave.EndDate.ToString("yyyy-MM-dd"), isOddRow);
-                        AddBodyCell(table, leave.LeaveType, isOddRow);
-                        AddBodyCell(table, leave.Status, isOddRow);
-
-                        isOddRow = !isOddRow;
-                        counter++;
-                    }
-
-                    document.Add(table);
-                    document.Add(new Paragraph(" "));
-
-                    document.Add(new Paragraph("----End of the document----", footer));
-                    document.Add(new Paragraph("*This document is system-generated and does not require a signature.", footer));
-                    document.Add(new Paragraph(" "));
-
-                    document.Close();
-
-                    byte[] byteArray = ms.ToArray();
-                    return File(byteArray, "application/pdf", $"Leave_Report_{year}_{month}.pdf");
-                }
-            }
+            return Json(data);
         }
+
+        [HttpPost]
+        public IActionResult GetTotalAnnualLeaves()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<object> data = new List<object>();
+
+            // Fetch leave types
+            List<string> labels = _db.LeaveManagement.Select(l => l.LeaveType).ToList();
+
+            // Fetch annual leaves for the logged-in user
+            List<int> total = _db.LeaveManagement.Select(l => l.NoOfLeaves_Year).ToList();
+
+            data.Add(labels);
+            data.Add(total);
+
+            return Json(data);
+        }
+
     }
 }
