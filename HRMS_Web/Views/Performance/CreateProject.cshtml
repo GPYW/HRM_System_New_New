@@ -1,0 +1,227 @@
+﻿
+
+@model HRMS_Web.Models.Projects
+
+
+@{
+    var priorities = new List<string> { "High", "Medium", "Low" };
+    var managers = new List<string> { "Amith", "Pooja", "Pasindi" };
+    var statuses = new List<string> { "Ongoing", "Completed", "On Hold" };
+}
+
+<form method="post" enctype="multipart/form-data" asp-controller="Performance" asp-action="CreateProject">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <div class="col-12">
+                <h2 class="text-primary">Create Project</h2>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" name="Project_Name" class="form-control" required />
+                <span asp-validation-for="Project_Name" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label for="clientName">Client</label>
+                <input type="text" id="clientName" name="Client" class="form-control" required />
+                <span asp-validation-for="Client" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" name="StartDate" class="form-control" required />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" name="EndDate" class="form-control" required />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="rate">Rate</label>
+                <input type="number" id="rate" name="Rate" class="form-control" required />
+                <span asp-validation-for="Rate" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label for="priority">Priority</label>
+                <select id="priority" name="P_Priority" class="form-control" required>
+                    <option value="" disabled selected>Select Priority</option>
+                    @foreach (var priority in priorities)
+                    {
+                        <option value="@priority">@priority</option>
+                    }
+                </select>
+                <span asp-validation-for="P_Priority" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="leader">Leader</label>
+                <select id="leader" name="Project_Manager" class="form-control" required>
+                    <option value="" disabled selected>Select Leader</option>
+                    @foreach (var manager in managers)
+                    {
+                        <option value="@manager">@manager</option>
+                    }
+                </select>
+                <span asp-validation-for="Project_Manager" class="text-danger"></span>
+            </div>
+            <div class="col-6 pb-4">
+                <label for="team">Project Team</label>
+                <input type="text" id="team" name="Project_Team" class="form-control" required />
+                <span asp-validation-for="Project_Team" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 pb-4">
+                <label for="status">Status</label>
+                <select id="status" name="P_Status" class="form-control" required>
+                    <option value="" disabled selected>Select Status</option>
+                    @foreach (var status in statuses)
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+                <span asp-validation-for="P_Status" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 pb-4">
+                <label for="description">Description</label>
+                <textarea id="description" name="Project_Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Project_Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 pb-4">
+                <label for="fileUpload">Upload File</label>
+                <input type="file" id="fileUpload" name="FileUpload" class="form-control" />
+                <span asp-validation-for="FileUpload" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3 pb-5">
+                <button type="submit" class="btn btn-primary form-control">Create Project</button>
+            </div>
+            <div class="col-3 pb-5">
+                <a asp-controller="Performance" asp-action="Index" class="btn btn-secondary form-control">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+@* 
+
+<style>
+    .bootstrap-tagsinput .tag {
+        margin-right: 2px;
+        color: white;
+        background-color: #007bff;
+        padding: 0.2em 0.4em;
+        border-radius: 0.2em;
+    }
+
+    .bootstrap-tagsinput {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+
+
+
+@model HRMS_Web.Models.Projects
+
+@{
+    ViewData["Title"] = "Create Project";
+}
+
+<h2>Create Project</h2>
+
+<form asp-action="CreateProject" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Project_Name" class="control-label"></label>
+        <input asp-for="Project_Name" class="form-control" />
+        <span asp-validation-for="Project_Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Project_Description" class="control-label"></label>
+        <input asp-for="Project_Description" class="form-control" />
+        <span asp-validation-for="Project_Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Client" class="control-label"></label>
+        <input asp-for="Client" class="form-control" />
+        <span asp-validation-for="Client" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Project_Manager" class="control-label"></label>
+        <input asp-for="Project_Manager" class="form-control" />
+        <span asp-validation-for="Project_Manager" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Project_Team" class="control-label"></label>
+        <input asp-for="Project_Team" class="form-control" />
+        <span asp-validation-for="Project_Team" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label"></label>
+        <input asp-for="StartDate" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate" class="control-label"></label>
+        <input asp-for="EndDate" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="P_Status" class="control-label"></label>
+        <input asp-for="P_Status" class="form-control" />
+        <span asp-validation-for="P_Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="P_Priority" class="control-label"></label>
+        <input asp-for="P_Priority" class="form-control" />
+        <span asp-validation-for="P_Priority" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rate" class="control-label"></label>
+        <input asp-for="Rate" class="form-control" />
+        <span asp-validation-for="Rate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FileUpload" class="control-label"></label>
+        <input asp-for="FileUpload" type="file" class="form-control" />
+        <span asp-validation-for="FileUpload" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+ 
+ *@

@@ -13,24 +13,30 @@ namespace HRMS_Web.Models
         [Required]
         public int TaskID { get; set; }
 
+        [Required]
         public string? Task_Name { get; set; }
 
-        public string? Project_Name { get; set; }
+        [Required]
+        public string? Task_Description { get; set; }
 
+        [Required]
         public DateTime Due_Date { get; set; }
 
-        public string? Priority { get; set; }
+        [Required]
+        public string? T_Priority { get; set; }
 
-        public string? Status { get; set; }
+        [Required]
+        public string? T_Status { get; set; }
 
+        [Required]
         public string? Completion { get; set; }
 
         public string? Actions { get; set; }
 
         
-        public int ProjectID { get; set; }
+        //public int ProjectID { get; set; }
 
-        public Projects Projects { get; set; }
+        //public Projects Projects { get; set; }
 
 
 

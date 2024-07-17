@@ -1,30 +1,57 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HRMS_Web.Models
 {
-    internal class Projects
+    public class Projects
     {
+        [Key]
         public int ProjectID { get; set; }
-        public string? ProjectName { get; set;}
-        
-        public string? ProjectDescription { get; set; }
-        public string? ProjectType { get; set;}
 
-        public string? Project_Manager{ get; set; }
+        [Required]
+        public string Project_Name { get; set;}
 
-        public DateTime Start_Date { get; set; }
+        [Required]
+        public string Project_Description { get; set; }
 
-        public DateTime End_Date { get; set; }
+        [Required]
+        public string Client { get; set; }
 
-        public string? Status { get; set; }
+        [Required]
+        public string Project_Manager{ get; set; }
 
-        public ICollection<Tasks> Tasks { get; set; }
+        [Required]
+        public string Project_Team{ get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime StartDate { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime EndDate { get; set; }
+
+        [Required]
+        public string P_Status { get; set; }
+
+        [Required]
+        public string P_Priority { get; set; }
+
+        [Required]
+        public decimal Rate { get; set; }
+
+        [NotMapped]
+        public IFormFile FileUpload { get; set; }
+        public string UploadFile { get; set; }
+
+        //public ICollection<Tasks> Tasks { get; set; }
     }
                            
                             

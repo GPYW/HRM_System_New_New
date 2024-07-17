@@ -1,5 +1,17 @@
-﻿@model HRMS_Web.Models.ApplicationUser
-@using HRMS_Web.ViewModel;
+﻿@* @model HRMS_Web.Models.Projects
+
+ @using HRMS_Web.ViewModel; *@  
+
+ @using HRMS_Web.Models;  
+
+ @model IEnumerable<HRMS_Web.Models.Projects> 
+
+@{
+    ViewData["Title"] = "Assign Projects";
+}
+
+
+
 
 <!DOCTYPE html>
 <html>
@@ -9,6 +21,10 @@
     <title>Assignment Section</title>
     <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -29,100 +45,98 @@
             <a class="nav-link active" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg navbar-primary navbar-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Assignment Dashboard</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#current-assignments">Current Assignments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#assignment-details">Assignment Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#assignment-updates">Assignment Updates</a>
-                    </li>
-                </ul>
-            </div>
+
+    @* <div class="row pt-4 pb-5">
+        <div class="col-6">
+            <h3 class="text-dark text-capitalize">Current Project Assignments</h3>
         </div>
-    </nav>
+        <div class="col-6 d-flex justify-content-end">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+                <i class="bi bi-plus-circle"></i> Create Project
+            </button>
+        </div>
+    </div> *@
 
-    <!--current Assignment-->
-    <div class="container mt-4" id="current-assignments">
-        <h2>Current Assignments</h2>
-        <table class="table table-striped">
-            <thead>
+    <div class="row pt-4  pb-5">
+        <div class="col-6">
+            <h2 class="text-primary">Current Project Assignments</h2>
+        </div>
+        <div class="col-6" text-end>
+            <a asp-controller="Performance" asp-action="CreateProject" class="btn btn-info">
+                <i class="bi bi-plus-circle"></i>  Create Project
+            </a>
+        </div>
+    </div>
+
+
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+
+                <th>Project Name</th>
+                <th>Project Leader</th>
+                <th>Project Team</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+       
+            @foreach (var projects in Model)
+            {
                 <tr>
-                    <th>Task Name</th>
-                    <th>Deadline</th>
-                    <th>Priority</th>
-                    <th>Status</th>
+                    <td>@projects.Project_Name</td>
+                    <td>@projects.Project_Manager</td>
+                    <td>@projects.Project_Team</td>
+                    <td>@projects.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>@projects.P_Priority</td>
+                    <td>@projects.P_Status</td>
+                    <td>
+                        <button type="submit" class="btn btn-dark">Edit</button>
+                        <button type="submit" class="btn btn-dark">Remove</button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <!-- Example row -->
-                <tr onclick="showAssignmentDetails('1')">
-                    <td>Project Alpha - Design Phase</td>
-                    <td>2024-06-01</td>
-                    <td>High</td>
-                    <td>In Progress</td>
-                </tr>
-                <!-- Additional rows -->
-            </tbody>
-        </table>
-    </div>
+            }
 
-    <!--Assignment Details-->
-    <div class="container mt-4 assignment-details" id="assignment-details">
-        <h2>Assignment Details</h2>
-        <h3 id="assignment-title">Project Alpha - Design Phase</h3>
-        <p id="assignment-description">Brief description of Project Alpha's design phase.</p>
-        <ul class="list-group">
-            <li class="list-group-item"><strong>Scope:</strong> Detailed scope of the assignment.</li>
-            <li class="list-group-item"><strong>Expected Outcomes:</strong> Expected outcomes and deliverables.</li>
-            <li class="list-group-item"><strong>Resources Needed:</strong> List of resources required.</li>
-            <li class="list-group-item"><strong>Dependencies:</strong> Other tasks or projects that this assignment depends on.</li>
-        </ul>
-    </div>
+        </tbody>
+    </table>
+ 
 
-    <!--Assignment updates-->
-    <div class="container mt-4" id="assignment-updates">
-        <h2>Assignment Updates</h2>
-        <form>
-            <div class="mb-3">
-                <label for="statusUpdate" class="form-label">Update Status</label>
-                <select class="form-control" id="statusUpdate">
-                  
-                    <option>Not Started</option>
-                    <option>In Progress</option>
-                    <option>Completed</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="issueReport" class="form-label">Report Issue</label>
-                <textarea class="form-control" id="issueReport" rows="3"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="supportRequest" class="form-label">Request Support/Resources</label>
-                <textarea class="form-control" id="supportRequest" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Update</button>
-        </form>
-    </div>
+
+@* 
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Project Leader</th>
+                <th>Project Team</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a asp-area="" asp-controller="Performance" asp-action="ProjectDetails" asp-route-id="1">Project Alpha</a></td>
+                <td>Td Weeramanthrie</td>
+                <td>ef</td>
+                <td>2024-06-01</td>
+                <td>High</td>
+                <td>Ongoing</td>
+                <td>
+                    <button type="submit" class="btn btn-dark">Edit</button>
+                    <button type="submit" class="btn btn-dark">Remove</button>
+                </td>
+            </tr>
+            <!-- Additional rows -->
+        </tbody>
+    </table> *@
+
+
 </body>
-
-<script>
-    function showAssignmentDetails(id) {
-        // Example function to show assignment details based on ID
-        // This would typically involve fetching data from a server
-        document.getElementById('assignment-details').style.display = 'block';
-        // Update the details section with appropriate data
-        document.getElementById('assignment-title').textContent = 'Project Alpha - Design Phase';
-        document.getElementById('assignment-description').textContent = 'Detailed information about the assignment.';
-    }
-</script>
 </html>
-
-
-
