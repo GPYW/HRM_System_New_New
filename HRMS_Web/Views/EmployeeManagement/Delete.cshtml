@@ -1,110 +1,42 @@
-﻿
- @using HRMS_Web.Models
+﻿@model HRMS_Web.Models.ApplicationUser
 
-@model ApplicationUser
-
-<form method="post">
-    <div class="card shadow border-0 mt-3">
-        <div class="card-header text-black py-2">
-            <h2 class="text-capitalize">Delete Employee Details</h2>
+<form id="deleteForm" asp-action="Delete" method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><hr />
+                <h4>Are you sure you want to delete this user?</h4>
+                <p><strong>ID:</strong> @Model.CompanyID</p>
+                <p><strong>Name:</strong> @Model.FirstName @Model.LastName</p>
+            </div>
         </div>
-        <div class="card-body p-6">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label asp-for="FirstName" class="ms-2 text-muted">First Name</label>
-                        <input asp-for="FirstName" class="form-control form-control-sm" aria-required="true" placeholder="First Name" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class=" mb-3">
-                        <label asp-for="LastName" class="ms-2 text-muted">Last Name</label>
-                        <input asp-for="LastName" class="form-control form-control-sm" aria-required="true" placeholder="Last Name" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <!-- Button to submit the form for deletion with confirmation -->
+                    <button id="deleteSubmit" type="submit" class="w-100 btn btn-danger">Delete</button>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label asp-for="Email" class="ms-2 text-muted">Email</label>
-                        <input asp-for="Email" class="form-control form-control-sm" type="email" aria-required="true" placeholder="name@example.com" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label asp-for="Address" class="ms-2 text-muted">Address</label>
-                        <input asp-for="Address" class="form-control" aria-required="true" placeholder="Address" />
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <!-- Cancel button to go back to the Index action -->
+                    <a asp-action="Index" class="btn btn-outline-secondary w-100">Cancel</a>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label asp-for="PhoneNumber" class="ms-2 text-muted">Mobile No</label>
-                        <input asp-for="PhoneNumber" class="form-control form-control-sm" aria-required="true" placeholder="Mobile No" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label asp-for="join_date" class="ms-2 text-muted">join_date</label>
-                        <input asp-for="join_date" class="form-control form-control-sm" autocomplete="join_date" aria-required="true" placeholder="join_date" />
-                        <span asp-validation-for="join_date" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="ms-2 text-muted">DOB</label>
-                        <input asp-for="DOB" class="form-control" autocomplete="DOB" aria-required="true" placeholder="DOB" />
-                       
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <button id="registerSubmit" type="submit" class="w-100 btn btn-dark">Delete</button>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class=" mb-3">
-                        <a asp-action="Index" class="btn btn-outline-dark w-100">Cancel</a>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
-      
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} 
 
-
-
-
-
-
-
-
-
-
-
+    <script>
+        // JavaScript to prompt confirmation before deleting
+        $(function () {
+            $('#deleteForm').submit(function () {
+                return confirm('Are you sure you want to delete this user?'); // Confirmation dialog
+            });
+        });
+    </script>
+}

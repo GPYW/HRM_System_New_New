@@ -1,5 +1,11 @@
 ﻿@model HRMS_Web.Models.ApplicationUser
 @using HRMS_Web.ViewModel;
+@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,9 +106,12 @@
                     <li class="nav-item">
                         <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="ViewHistory">View History</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
-                    </li>
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Assign">Assign</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -113,7 +122,7 @@
     <div class="content-header">
         <div class="container-lg">
             <div class="row mb-1">
-                <h5 class="mt-5" style="margin-left:-15px">Performance/Dashboard</h5>
+                <h5 style="margin-left:-15px">Performance/Dashboard</h5>
             </div>
         </div>
     </div>

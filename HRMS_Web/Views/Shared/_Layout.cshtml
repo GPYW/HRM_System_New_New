@@ -194,25 +194,25 @@
                                 </p>
                             </a>
                         </li>
+                        @if (User.IsInRole(SD.Role_Admin)){
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "EmployeeManagement") ? "active" : "")" asp-area="" asp-controller="EmployeeManagement" asp-action="Index">
+                                    <i class="bi bi-people"></i>
+                                    <p>
+                                        Employee Management
+                                    </p>
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "EmployeeManagement") ? "active" : "")" asp-area="" asp-controller="EmployeeManagement" asp-action="Index">
-                                <i class="bi bi-people"></i>
-                                <p>
-                                    Employee Management
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration") ? "active" : "")" asp-area="" asp-controller="Configuration" asp-action="Index">
-                                <i class="fas fa-cogs"></i>
-                                <p>
-                                    Configurations
-                                </p>
-                            </a>
-                        </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration") ? "active" : "")" asp-area="" asp-controller="Configuration" asp-action="Index">
+                                    <i class="fas fa-cogs"></i>
+                                    <p>
+                                        Configurations
+                                    </p>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </nav>
 

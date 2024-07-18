@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -119,9 +126,12 @@
                     <li class="nav-item">
                         <a class="nav-link nav_link" asp-area="" asp-controller="AttendanceManagement" asp-action="ViewHistory">View History</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav_link" asp-area="" asp-controller="AttendanceManagement" asp-action="MarkAttendance">Mark Attendance</a>
-                    </li>
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link nav_link" asp-area="" asp-controller="AttendanceManagement" asp-action="MarkAttendance">Mark Attendance</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
