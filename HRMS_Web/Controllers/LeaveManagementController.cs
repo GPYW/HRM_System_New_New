@@ -116,15 +116,32 @@ namespace HRMS_Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult ApproveRequest(int id)
+        public async Task<IActionResult> ApproveRequest(int id)
         {
-            var leaveRequest = _db.LeaveRequests.Find(id);
+            var leaveRequest = await _db.LeaveRequests
+                .Include(lr => lr.User)
+                .FirstOrDefaultAsync(lr => lr.RequestId == id);
+
             if (leaveRequest != null)
             {
                 leaveRequest.Status = "Approved";
                 _db.SaveChanges();
-            }
 
+                var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var admin = await _db.Admins.FirstOrDefaultAsync(a => a.AdminId == adminId);
+
+                if (admin != null && leaveRequest.User != null)
+                {
+                    var emailSender = new EmailSender();
+                    await emailSender.SendEmailAsync(
+                        leaveRequest.User.Email,
+                        "Leave Request Approved",
+                        $"Your leave request has been approved.",
+                        admin.Email,
+                        admin.SmtpPassword
+                    );
+                }
+            }
             return RedirectToAction("LeaveRequest");
         }
 
@@ -133,17 +150,16 @@ namespace HRMS_Web.Controllers
         {
             var leaveRequest = await _db.LeaveRequests
                 .Include(lr => lr.LeaveManagement)
+                .Include(lr => lr.User)
                 .FirstOrDefaultAsync(lr => lr.RequestId == id);
 
             if (leaveRequest != null)
             {
-                // Find the RemainingLeaves record
                 var remainingLeaves = await _db.RemainingLeaves
                     .FirstOrDefaultAsync(rl => rl.Id == leaveRequest.Id && rl.LeaveId == leaveRequest.LeaveId);
 
                 if (remainingLeaves != null)
                 {
-                    // Restore the NoOfRemainingLeave property
                     if (leaveRequest.LeaveType == "Half Day")
                     {
                         remainingLeaves.NoOfRemainingLeave += 1;
@@ -153,12 +169,26 @@ namespace HRMS_Web.Controllers
                         remainingLeaves.NoOfRemainingLeave += leaveRequest.NumberOfLeaveDays;
                     }
 
-                    // Save the changes to the RemainingLeaves instance
                     _db.RemainingLeaves.Update(remainingLeaves);
                 }
 
                 leaveRequest.Status = "Declined";
                 _db.SaveChanges();
+
+                var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var admin = await _db.Admins.FirstOrDefaultAsync(a => a.AdminId == adminId);
+
+                if (admin != null && leaveRequest.User != null)
+                {
+                    var emailSender = new EmailSender();
+                    await emailSender.SendEmailAsync(
+                        leaveRequest.User.Email,
+                        "Leave Request Declined",
+                        $"Your leave request has been declined.",
+                        admin.Email,
+                        admin.SmtpPassword
+                    );
+                }
             }
 
             return RedirectToAction("LeaveRequest");

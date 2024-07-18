@@ -36,8 +36,7 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 builder.Services.AddHttpClient();
 
 // Add email sender service
-builder.Services.AddTransient<IEmailSender, EmailSender>();
-
+builder.Services.AddTransient<IEmailSenderRepository, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

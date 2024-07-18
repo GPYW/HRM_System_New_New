@@ -71,6 +71,11 @@ namespace HRMS_Web.DataAccess.Data
              .HasForeignKey(u => u.Id)
             .IsRequired();
 
+            builder.Entity<Admin>()
+            .HasOne(c => c.User)
+            .WithMany(u => u.Admins)
+            .HasForeignKey(c => c.AdminId);
+
         }
     }
 }

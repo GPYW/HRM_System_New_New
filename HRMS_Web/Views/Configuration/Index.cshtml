@@ -141,6 +141,10 @@
                                 <input type="email" class="form-control" id="Email" name="Email" required />
                             </div>
                             <div class="col-md-3 mb-3">
+                                <label for="SmtpServer" class="form-label">SMTP Server</label>
+                                <input type="text" class="form-control" id="SmtpServer" name="SmtpServer" required />
+                            </div>
+                            <div class="col-md-3 mb-3">
                                 <label for="SmtpPassword" class="form-label">SMTP Password</label>
                                 <input type="password" class="form-control" id="SmtpPassword" name="SmtpPassword" required />
                             </div>
@@ -165,6 +169,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Email</th>
+                                    <th>SMTP Server</th>
                                     <th>SMTP Password</th>
                                     <th>SMTP Port</th>
                                 </tr>
@@ -177,6 +182,7 @@
                                         <tr>
                                             <td>@admin.AdminId</td>
                                             <td>@admin.Email</td>
+                                            <td>@admin.SmtpServer</td>
                                             <td>@admin.SmtpPassword</td>
                                             <td>@admin.SmtpPort</td>
                                         </tr>

@@ -39,7 +39,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailSenderRepository _emailSender;
         private readonly IConfiguration _configuration;
 
         public RegisterModel(
@@ -49,7 +49,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+            IEmailSenderRepository emailSender,
             IConfiguration configuration)
         {
             _context = context;
@@ -236,6 +236,8 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
+                    var mail = "teamoutstanders@gmail.com";
+                    var pw = "zlhcbbzerpttznce";
 
                     var subject = "Confirm your email";
                     var body = $@"
@@ -257,8 +259,7 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                     <p style='font-size: 12px; color: #999;'>If you did not create this account, please ignore this email.</p>
                 </div>";
 
-                    await _emailSender.SendEmailAsync(Input.Email, subject, body);
-
+                    await _emailSender.SendEmailAsync(Input.Email, subject, body, mail, pw);
                     // if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     // {
                     //     return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });

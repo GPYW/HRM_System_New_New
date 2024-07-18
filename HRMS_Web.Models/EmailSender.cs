@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HRMS_Web.Models
 {
-    public class EmailSender : IEmailSender
+    public class EmailSender : IEmailSenderRepository
     {
-        public async Task SendEmailAsync(string email, string subject, string msg)
+        public async Task SendEmailAsync(string email, string subject, string msg, string sendermail, string senderpassword)
         {
-            var mail = "teamoutstanders@gmail.com";
-            var pw = "zlhcbbzerpttznce";
+            var mail = sendermail;
+            var pw = senderpassword;
 
             try
             {
