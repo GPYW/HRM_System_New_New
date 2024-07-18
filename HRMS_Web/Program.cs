@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
 using HRMS_Web.IService;
 using HRMS_Web.Service;
+using HRMS_Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddScoped<IPerformanceService, PerformanceService>();
 
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
