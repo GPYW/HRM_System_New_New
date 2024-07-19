@@ -21,5 +21,8 @@ namespace HRMS_Web.Models
         public ICollection<RemainingLeaves> RemainingLeaves { get; set; } = new List<RemainingLeaves>();
         // Navigation property to AttendanceMangementModel
         public ICollection<AttendanceManagement> AttendanceTimeTable { get; set; }
+        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+        // Navigation property to UsersNotification
+        public ICollection<UsersNotification> UsersNotifications { get; set; } = new List<UsersNotification>();
     }
 }

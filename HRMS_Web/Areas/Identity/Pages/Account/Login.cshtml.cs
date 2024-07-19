@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Configuration;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 namespace HRMS_Web.Areas.Identity.Pages.Account
 {
@@ -99,6 +100,8 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("/Home/Index");
 
+            HttpContext.Session.Remove("Username");
+
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -121,6 +124,9 @@ namespace HRMS_Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    HttpContext.Session.SetString("Username", userId);
 
                     // Call the API method to log the click
                     await LogClickApi();

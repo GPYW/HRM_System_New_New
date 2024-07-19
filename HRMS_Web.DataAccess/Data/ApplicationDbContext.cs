@@ -26,6 +26,9 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<LeaveManagement> LeaveTypes { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UsersNotification> UsersNotifications { get; set; }
+        public virtual DbSet<HubConnection> HubConnections { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -75,6 +78,33 @@ namespace HRMS_Web.DataAccess.Data
             .HasOne(c => c.User)
             .WithMany(u => u.Admins)
             .HasForeignKey(c => c.AdminId);
+
+            builder.Entity<Notification>()
+            .Property(rl => rl.NotificationId)
+            .ValueGeneratedOnAdd();
+
+            builder.Entity<Notification>()
+               .HasOne(l => l.User)
+               .WithMany(u => u.Notifications)
+               .HasForeignKey(l => l.SenderId)
+            .IsRequired();
+
+            builder.Entity<UsersNotification>()
+            .Property(rl => rl.RecordId)
+            .ValueGeneratedOnAdd();
+
+            builder.Entity<UsersNotification>()
+               .HasOne(l => l.User)
+               .WithMany(u => u.UsersNotifications)
+               .HasForeignKey(l => l.RecieverId)
+            .IsRequired();
+
+            builder.Entity<UsersNotification>()
+            .HasOne(lr => lr.Notification)
+            .WithMany(lm => lm.UsersNotifications)
+            .HasForeignKey(lr => lr.NotificationId)
+            .OnDelete(DeleteBehavior.Restrict) // This sets cascade delete to false
+            .IsRequired();
 
         }
     }

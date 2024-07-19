@@ -9,6 +9,7 @@
   <ItemGroup>
     <Content Remove="Views\EmployeeManagement\Create.cshtml" />
     <Content Remove="Views\EmployeeManagement\Index1.cshtml" />
+	  <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="iTextSharp" Version="5.5.13.4" />
   
 
@@ -16,13 +17,18 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
+	    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+	    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+	    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.2" />
+	    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+	  <PackageReference Include="SqlTableDependency" Version="8.5.8" />
+	  <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<ProjectReference Include="..\HRMS_Web.Models\HRMS_Web.Models.csproj" />
 		<ProjectReference Include="..\HRMS_Web.DataAccess\HRMS_Web.DataAccess.csproj" />

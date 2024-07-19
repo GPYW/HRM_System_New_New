@@ -7,8 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
 using HRMS_Web.IService;
 using HRMS_Web.Service;
+using HRMS_Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<INotiService, NotiService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -19,6 +22,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+// DI
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+// Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";
@@ -28,6 +40,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddSignalR();
 
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -56,6 +69,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.UseSession();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.MapControllerRoute(
     name: "default",
