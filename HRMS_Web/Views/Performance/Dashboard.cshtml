@@ -1,5 +1,37 @@
-﻿@model HRMS_Web.Models.PerformanceDashboardViewModel
+﻿<h1>egkeufufhhfeuhe</h1>
 
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fff;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Appraisal">Appraisal</a>
+                </li>
+              @*   <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="ViewLeaveHistory">View History</a>
+                </li> *@
+                
+                <div style="margin-left:240px;">
+                    <a asp-controller="LeaveManagement" asp-action="LeaveForm" class="btn btn-dark">
+                        <i class="bi bi-plus-circle"></i> Request a leave
+                    </a>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+@* @model HRMS_Web.Models.PerformanceDashboardViewModel
+ *@
+@* 
 @{
     ViewData["Title"] = "Performance Dashboard";
 }
@@ -177,3 +209,4 @@
         color: #343a40;
     }
 </style>
+ *@

@@ -14,6 +14,7 @@ namespace HRMS_Web.Models
         public string? CompanyID { get; set; }
         public string? DepartmentID { get; set; }
         public Department? Department { get; set; }
+        public string Designation { get; set; }
         public ICollection<Admin> Admins { get; set; }
         // Navigation property to LeaveRequestModel
         public ICollection<LeaveRequestModel> LeaveRequests { get; set; } = new List<LeaveRequestModel>();
@@ -21,5 +22,7 @@ namespace HRMS_Web.Models
         public ICollection<RemainingLeaves> RemainingLeaves { get; set; } = new List<RemainingLeaves>();
         // Navigation property to AttendanceMangementModel
         public ICollection<AttendanceManagement> AttendanceTimeTable { get; set; }
+        // Navigation property to AppraisalModel
+        public ICollection<Appraisal> Appraisals { get; set; }
     }
 }

@@ -1,0 +1,286 @@
+﻿@*  Popup form *@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Give Performance Appraisal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Employee</label>
+                        <select class="select select2-hidden-accessible" data-select2-id="select2-data-1-vbki" tabindex="-1" aria-hidden="true">
+                            <option data-select2-id="select2-data-3-onn7">Select Employee</option>
+                            <option>John Doe</option>
+                            <option>Mike Litorus</option>
+                        </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-2-zg2r" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-xwjm-container" aria-controls="select2-xwjm-container"><span class="select2-selection_rendered" id="select2-xwjm-container" role="textbox" aria-readonly="true" title="Select Employee">Select Employee</span><span class="select2-selection_arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                    </div>
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Select Date <span class="text-danger">*</span></label>
+                        <div class="cal-icon"><input class="form-control datetimepicker" type="text"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tab-box">
+                                <div class="row user-tabs">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                                        <ul class="nav nav-tabs nav-tabs-solid" role="tablist">
+                                            <li class="nav-item" role="presentation"><a href="#appr_technical" data-bs-toggle="tab" class="nav-link active" aria-selected="true" role="tab">Technical</a></li>
+                                            <li class="nav-item" role="presentation"><a href="#appr_organizational" data-bs-toggle="tab" class="nav-link" aria-selected="false" tabindex="-1" role="tab">Organizational</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <div id="appr_technical" class="pro-overview tab-pane fade show active" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="bg-white">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Technical Competencies</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="2">Indicator</th>
+                                                            <th colspan="2">Expected Value</th>
+                                                            <th>Set Value</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Customer Experience</td>
+                                                            <td colspan="2">Intermediate</td>
+                                                            <td>
+                                                                <select name="customer_experience" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                    <option value="4"> Expert / Leader</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Marketing</td>
+                                                            <td colspan="2">Advanced</td>
+                                                            <td>
+                                                                <select name="marketing" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                    <option value="4"> Expert / Leader</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Management</td>
+                                                            <td colspan="2">Advanced</td>
+                                                            <td>
+                                                                <select name="management" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                    <option value="4"> Expert / Leader</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Administration</td>
+                                                            <td colspan="2">Advanced</td>
+                                                            <td>
+                                                                <select name="administration" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                    <option value="4"> Expert / Leader</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Presentation Skill</td>
+                                                            <td colspan="2">Expert / Leader</td>
+                                                            <td>
+                                                                <select name="presentation_skill" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                    <option value="4"> Expert / Leader</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Quality Of Work</td>
+                                                            <td colspan="2">Expert / Leader</td>
+                                                            <td>
+                                                                <select name="quality_of_work" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                    <option value="4"> Expert / Leader</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Efficiency</td>
+                                                            <td colspan="2">Expert / Leader</td>
+                                                            <td>
+                                                                <select name="efficiency" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                    <option value="4"> Expert / Leader</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="appr_organizational" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="bg-white">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Organizational Competencies</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="2">Indicator</th>
+                                                            <th colspan="2">Expected Value</th>
+                                                            <th>Set Value</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Integrity</td>
+                                                            <td colspan="2">Beginner</td>
+                                                            <td>
+                                                                <select name="integrity" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Professionalism</td>
+                                                            <td colspan="2">Beginner</td>
+                                                            <td>
+                                                                <select name="professionalism" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Team Work</td>
+                                                            <td colspan="2">Intermediate</td>
+                                                            <td>
+                                                                <select name="team_work" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Critical Thinking</td>
+                                                            <td colspan="2">Advanced</td>
+                                                            <td>
+                                                                <select name="critical_thinking" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Conflict Management</td>
+                                                            <td colspan="2">Intermediate</td>
+                                                            <td>
+                                                                <select name="conflict_management" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Attendance</td>
+                                                            <td colspan="2">Intermediate</td>
+                                                            <td>
+                                                                <select name="attendance" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">Ability To Meet Deadline</td>
+                                                            <td colspan="2">Advanced</td>
+                                                            <td>
+                                                                <select name="ability_to_meet_deadline" class="form-control form-select">
+                                                                    <option value="">None</option>
+                                                                    <option value="1"> Beginner</option>
+                                                                    <option value="2"> Intermediate</option>
+                                                                    <option value="3"> Advanced</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="input-block mb-3">
+                        <label class="col-form-label">Status</label>
+                        <select class="select select2-hidden-accessible" data-select2-id="select2-data-4-yrp9" tabindex="-1" aria-hidden="true">
+                            <option data-select2-id="select2-data-6-nyj8">Active</option>
+                            <option>Inactive</option>
+                        </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-5-oofa" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-uhep-container" aria-controls="select2-uhep-container"><span class="select2-selection_rendered" id="select2-uhep-container" role="textbox" aria-readonly="true" title="Active">Active</span><span class="select2-selection_arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-section">
+                <button class="btn btn-primary submit-btn">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
