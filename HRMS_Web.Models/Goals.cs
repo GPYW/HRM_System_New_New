@@ -5,30 +5,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRMS_Web.Models
 {
-    public class Appraisal
+    public class Goals
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int AppraisalId { get; set; }
-
+        public int GoalId { get; set; }
         [Required]
-        public DateTime AppraisalDate { get; set; }
-
+        public string Title { get; set; }
         [Required]
-        public string Status { get; set; } //active , inactive
-
+        public string Description { get; set; }
         [Required]
-        public string Employee { get; set; }
-
+        public DateTime StartDate { get; set; }
         [Required]
-        public string Designation { get; set; }
-
+        public DateTime EndDate { get; set; }
         [Required]
-        public string Department { get; set; }
-
+        public GoalStatus Status { get; set; }
 
         // Foreign key to ApplicationUser
         [Required]
@@ -37,5 +32,13 @@ namespace HRMS_Web.Models
         // Navigation property to ApplicationUser
         [ForeignKey("Id")]
         public ApplicationUser? User { get; set; }
+    }
+
+    public enum GoalStatus
+    {
+        NotStarted,
+        InProgress,
+        Completed,
+        OnHold
     }
 }
