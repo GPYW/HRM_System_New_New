@@ -1,0 +1,59 @@
+﻿@model HRMS_Web.Models.Notification
+
+@{
+    ViewData["Title"] = "Create Notification";
+}
+
+<h2>Create Notification</h2>
+
+<form asp-action="Create" method="post">
+    <div class="row">
+        <div class="form-group col-6 pb-4">
+             <label asp-for="MessageType" class="control-label"></label>
+             <select asp-for="MessageType" class="form-control">
+                  <option value="General">General</option>
+                  <option value="Personal">Personal</option>
+                  <option value="Group">Group</option>
+             </select>
+             <span asp-validation-for="MessageType" class="text-danger"></span>
+        </div>
+        <div class="form-group col-6 pb-4">
+            <label asp-for="ReciverCode" class="control-label"></label>
+            <input asp-for="ReciverCode" class="form-control" type="text" />
+            <span asp-validation-for="ReciverCode" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6 pb-4">
+            <label asp-for="SenderUsername" class="control-label"></label>
+            <input asp-for="SenderUsername" class="form-control" id="userInput" readonly />
+        </div>
+        <div class="form-group col-6 pb-4">
+            <label asp-for="NotificationDateTime" class="control-label"></label>
+            <input asp-for="NotificationDateTime" class="form-control" type="datetime-local" />
+            <span asp-validation-for="NotificationDateTime" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Message" class="control-label"></label>
+        <textarea asp-for="Message" class="form-control" id="messageInput"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </div>
+    <div class="form-group" id="sendButton">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+
+@* 
+<div class="row p-1">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

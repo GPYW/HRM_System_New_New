@@ -1,0 +1,32 @@
+﻿@using HRMS_Web.Models
+@model IEnumerable<HRMS_Web.Models.UsersNotification>
+
+@{
+    ViewBag.Title = "All Notifications";
+}
+
+<h2 class="text-primary">All Notifications</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Sender</th>
+            <th scope="col">Message Type</th>
+            <th scope="col">Message</th>
+            <th scope="col">DateTime</th>
+            <th scope="col">IsRead</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Noti in Model)
+        {
+            <tr class="table-active">
+                <td>@Noti.Notification?.SenderUsername</td>
+                <td>@Noti.Notification?.MessageType</td>
+                <td>@Noti.Notification?.Message</td>
+                <td>@Noti.Notification?.NotificationDateTime</td>
+                <td>@Noti.IsRead</td>
+            </tr>
+        }
+    </tbody>
+</table>
