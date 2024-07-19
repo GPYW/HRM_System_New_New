@@ -18,10 +18,12 @@ namespace HRMS_Web.Controllers
     public class LeaveManagementController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IEmailSenderRepository _emailSender;
 
-        public LeaveManagementController(ApplicationDbContext db)
+        public LeaveManagementController(ApplicationDbContext db, IEmailSenderRepository emailSender)
         {
             _db = db;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -132,8 +134,8 @@ namespace HRMS_Web.Controllers
 
                 if (admin != null && leaveRequest.User != null)
                 {
-                    var emailSender = new EmailSender();
-                    await emailSender.SendEmailAsync(
+                    //var emailSender = new EmailSender();
+                    await _emailSender.SendEmailAsync(
                         leaveRequest.User.Email,
                         "Leave Request Approved",
                         $"Your leave request has been approved.",
@@ -180,8 +182,8 @@ namespace HRMS_Web.Controllers
 
                 if (admin != null && leaveRequest.User != null)
                 {
-                    var emailSender = new EmailSender();
-                    await emailSender.SendEmailAsync(
+                    //var emailSender = new EmailSender();
+                    await _emailSender.SendEmailAsync(
                         leaveRequest.User.Email,
                         "Leave Request Declined",
                         $"Your leave request has been declined.",
