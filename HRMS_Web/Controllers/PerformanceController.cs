@@ -3,11 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using HRMS_Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HRMS_Web.DataAccess.Data;
 using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.AspNetCore.Authorization;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.InkML;
+using System;
+using Mono.TextTemplating;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HRMS_Web.Controllers
 {
@@ -29,11 +34,7 @@ namespace HRMS_Web.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Goals()
-        {
-            return View();
-        }
+
 
         [HttpGet]
         public async Task<IActionResult> Appraisal()
@@ -42,10 +43,24 @@ namespace HRMS_Web.Controllers
             return View(appraisals);
         }
 
+        [Authorize(Roles = SD.Role_Admin)]
         [HttpGet]
         public async Task<IActionResult> AppraisalForm()
         {
-            
+            //var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            //var admin = _context.ApplicationUser.FirstOrDefault(u => u.Id == adminId);
+
+            //if (admin == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //// Filter names by department of the admin
+            //List<ApplicationUser> objAttendanceManagementList = _context.Appraisals
+            //    .Where(a => a.ApplicationUser.DepartmentID == admin.DepartmentID)
+            //    .ToList();
+
             ViewBag.Users = GetUsersAsync().Result;
             return View();
         }
@@ -54,16 +69,23 @@ namespace HRMS_Web.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentUser = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Id == userId);
+            if (currentUser == null)
+
+            {
+                return new List<ApplicationUser>();
+            }
+
             string departmentID = currentUser?.DepartmentID;
 
             return await _context.ApplicationUser
-                .Where(u => u.DepartmentID == departmentID)
+                .Where(u => u.DepartmentID == departmentID && u.Id != userId)
                 .ToListAsync();
         }
 
+        [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AppraisalForm([Bind("AppraisalDate,Status,Employee,Designation,Department")] Appraisal appraisal)
+        public async Task<IActionResult> AppraisalForm([Bind("AppraisalDate,Status,Id,Designation,Employee")] Appraisal appraisal)
         {
             if (!ModelState.IsValid)
             {
@@ -77,6 +99,7 @@ namespace HRMS_Web.Controllers
 
                 ViewBag.Users = GetUsersAsync().Result;
                 ModelState.AddModelError(string.Empty, "User not found");
+                //return View(appraisal); //to display the validation errors
             }
 
 
@@ -84,29 +107,321 @@ namespace HRMS_Web.Controllers
             //var user = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Id == userId);
             var user = await _context.ApplicationUser
                .Where(u => u.Id == appraisal.Id)
-               .Select(u => new { u.FirstName, u.LastName , u.DepartmentID})
+               .Select(u => new { u.FirstName, u.LastName, u.DepartmentID })
                .FirstOrDefaultAsync();
 
             if (user != null)
-                {
-                   
-                     appraisal.Employee = $"{user.FirstName} {user.LastName}";
+            {
+
+                appraisal.Employee = $"{user.FirstName} {user.LastName}";
 
                 var department = await _context.Department
                     .Where(u => u.DepartmentID == user.DepartmentID)
-                    .Select(u=>u.DepartmentName)
+                    .Select(u => u.DepartmentName)
                     .FirstOrDefaultAsync();
 
-                    appraisal.Department = department;
-                    _context.Add(appraisal);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Appraisal));
-                }
-             
-            
+                appraisal.Department = department;
+                _context.Add(appraisal);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Appraisal));
+            }
+
+
             ViewBag.Users = await GetUsersAsync();
+            ModelState.AddModelError(string.Empty, "User not found");
             return View(appraisal);
         }
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> AppraisalEdit(int AppraisalId)
+        //{
+        //    if (AppraisalId == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Appraisal AppraisalFromDb = _context.ApplicationUser.Include(u => u.Department).FirstOrDefault(u => u.Id == AppraisalId);
+
+        //    if (AppraisalFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    //ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        //    //{
+        //    //    new BreadcrumbItem { Title = "Employee Management", Url = Url.Action("Index", "EmployeeManagement") },
+        //    //    new BreadcrumbItem { Title = "Edit", Url = Url.Action("Edit", "EmployeeManagement") },
+
+        //    //};
+        //    return View(AppraisalFromDb);
+        //}
+
+
+        // Edit Action
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpGet]
+        public IActionResult AppraisalEdit(int? AppraisalId)
+        {
+            if (AppraisalId == null || AppraisalId == 0)
+            {
+                return NotFound();
+            }
+            Appraisal? AppraisalFromDb = _context.Appraisals.Find(AppraisalId);
+
+            if (AppraisalFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(AppraisalFromDb);
+        }
+
+        [HttpPost, ActionName("AppraisalEdit")]
+        public IActionResult AppraisalEdit(Appraisal model)
+        {
+            Appraisal? obj = _context.Appraisals.Find(model.AppraisalId);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            obj.AppraisalDate = model.AppraisalDate;
+            obj.Status = model.Status;
+            //  obj.Employee = model.Employee;
+            obj.Designation = model.Designation;
+
+            _context.SaveChanges();
+            return RedirectToAction("Appraisal");
+        }
+
+        //Delete Appraisal details
+
+        //public IActionResult AppraisalDelete(int? AppraisalId)
+        //{
+        //    if (AppraisalId == null || AppraisalId == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Appraisal? AppraisalFromDb = _context.Appraisals.Find(AppraisalId);
+
+        //    if (AppraisalFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(AppraisalFromDb);
+        //}
+
+        //[HttpPost, ActionName("AppraisalDelete")]
+        //public IActionResult AppraisaDeletelPOST(int? id)
+        //{
+        //    Appraisal? obj = _context.Appraisals.Find(id);
+        //    if (obj == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _context.Appraisals.Remove(obj);
+        //    _context.SaveChanges();
+        //    return RedirectToAction("Appraisal");
+        //}
+
+        // Delete Actions
+        //[Authorize(Roles = SD.Role_Admin)]
+        //[HttpGet]
+        //public async Task<IActionResult> deleteAppraisal(int? AppraisalId)
+        //{
+        //    if (AppraisalId == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var appraisal = await _context.Appraisals
+        //        .FirstOrDefaultAsync(m => m.AppraisalId == AppraisalId);
+        //    if (appraisal == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(appraisal);
+        //}
+
+        //[Authorize(Roles = SD.Role_Admin)]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> deleteAppraisalConfirmed(int AppraisalId)
+        //{
+        //    var appraisal = await _context.Appraisals.FindAsync(AppraisalId);
+        //    if (appraisal != null)
+        //    {
+        //        _context.Appraisals.Remove(appraisal);
+        //        await _context.SaveChangesAsync();
+        //        return Json(new { success = true });
+        //    }
+        //    return RedirectToAction(nameof(Appraisal));
+        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteAppraisalConfirmed(int AppraisalId)
+        {
+            try
+            {
+                var appraisal = _context.Appraisals.Find(AppraisalId);
+                if (appraisal != null)
+                {
+                    _context.Appraisals.Remove(appraisal);
+                    _context.SaveChanges();
+                    return Json(new { success = true });
+                }
+                return Json(new { success = false, message = "Appraisal not found" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+        //Goals create
+
+        [Authorize(Roles = SD.Role_Admin)]
+        public async Task<IActionResult> Goals()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (currentUser == null)
+            {
+                return NotFound("Current user not found");
+            }
+
+            var departmentID = currentUser.DepartmentID;
+            var employees = await _context.ApplicationUser
+                .Where(u => u.DepartmentID == departmentID && u.Id != userId)
+                .ToListAsync();
+
+            var goals = await _context.Goals.Include(g => g.User).ToListAsync();
+            var model = new Tuple<IEnumerable<Goals>, Goals>(goals, new Goals());
+
+            ViewBag.Users = employees;
+            return View(model);
+        }
+
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Goals([Bind("Title,Description,StartDate,EndDate,Status")] Goals goal, string selectedEmployeeId)
+        {
+            if (!ModelState.IsValid)
+            {
+                var user = await _context.ApplicationUser
+                    .Where(u => u.Id == selectedEmployeeId)
+                    .Select(u => new { u.FirstName, u.LastName })
+                    .FirstOrDefaultAsync();
+
+                if (user != null)
+                {
+                    goal.Employee = $"{user.FirstName} {user.LastName}";
+                    goal.Id = selectedEmployeeId; // Set the selected employee ID
+
+                    _context.Add(goal);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Goals));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found");
+                }
+            }
+
+            ViewBag.Users = await GetUsersAsync();
+            var goals = await _context.Goals.Include(g => g.User).ToListAsync();
+            var model = new Tuple<IEnumerable<Goals>, Goals>(goals, goal);
+            return View(model);
+        }
+
+        //Edit Goal
+
+        [Authorize(Roles = SD.Role_Admin)]
+        public async Task<IActionResult> EditGoal(int id)
+        {
+            var goal = await _context.Goals.FindAsync(id);
+            if (goal == null)
+            {
+                return NotFound();
+            }
+
+            var users = await GetUsersAsync();
+            ViewBag.Users = users;
+
+            return View(goal);
+        }
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGoal(int id, [Bind("GoalId,Title,Description,StartDate,EndDate,Status")] Goals goal, string selectedEmployeeId)
+        {
+            if (id != goal.GoalId)
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var user = await _context.ApplicationUser
+                    .Where(u => u.Id == selectedEmployeeId)
+                    .Select(u => new { u.FirstName, u.LastName })
+                    .FirstOrDefaultAsync();
+
+                if (user != null)
+                {
+                    goal.Employee = $"{user.FirstName} {user.LastName}";
+                    goal.Id = selectedEmployeeId; // Set the selected employee ID
+
+                    _context.Update(goal);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Goals));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found");
+                }
+            }
+
+            ViewBag.Users = await GetUsersAsync();
+            return View(goal);
+        }
+
+
+        //DeleteGoal
+
+        [Authorize(Roles = SD.Role_Admin)]
+        public async Task<IActionResult> DeleteGoal(int id)
+        {
+            var goal = await _context.Goals.FindAsync(id);
+            if (goal == null)
+            {
+                return NotFound();
+            }
+
+            return View(goal);
+        }
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpPost, ActionName("DeleteGoal")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGoalConfirmed(int id)
+        {
+            var goal = await _context.Goals.FindAsync(id);
+            if (goal != null)
+            {
+                _context.Goals.Remove(goal);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Goals));
+        }
+
+
 
     }
 }

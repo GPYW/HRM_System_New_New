@@ -13,7 +13,12 @@ namespace HRMS_Web.Models
     public class Goals
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GoalId { get; set; }
+
+        [Required]
+        public string Employee { get; set; }
+
         [Required]
         public string Title { get; set; }
         [Required]
