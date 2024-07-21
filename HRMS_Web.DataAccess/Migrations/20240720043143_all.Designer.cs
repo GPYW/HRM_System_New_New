@@ -4,6 +4,7 @@ using HRMS_Web.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMS_Web.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240720043143_all")]
+    partial class all
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,51 +56,6 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.HasIndex("AdminId");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("HRMS_Web.Models.Appraisal", b =>
-                {
-                    b.Property<int>("AppraisalId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppraisalId"));
-
-                    b.Property<DateTime>("AppraisalDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Designation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Employee")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AppraisalId");
-
-                    b.HasIndex("Id");
-
-                    b.ToTable("Appraisals");
                 });
 
             modelBuilder.Entity("HRMS_Web.Models.AttendanceManagement", b =>
@@ -161,44 +119,25 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.ToTable("Department");
                 });
 
-            modelBuilder.Entity("HRMS_Web.Models.Goals", b =>
+            modelBuilder.Entity("HRMS_Web.Models.HubConnection", b =>
                 {
-                    b.Property<int>("GoalId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GoalId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("ConnectionId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Employee")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.HasKey("Id");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GoalId");
-
-                    b.HasIndex("Id");
-
-                    b.ToTable("Goals");
+                    b.ToTable("HubConnections");
                 });
 
             modelBuilder.Entity("HRMS_Web.Models.LeaveManagement", b =>
@@ -271,6 +210,45 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.ToTable("LeaveRequests");
                 });
 
+            modelBuilder.Entity("HRMS_Web.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NotificationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReciverCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderUsername")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("HRMS_Web.Models.RemainingLeaves", b =>
                 {
                     b.Property<int>("RemainingLeaveId")
@@ -297,6 +275,33 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.HasIndex("LeaveId");
 
                     b.ToTable("RemainingLeaves");
+                });
+
+            modelBuilder.Entity("HRMS_Web.Models.UsersNotification", b =>
+                {
+                    b.Property<int>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecieverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("RecieverId");
+
+                    b.ToTable("UsersNotifications");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -526,10 +531,6 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.Property<string>("DepartmentID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Designation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -560,17 +561,6 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HRMS_Web.Models.Appraisal", b =>
-                {
-                    b.HasOne("HRMS_Web.Models.ApplicationUser", "User")
-                        .WithMany("Appraisals")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("HRMS_Web.Models.AttendanceManagement", b =>
                 {
                     b.HasOne("HRMS_Web.Models.ApplicationUser", "ApplicationUser")
@@ -580,17 +570,6 @@ namespace HRMS_Web.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("HRMS_Web.Models.Goals", b =>
-                {
-                    b.HasOne("HRMS_Web.Models.ApplicationUser", "User")
-                        .WithMany("Goals")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HRMS_Web.Models.LeaveRequestModel", b =>
@@ -612,6 +591,17 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HRMS_Web.Models.Notification", b =>
+                {
+                    b.HasOne("HRMS_Web.Models.ApplicationUser", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HRMS_Web.Models.RemainingLeaves", b =>
                 {
                     b.HasOne("HRMS_Web.Models.ApplicationUser", "User")
@@ -627,6 +617,25 @@ namespace HRMS_Web.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("LeaveManagement");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_Web.Models.UsersNotification", b =>
+                {
+                    b.HasOne("HRMS_Web.Models.Notification", "Notification")
+                        .WithMany("UsersNotifications")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_Web.Models.ApplicationUser", "User")
+                        .WithMany("UsersNotifications")
+                        .HasForeignKey("RecieverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
 
                     b.Navigation("User");
                 });
@@ -703,19 +712,24 @@ namespace HRMS_Web.DataAccess.Migrations
                     b.Navigation("RemainingLeaves");
                 });
 
+            modelBuilder.Entity("HRMS_Web.Models.Notification", b =>
+                {
+                    b.Navigation("UsersNotifications");
+                });
+
             modelBuilder.Entity("HRMS_Web.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Admins");
 
-                    b.Navigation("Appraisals");
-
                     b.Navigation("AttendanceTimeTable");
-
-                    b.Navigation("Goals");
 
                     b.Navigation("LeaveRequests");
 
+                    b.Navigation("Notifications");
+
                     b.Navigation("RemainingLeaves");
+
+                    b.Navigation("UsersNotifications");
                 });
 #pragma warning restore 612, 618
         }

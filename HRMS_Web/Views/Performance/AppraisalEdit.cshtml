@@ -39,28 +39,28 @@
                     </select>
                     <span id="EmployeeId-error" class="text-danger"></span>
                 </div>
-              @*   <div class="col-4 pb-4">
-                    <label class="control-label">Employee</label>
-                    <select id="UserDropdown" name="Employee" class="form-control" required>
-                        <option value="" disabled selected>Select Employee</option>
-                        @foreach (var user in users)
-                        {
-                            <option value="@user.Id" data-name="@user.FirstName @user.LastName">@($"{user.FirstName} {user.LastName}")</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Employee" class="text-danger"></span>
+                @*   <div class="col-4 pb-4">
+                <label class="control-label">Employee</label>
+                <select id="UserDropdown" name="Employee" class="form-control" required>
+                <option value="" disabled selected>Select Employee</option>
+                @foreach (var user in users)
+                {
+                <option value="@user.Id" data-name="@user.FirstName @user.LastName">@($"{user.FirstName} {user.LastName}")</option>
+                }
+                </select>
+                <span asp-validation-for="Employee" class="text-danger"></span>
 
                 </div> *@
 
                 <div class="col-4 pb-4">
                     <label asp-for="AppraisalDate" class="p-0"></label>
-                    <input asp-for="AppraisalDate" type="date" class="form-control" required />
-                 
+                    <input asp-for="AppraisalDate" type="date" class="form-control" required />
+
                 </div>
                 <div class="col-4 pb-4">
                     <label asp-for="Designation" class="p-0"></label>
-                    <input asp-for="Designation" type="text" class="form-control" required />
-                   
+                    <input asp-for="Designation" type="text" class="form-control" required />
+
                 </div>
             </div>
 
@@ -313,7 +313,7 @@
                 <div class="col-sm-12">
                     <div class="input-block mb-3">
                         <label for="Status" class="col-form-label">Status</label>
-                       
+
                         <select id="StatusDropdown" name="Status" class="form-control" required>
                             <option value="" disabled selected>Status</option>
                             <option>Active</option>
@@ -325,7 +325,7 @@
             </div>
             <input type="hidden" id="EmployeeId" name="Id" value="" />
             <input type="hidden" id="EmployeeName" name="Employee" value="" />
-          @*   <input type="hidden" id="Status" name="Status" value="" /> *@
+            @*   <input type="hidden" id="Status" name="Status" value="" /> *@
 
             <div class="submit-section">
                 <button class="btn btn-primary submit-btn">Submit</button>
@@ -371,4 +371,3 @@
 
 
 }
-

@@ -1,163 +1,163 @@
-﻿@using HRMS_Web.Models
-@model Tuple<IEnumerable<Goals>, Goals>
+﻿@* @model Tuple<IEnumerable<Goals>, Goals> *@
+@model IEnumerable<HRMS_Web.Models.Goals>
+@using HRMS_Web.Models
 @using Microsoft.AspNetCore.Mvc.Rendering
-
+@using HRMS_Web.Models
+@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "Goals";
     var users = ViewBag.Users as List<ApplicationUser>;
-    var statusOptions = new SelectList(new[]
-    {
-        new { Value = "NotStarted", Text = "Not Started" },
-        new { Value = "InProgress", Text = "In Progress" },
-        new { Value = "Completed", Text = "Completed" },
-        new { Value = "OnHold", Text = "On Hold" }
-    }, "Value", "Text", Model.Item2.Status);
+
 }
 
-<h2>Create Goal</h2>
+    <style>
+        .text-center {
+            text-align: center;
+            vertical-align: middle;
+        }
 
-<form asp-action="Goals" method="post">
-    @Html.AntiForgeryToken()
-    <div class="row">
-        <div class="col-6 pb-4">
-            <label for="Title" class="control-label">Title</label>
-            <input type="text" id="Title" name="Title" class="form-control" value="@Model.Item2.Title" />
-            <span id="Title-error" class="text-danger"></span>
-        </div>
+        .table th {
+            font-size: 0.65rem;
+            vertical-align: middle;
+        }
 
-        <div class="col-6 pb-4">
-            <label for="Employee" class="control-label">Employee</label>
-            <select id="Employee" name="selectedEmployeeId" class="form-control" required>
-                <option value="" disabled selected>Select Employee</option>
-                @if (users != null)
-                {
-                    foreach (var user in users)
+        .table td {
+            font-size: 0.85rem;
+            vertical-align: middle;
+        }
+
+        .btn-icon {
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .table img {
+            max-width: 30px;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        .nav_link {
+            color: #000000 !important;
+            font-weight: 500;
+            margin-right: 20px;
+        }
+
+            .nav_link:hover {
+                color: #17a2b8 !important;
+            }
+    </style>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fff;">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Appraisal">Appraisal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Goals">Goals</a>
+                    </li>
+                    @if (User.IsInRole(SD.Role_Admin))
                     {
-                        <option value="@user.Id">@($"{user.FirstName} {user.LastName}")</option>
+                        <li class="nav-item">
+                            <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="AdminView">Admin View</a>
+                        </li>
                     }
+                    <div style="margin-left:240px;">
+                        <a asp-controller="Performance" asp-action="CreateGoal" class="btn btn-dark">
+                            <i class="bi bi-plus-circle"></i> Add Goal
+                        </a>
+                    </div>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <h2>Employee Goals List</h2>
+
+    <!-- Goals List -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Employee</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        @*  <td>@(item.User?.FirstName + " " + item.User?.LastName ?? "No User Assigned")</td> * *@
+                        <td>@item.Employee</td>
+                        <td>@item.Description</td>
+                        <td>@item.StartDate.ToShortDateString()</td>
+                        <td>@item.EndDate.ToShortDateString()</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <a href="@Url.Action("EditGoal", new { id = item.GoalId })"> <i class="fas fa-edit"></i> Edit</a> |
+                            <a href="@Url.Action("DeleteGoal", new { id = item.GoalId })"> <i class="fas fa-trash-alt"></i>Delete</a>
+                        </td>
+                    </tr>
                 }
-            </select>
-            <span id="EmployeeId-error" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="Description" class="control-label">Description</label>
-        <input type="text" id="Description" name="Description" class="form-control" value="@Model.Item2.Description" />
-        <span id="Description-error" class="text-danger"></span>
-    </div>
-
-    <div class="row">
-        <div class="col-6 pb-4">
-            <label for="StartDate" class="control-label">Start Date</label>
-            <input type="date" id="StartDate" name="StartDate" class="form-control" value="@Model.Item2.StartDate.ToString("yyyy-MM-dd")" />
-            <span id="StartDate-error" class="text-danger"></span>
-        </div>
-
-        <div class="col-6 pb-4">
-            <label for="EndDate" class="control-label">End Date</label>
-            <input type="date" id="EndDate" name="EndDate" class="form-control" value="@Model.Item2.EndDate.ToString("yyyy-MM-dd")" />
-            <span id="EndDate-error" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="Status" class="control-label">Status</label>
-        <select id="Status" name="Status" class="form-control" asp-items="statusOptions"></select>
-        <span id="Status-error" class="text-danger"></span>
-    </div>
-    <input type="hidden" id="EmployeeId" name="Id" value="" />
-    <input type="hidden" id="EmployeeName" name="Employee" value=""/>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
-    </div>
-</form>
-
-<h2>Goals</h2>
-
-<!-- Goals List -->
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Employee</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Item1 != null)
-        {
-            foreach (var item in Model.Item1)
+            }
+            else
             {
                 <tr>
-                    <td>@item.Title</td>
-                   @*  <td>@(item.User?.FirstName + " " + item.User?.LastName ?? "No User Assigned")</td> * *@
-                    <td>@item.Employee</td> 
-                    <td>@item.Description</td>
-                    <td>@item.StartDate.ToShortDateString()</td>
-                    <td>@item.EndDate.ToShortDateString()</td>
-                    <td>@item.Status</td>
-                    <td>
-                        <a href="@Url.Action("EditGoal", new { id = item.GoalId })"> <i class="fas fa-edit"></i> Edit</a> |
-                        <a href="@Url.Action("DeleteGoal", new { id = item.GoalId })"> <i class="fas fa-trash-alt"></i>Delete</a>
-                    </td>
+                    <td colspan="7">No goals available.</td>
                 </tr>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="7">No goals available.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const userDropdown = document.getElementById('UserDropdown');
-        userDropdown.addEventListener('change', function () {
-            const selectedUserId = this.value;
-            const selectedUserName = this.options[this.selectedIndex].getAttribute('data-name');
-            console.log('Selected User ID:', selectedUserId);
-            console.log('Selected User Name:', selectedUserName);
 
-            
-            document.getElementById('EmployeeId').value = selectedUserId;
-            document.getElementById('EmployeeName').value = selectedUserName;
-        });
-    });
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+    @* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
     var ctx = document.getElementById('goalStatusChart').getContext('2d');
     var chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Not Started', 'In Progress', 'Completed', 'On Hold'],
-            datasets: [{
-                label: 'Number of Goals',
-                data: [
+    type: 'bar',
+    data: {
+    labels: ['Not Started', 'In Progress', 'Completed', 'On Hold'],
+    datasets: [{
+    label: 'Number of Goals',
+    data: [
     @Model.Item1.Count(g => g.Status == GoalStatus.NotStarted),
     @Model.Item1.Count(g => g.Status == GoalStatus.InProgress),
     @Model.Item1.Count(g => g.Status == GoalStatus.Completed),
     @Model.Item1.Count(g => g.Status == GoalStatus.OnHold)
-                        ],
-                backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56'],
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
+    ],
+    backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56'],
+    }]
+    },
+    options: {
+    responsive: true,
+    scales: {
+    y: {
+    beginAtZero: true
+    }
+    }
+    }
     });
-</script>
+    </script> *@
+
+</body>
+

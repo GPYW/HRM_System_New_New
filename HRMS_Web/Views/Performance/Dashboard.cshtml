@@ -1,4 +1,9 @@
-﻿
+﻿@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 <style>
     .nav_link {
         color: #000000 !important;
@@ -26,9 +31,13 @@
                 </li>
                  <li class="nav-item">
                     <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Goals">Goals</a>
-                </li> 
-                
-             
+                </li>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="AdminView">Admin View</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>

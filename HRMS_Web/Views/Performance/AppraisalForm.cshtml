@@ -38,12 +38,12 @@
                 <div class="col-4 pb-4">
                     <label for="fromDate">Date</label>
                     <input type="date" id="fromDate" name="StartDate" class="form-control" required />
-              @*       <span asp-validation-for="AppraisalDate" class="text-danger"></span> *@
+                    <span asp-validation-for="AppraisalDate" class="text-danger"></span>
                 </div>
                 <div class="col-4 pb-4">
                     <label for="Designation">Designation</label>
                     <input type="text" id="Designation" name="Designation" class="form-control" required />
-              @*       <span asp-validation-for="AppraisalDate" class="text-danger"></span> *@
+                    <span asp-validation-for="Designation" class="text-danger"></span>
                 </div>
             </div>
 
@@ -294,25 +294,35 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <div class="input-block mb-3">             
+                    <div class="input-block mb-3">
                         <label class="col-form-label">Status</label>
                         <select id="StatusDropdown" name="Status" class="form-control" required>
                             <option value="" disabled selected>Status</option>
                             <option>Active</option>
                             <option>Inactive</option>
                         </select>
-                    </div>  
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
             <input type="hidden" id="EmployeeId" name="Id" value="" />
             <input type="hidden" id="EmployeeName" name="Employee" value="" />
 
-            <div class="submit-section">
-                <button class="btn btn-primary submit-btn">Submit</button>
+            <div class="row">
+                <div class="col-3 pb-5">
+                    <button type="submit" class="btn btn-dark form-control">Submit</button>
+                </div>
+                <div class="col-3 pb-5">
+                    <a asp-controller="Performance" asp-action="Appraisal" class="btn btn-outline-dark form-control">Back to List</a>
+                </div>
             </div>
+            @*
+            <div class="submit-section">
+            <button class="btn btn-primary submit-btn">Submit</button>
+            </div> *@
         </form>
     </div>
-</div> 
+</div>
 
 @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> *@
 
@@ -321,7 +331,7 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-   @*  <script>
+    @*  <script>
         document.addEventListener('DOMContentLoaded', function () {
             const userDropdown = document.getElementById('UserDropdown');
             userDropdown.addEventListener('change', function () {
@@ -350,4 +360,3 @@
 
 
 }
-

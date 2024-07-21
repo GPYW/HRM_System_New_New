@@ -1,6 +1,11 @@
 ﻿@using HRMS_Web.Models
 @model IEnumerable<HRMS_Web.Models.Appraisal>
+@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
 
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,7 +70,12 @@
                       <li class="nav-item">
                     <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Goals">Goals</a>
                     </li> 
-
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="AdminView">Admin View</a>
+                        </li>
+                    }
 
                 </ul>
             </div>

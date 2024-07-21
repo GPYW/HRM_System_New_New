@@ -16,6 +16,7 @@ namespace HRMS_Web.Models
         public Department? Department { get; set; }
         public string Designation { get; set; }
         public ICollection<Admin> Admins { get; set; }
+        public ICollection<Goals> Goals { get; set; }
         // Navigation property to LeaveRequestModel
         public ICollection<LeaveRequestModel> LeaveRequests { get; set; } = new List<LeaveRequestModel>();
         // Navigation property to LeaveRequestModel

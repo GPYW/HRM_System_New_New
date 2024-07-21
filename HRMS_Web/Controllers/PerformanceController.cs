@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.InkML;
 using System;
 using Mono.TextTemplating;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRMS_Web.Controllers
 {
@@ -27,6 +28,38 @@ namespace HRMS_Web.Controllers
             //_userManager = userManager;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AdminView()
+        {
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Id == adminId);
+
+            if (admin == null)
+            {
+                return NotFound();
+            }
+
+            // Filter appraisals by department of the admin
+            var appraisals = await _context.Appraisals
+                .Where(a => a.User.DepartmentID == admin.DepartmentID)
+                .ToListAsync();
+
+            // Filter goals by department of the admin
+            var goals = await _context.Goals
+                .Where(g => g.User.DepartmentID == admin.DepartmentID)
+                .Include(g => g.User)
+                .ToListAsync();
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Performance", Url = Url.Action("Dashboard", "Performance") },
+                new BreadcrumbItem { Title = "Admin View", Url = Url.Action("AdminView", "Performance") }
+            };
+
+            var model = new Tuple<IEnumerable<Appraisal>, IEnumerable<Goals>>(appraisals, goals);
+
+            return View(model);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Dashboard()
@@ -34,6 +67,12 @@ namespace HRMS_Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CreateGoal()
+        {
+            ViewBag.Users = GetUsersAsync().Result;
+            return View();
+        }
 
 
         [HttpGet]
@@ -179,16 +218,16 @@ namespace HRMS_Web.Controllers
 
             return View(appraisal);
         }
-       
+
 
 
         [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
+
         public async Task<IActionResult> AppraisalEdit([Bind("AppraisalId,AppraisalDate,Status,Id,Designation,Employee")] Appraisal appraisal, string selectedEmployeeId)
         {
-           
+
             //if (id != appraisal.AppraisalId)
             //{
             //    return NotFound();
@@ -211,11 +250,11 @@ namespace HRMS_Web.Controllers
                 if (user != null)
                 {
                     obj.Employee = $"{user.FirstName} {user.LastName}";
-                  //  obj.Id = selectedEmployeeId; // Set the selected employee ID
+                    //  obj.Id = selectedEmployeeId; // Set the selected employee ID
                     obj.AppraisalDate = appraisal.AppraisalDate;
                     obj.Status = appraisal.Status;
-                    obj.Designation = appraisal.Designation; 
-                    
+                    obj.Designation = appraisal.Designation;
+
 
                     //_context.Add(appraisal);
                     await _context.SaveChangesAsync();
@@ -314,17 +353,17 @@ namespace HRMS_Web.Controllers
                 .ToListAsync();
 
             var goals = await _context.Goals.Include(g => g.User).ToListAsync();
-            var model = new Tuple<IEnumerable<Goals>, Goals>(goals, new Goals());
+            //var model = new Tuple<IEnumerable<Goals>, Goals>(goals, new Goals());
 
-            ViewBag.Users = employees;
-            return View(model);
+            //ViewBag.Users = employees;
+            return View(goals);
         }
 
 
         [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Goals([Bind("Title,Description,StartDate,EndDate,Status")] Goals goal, string selectedEmployeeId)
+        public async Task<IActionResult> CreateGoal([Bind("Title,Description,StartDate,EndDate,Status")] Goals goal, string selectedEmployeeId)
         {
             if (!ModelState.IsValid)
             {
@@ -336,7 +375,7 @@ namespace HRMS_Web.Controllers
                 if (user != null)
                 {
                     goal.Employee = $"{user.FirstName} {user.LastName}";
-                    goal.Id = selectedEmployeeId; // Set the selected employee ID
+                    goal.Id = selectedEmployeeId;
 
                     _context.Add(goal);
                     await _context.SaveChangesAsync();
@@ -350,8 +389,8 @@ namespace HRMS_Web.Controllers
 
             ViewBag.Users = await GetUsersAsync();
             var goals = await _context.Goals.Include(g => g.User).ToListAsync();
-            var model = new Tuple<IEnumerable<Goals>, Goals>(goals, goal);
-            return View(model);
+            //var model = new Tuple<IEnumerable<Goals>, Goals>(goals, goal);
+            return View(goals);
         }
 
         //Edit Goal

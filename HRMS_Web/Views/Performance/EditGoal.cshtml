@@ -34,7 +34,7 @@
                 {
                     foreach (var user in users)
                     {
-                       // <option value="@user.Id" @(user.Id == Model.Id ? "selected" : "")>@($"{user.FirstName} {user.LastName}")</option>
+                        // <option value="@user.Id" @(user.Id == Model.Id ? "selected" : "")>@($"{user.FirstName} {user.LastName}")</option>
                         <option value="@user.Id">@($"{user.FirstName} {user.LastName}")</option>
                     }
                 }
