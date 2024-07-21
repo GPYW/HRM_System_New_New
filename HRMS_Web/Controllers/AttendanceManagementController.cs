@@ -30,6 +30,7 @@ using OfficeOpenXml.Style;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 
 
 namespace HRMS_Web.Controllers
@@ -174,6 +175,8 @@ namespace HRMS_Web.Controllers
             return RedirectToAction("MarkAttendance");
         }
 
+
+        //Fetch employee list
 
         [HttpGet]
         public IActionResult AddDailyAttendance()
@@ -320,188 +323,88 @@ namespace HRMS_Web.Controllers
 
         //To Handle Daiy Attendance
 
-        //[HttpPost]
-        //public IActionResult SaveDailyAttendance([FromBody] List<AttendanceManagement> attendances)
-        //{
-        //    if (attendances == null || !attendances.Any())
-        //    {
-        //        return BadRequest(new { success = false, message = "No attendance data received." });
-        //    }
-
-        //    try
-        //    {
-        //        foreach (var attendance in attendances)
-        //        {
-        //            // Fetch the ApplicationUser based on the EmpID which refers to CompanyID
-        //        //    var user = _db.ApplicationUser.SingleOrDefault(u => u.CompanyID == attendance.EmpID);
-
-        //            //if (user == null)
-        //            //{
-        //            //    // Handle the case where the user is not found
-        //            //    return BadRequest(new { success = false, message = $"User with CompanyID '{attendance.EmpID}' not found." });
-        //            //}
-
-        //            // Assign the Id of the fetched user to the AttendanceManagement object
-        //           // attendance.Id = user.CompanyID;
-
-        //            // Check if the attendance record already exists for the employee on the given date
-        //            var existingRecord = _db.AttendanceTimeTable
-        //                .FirstOrDefault(a => a.EmpID == attendance.EmpID && a.Date.Date == attendance.Date.Date);
-
-        //            if (existingRecord != null)
-        //            {
-        //                // Update existing record if needed (for now, assuming it's handled elsewhere)
-        //                continue;
-        //            }
-        //            else
-        //            {
-        //                // Add new record
-        //                var newAttendance = new AttendanceManagement
-        //                {
-        //                    Id = attendance.Id,
-        //                    EmpID = attendance.EmpID,
-        //                    Date = attendance.Date,
-        //                    IsPresent = attendance.IsPresent,
-        //                    CheckIn = attendance.CheckIn,
-        //                    CheckOut = attendance.CheckOut,
-        //                    OverTime = attendance.OverTime,
-        //                    Break = attendance.Break
-        //                };
-        //                _db.AttendanceTimeTable.Add(newAttendance);
-        //            }
-        //        }
-
-        //        _db.SaveChanges();
-
-        //        return Ok(new { success = true, message = "Attendance saved successfully!" });
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception if necessary
-        //        return StatusCode(500, new { success = false, message = "An error occurred while saving the attendance." });
-        //    }
-        //}
-
-
-
-        //public IActionResult SaveDailyAttendance([FromBody] List<AttendanceManagement> attendances)
-        //{
-        //    if (attendances == null || !attendances.Any())
-        //    {
-        //        return BadRequest(new { success = false, message = "No attendance data received." });
-        //    }
-
-        //    try
-        //    {
-        //        foreach (var attendance in attendances)
-        //        {
-        //            // Fetch the ApplicationUser based on the Id property (assuming it's populated correctly on the client-side)
-        //            var user = _db.ApplicationUser.SingleOrDefault(u => u.Id == attendance.Id);
-
-        //            // Handle the case where the user is not found (optional, based on your business logic)
-        //            if (user == null)
-        //            {
-        //                // You can return an error message, create a new user record, or handle it differently
-        //                return BadRequest(new { success = false, message = $"User with Id '{attendance.Id}' not found." });
-        //            }
-
-        //            // Assign the fetched user to the attendance object
-        //            attendance.ApplicationUser = user;
-
-        //            var existingRecord = _db.AttendanceTimeTable
-        //               .FirstOrDefault(a => a.Id == attendance.Id && a.Date.Date == attendance.Date.Date);
-
-
-        //            // Check for existing attendance records and handle them appropriately (update or create new)
-        //            // ... (rest of your existing code to check and handle existing records)
-
-        //            if (existingRecord != null)
-        //            {
-        //                // Update existing record if needed (for now, assuming it's handled elsewhere)
-        //                continue;
-        //            }
-        //            else
-        //            {
-        //                // Add new record
-        //                var newAttendance = new AttendanceManagement
-        //                {
-        //                    ApplicationUser = attendance.ApplicationUser, // Set the foreign key relationship
-        //                    EmpID = attendance.EmpID,
-        //                    Date = attendance.Date,
-        //                    IsPresent = attendance.IsPresent,
-        //                    CheckIn = attendance.CheckIn,
-        //                    CheckOut = attendance.CheckOut,
-        //                    OverTime = attendance.OverTime,
-        //                    Break = attendance.Break
-        //                };
-        //                _db.AttendanceTimeTable.Add(newAttendance);
-        //            }
-        //        }
-
-        //                 _db.SaveChanges();
-
-        //        return Ok(new { success = true, message = "Attendance saved successfully!" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception if necessary
-        //        return StatusCode(500, new { success = false, message = "An error occurred while saving the attendance.", error = ex.Message });
-        //    }
-        //}
-
-
         [HttpPost]
         public IActionResult SaveDailyAttendance([FromBody] List<AttendanceManagement> attendances)
         {
             if (attendances == null || !attendances.Any())
             {
-                return Json(new { success = false, message = "No attendance data provided." });
+                return BadRequest(new { success = false, message = "No attendance data received." });
             }
 
             try
             {
                 foreach (var attendance in attendances)
                 {
+                    //if (!attendance.IsPresent)
+                    //{
+                    //    attendance.CheckIn = null;
+                    //    attendance.CheckOut = null;
+                    //    attendance.OverTime = null;
+                    //    attendance.Break = null;
+                    //}
+
+                    // Fetch the ApplicationUser based on the EmpID which refers to CompanyID
+                    var user = _db.ApplicationUser.SingleOrDefault(u => u.CompanyID == attendance.EmpID);
+
+                    if (user == null)
+                    {
+                        //    // Handle the case where the user is not found
+                        return BadRequest(new { success = false, message = $"User with CompanyID '{attendance.EmpID}' not found." });
+                    }
+
+                    // Assign the Id of the fetched user to the AttendanceManagement object
+                    attendance.Id = user.Id;
+
+                    // Check if the attendance record already exists for the employee on the given date
                     var existingRecord = _db.AttendanceTimeTable
-                        .FirstOrDefault(a => a.Date == attendance.Date && a.EmpID == attendance.EmpID);
+                        .FirstOrDefault(a => a.EmpID == attendance.EmpID && a.Date.Date == attendance.Date.Date);
 
                     if (existingRecord != null)
                     {
-                        // Update existing record
-                        existingRecord.CheckIn = attendance.CheckIn;
-                        existingRecord.CheckOut = attendance.CheckOut;
-                        existingRecord.Break = attendance.Break;
-                        existingRecord.OverTime = attendance.OverTime;
-                        existingRecord.IsPresent = attendance.IsPresent;
+                        // Update existing record if needed (for now, assuming it's handled elsewhere)
+                        continue;
                     }
                     else
                     {
                         // Add new record
-                        _db.AttendanceTimeTable.Add(new AttendanceManagement
+                        var newAttendance = new AttendanceManagement
                         {
+                            Id = attendance.Id,
                             EmpID = attendance.EmpID,
                             Date = attendance.Date,
+                            IsPresent = attendance.IsPresent,
                             CheckIn = attendance.CheckIn,
                             CheckOut = attendance.CheckOut,
-                            Break = attendance.Break,
                             OverTime = attendance.OverTime,
-                            IsPresent = attendance.IsPresent,
-                            Id = attendance.Id
-
-                        });
+                            Break = attendance.Break
+                        };
+                        _db.AttendanceTimeTable.Add(newAttendance);
                     }
                 }
 
                 _db.SaveChanges();
-                return Json(new { success = true });
+
+                return Ok(new { success = true, message = "Attendance saved successfully!" });
+
+            }
+            catch (DbUpdateException dbEx)
+            {
+                // Log the inner exception details
+                var innerExceptionMessage = dbEx.InnerException != null ? dbEx.InnerException.Message : dbEx.Message;
+                Console.Error.WriteLine("Error saving attendance: " + innerExceptionMessage);
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while saving the entity changes. See the inner exception for details: " + innerExceptionMessage
+                });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                // Log the exception details
+                Console.Error.WriteLine("General error: " + ex.Message);
+                return Json(new { success = false, message = "A general error occurred: " + ex.Message });
             }
         }
-
 
 
 
