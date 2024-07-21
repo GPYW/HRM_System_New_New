@@ -156,44 +156,88 @@ namespace HRMS_Web.Controllers
         //}
 
 
-        // Edit Action
+
+        //Edit Appraisal
+
+
         [Authorize(Roles = SD.Role_Admin)]
-        [HttpGet]
-        public IActionResult AppraisalEdit(int? AppraisalId)
+        public async Task<IActionResult> AppraisalEdit(int? id)
         {
-            if (AppraisalId == null || AppraisalId == 0)
-            {
-                return NotFound();
-            }
-            Appraisal? AppraisalFromDb = _context.Appraisals.Find(AppraisalId);
 
-            if (AppraisalFromDb == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            return View(AppraisalFromDb);
+            var appraisal = await _context.Appraisals.FindAsync(id);
+            if (appraisal == null)
+            {
+                return NotFound();
+            }
+
+            var users = await GetUsersAsync();
+            ViewBag.Users = users;
+
+            return View(appraisal);
+        }
+       
+
+
+        [Authorize(Roles = SD.Role_Admin)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        
+        public async Task<IActionResult> AppraisalEdit([Bind("AppraisalId,AppraisalDate,Status,Id,Designation,Employee")] Appraisal appraisal, string selectedEmployeeId)
+        {
+           
+            //if (id != appraisal.AppraisalId)
+            //{
+            //    return NotFound();
+            //}
+
+            if (!ModelState.IsValid)
+            {
+                Appraisal? obj = _context.Appraisals.Find(appraisal.AppraisalId);
+                if (obj == null)
+                {
+                    return NotFound();
+                }
+
+
+                var user = await _context.ApplicationUser
+                    .Where(u => u.Id == selectedEmployeeId)
+                    .Select(u => new { u.FirstName, u.LastName })
+                    .FirstOrDefaultAsync();
+
+                if (user != null)
+                {
+                    obj.Employee = $"{user.FirstName} {user.LastName}";
+                  //  obj.Id = selectedEmployeeId; // Set the selected employee ID
+                    obj.AppraisalDate = appraisal.AppraisalDate;
+                    obj.Status = appraisal.Status;
+                    obj.Designation = appraisal.Designation; 
+                    
+
+                    //_context.Add(appraisal);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Appraisal));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found");
+                }
+            }
+
+            ViewBag.Users = await GetUsersAsync();
+            return View(appraisal);
         }
 
-        [HttpPost, ActionName("AppraisalEdit")]
-        public IActionResult AppraisalEdit(Appraisal model)
-        {
-            Appraisal? obj = _context.Appraisals.Find(model.AppraisalId);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            obj.AppraisalDate = model.AppraisalDate;
-            obj.Status = model.Status;
-            //  obj.Employee = model.Employee;
-            obj.Designation = model.Designation;
 
-            _context.SaveChanges();
-            return RedirectToAction("Appraisal");
-        }
 
-        //Delete Appraisal details
 
-        //public IActionResult AppraisalDelete(int? AppraisalId)
+        //// Edit Action
+        //[Authorize(Roles = SD.Role_Admin)]
+        //[HttpGet]
+        //public IActionResult AppraisalEdit(int? AppraisalId)
         //{
         //    if (AppraisalId == null || AppraisalId == 0)
         //    {
@@ -208,53 +252,25 @@ namespace HRMS_Web.Controllers
         //    return View(AppraisalFromDb);
         //}
 
-        //[HttpPost, ActionName("AppraisalDelete")]
-        //public IActionResult AppraisaDeletelPOST(int? id)
+        //[HttpPost, ActionName("AppraisalEdit")]
+        //public IActionResult AppraisalEdit(Appraisal model)
         //{
-        //    Appraisal? obj = _context.Appraisals.Find(id);
+        //    Appraisal? obj = _context.Appraisals.Find(model.AppraisalId);
         //    if (obj == null)
         //    {
         //        return NotFound();
         //    }
-        //    _context.Appraisals.Remove(obj);
+        //    obj.AppraisalDate = model.AppraisalDate;
+        //    obj.Status = model.Status;
+        //    //  obj.Employee = model.Employee;
+        //    obj.Designation = model.Designation;
+
         //    _context.SaveChanges();
         //    return RedirectToAction("Appraisal");
         //}
 
-        // Delete Actions
-        //[Authorize(Roles = SD.Role_Admin)]
-        //[HttpGet]
-        //public async Task<IActionResult> deleteAppraisal(int? AppraisalId)
-        //{
-        //    if (AppraisalId == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //Delete Appraisal details
 
-        //    var appraisal = await _context.Appraisals
-        //        .FirstOrDefaultAsync(m => m.AppraisalId == AppraisalId);
-        //    if (appraisal == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(appraisal);
-        //}
-
-        //[Authorize(Roles = SD.Role_Admin)]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> deleteAppraisalConfirmed(int AppraisalId)
-        //{
-        //    var appraisal = await _context.Appraisals.FindAsync(AppraisalId);
-        //    if (appraisal != null)
-        //    {
-        //        _context.Appraisals.Remove(appraisal);
-        //        await _context.SaveChangesAsync();
-        //        return Json(new { success = true });
-        //    }
-        //    return RedirectToAction(nameof(Appraisal));
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

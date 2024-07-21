@@ -22,7 +22,23 @@
         <form asp-action="AppraisalEdit" method="post">
             <input asp-for="AppraisalId" hidden />
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.AppraisalId)
             <div class="row">
+                <div class="col-4 pb-4">
+                    <label for="Employee" class="control-label">Employee</label>
+                    <select id="Employee" name="selectedEmployeeId" class="form-control" required>
+                        <option value="" disabled>Select Employee</option>
+                        @if (users != null)
+                        {
+                            foreach (var user in users)
+                            {
+                                // <option value="@user.Id" @(user.Id == Model.Id ? "selected" : "")>@($"{user.FirstName} {user.LastName}")</option>
+                                <option value="@user.Id">@($"{user.FirstName} {user.LastName}")</option>
+                            }
+                        }
+                    </select>
+                    <span id="EmployeeId-error" class="text-danger"></span>
+                </div>
               @*   <div class="col-4 pb-4">
                     <label class="control-label">Employee</label>
                     <select id="UserDropdown" name="Employee" class="form-control" required>
@@ -37,14 +53,14 @@
                 </div> *@
 
                 <div class="col-4 pb-4">
-                    <label for="fromDate">Date</label>
-                    <input type="date" id="fromDate" name="StartDate" class="form-control" required />
-                    @*       <span asp-validation-for="AppraisalDate" class="text-danger"></span> *@
+                    <label asp-for="AppraisalDate" class="p-0"></label>
+                    <input asp-for="AppraisalDate" type="date" class="form-control" required />
+                 
                 </div>
                 <div class="col-4 pb-4">
-                    <label for="Designation">Designation</label>
-                    <input type="text" id="Designation" name="Designation" class="form-control" required />
-                    @*       <span asp-validation-for="AppraisalDate" class="text-danger"></span> *@
+                    <label asp-for="Designation" class="p-0"></label>
+                    <input asp-for="Designation" type="text" class="form-control" required />
+                   
                 </div>
             </div>
 
@@ -296,17 +312,20 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="input-block mb-3">
-                        <label class="col-form-label">Status</label>
+                        <label for="Status" class="col-form-label">Status</label>
+                       
                         <select id="StatusDropdown" name="Status" class="form-control" required>
                             <option value="" disabled selected>Status</option>
                             <option>Active</option>
                             <option>Inactive</option>
                         </select>
+
                     </div>
                 </div>
             </div>
             <input type="hidden" id="EmployeeId" name="Id" value="" />
             <input type="hidden" id="EmployeeName" name="Employee" value="" />
+          @*   <input type="hidden" id="Status" name="Status" value="" /> *@
 
             <div class="submit-section">
                 <button class="btn btn-primary submit-btn">Submit</button>
@@ -345,6 +364,7 @@
                 // Set the hidden input values
                 document.getElementById('EmployeeId').value = selectedUserId;
                 document.getElementById('EmployeeName').value = selectedUserName;
+                // document.getElementById('Status').value = selectedUserName;
             });
         });
     </script>
