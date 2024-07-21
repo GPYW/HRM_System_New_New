@@ -31,6 +31,13 @@ namespace HRMS_Web.Controllers
                                   .Include(l => l.User) // Include the ApplicationUser
                                   .Where(l => l.RecieverId == userId)
                                   .ToListAsync();
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Notifications", Url = Url.Action("AllNotificationsAsync", "Notification") }
+            };
+
             return View(notifications);
         }
 
@@ -51,6 +58,13 @@ namespace HRMS_Web.Controllers
             {
                 notification.SenderUsername = $"{user.FirstName} {user.LastName}";
             }
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Notifications", Url = Url.Action("AllNotificationsAsync", "Notification") },
+                new BreadcrumbItem { Title = "Create Notification", Url = Url.Action("Create", "Notification") }
+            };
 
             return View(notification);
         }

@@ -1,32 +1,129 @@
 ﻿@using HRMS_Web.Models
 @model IEnumerable<HRMS_Web.Models.UsersNotification>
+@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewBag.Title = "All Notifications";
 }
+<style>
+    /* notification.css */
 
-<h2 class="text-primary">All Notifications</h2>
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        background-color: #ffffff;
+    }
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Sender</th>
-            <th scope="col">Message Type</th>
-            <th scope="col">Message</th>
-            <th scope="col">DateTime</th>
-            <th scope="col">IsRead</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var Noti in Model)
-        {
-            <tr class="table-active">
-                <td>@Noti.Notification?.SenderUsername</td>
-                <td>@Noti.Notification?.MessageType</td>
-                <td>@Noti.Notification?.Message</td>
-                <td>@Noti.Notification?.NotificationDateTime</td>
-                <td>@Noti.IsRead</td>
-            </tr>
+        .table thead th {
+            background-color: #343a40;
+            color: #ffffff;
+            border-bottom: 2px solid #dee2e6;
+            text-transform: uppercase;
+            letter-spacing: 0.05em; /* Increase letter spacing for headers */
         }
-    </tbody>
-</table>
+
+        .table th,
+        .table td {
+            padding: 16px;
+            vertical-align: middle;
+            border-top: 1px solid #dee2e6;
+            text-align: center; /* Center align text */
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa; /* Light grey hover effect */
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f2f2f2; /* Light grey striping */
+    }
+
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
+
+    .notification-row td {
+        padding: 12px 8px; /* Adjust padding for a cleaner look */
+    }
+
+    .badge {
+        font-size: 0.9em; /* Adjust badge font size */
+        padding: 0.5em 0.75em; /* Adjust badge padding */
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+    }
+
+    /* Additional customization */
+    h2.text-primary {
+        letter-spacing: 0.05em; /* Increase letter spacing */
+        text-transform: uppercase; /* Uppercase heading */
+        font-weight: bold;
+    }
+
+    .table-responsive {
+        margin-bottom: 2rem; /* Add bottom margin */
+        border-radius: 0.5rem; /* Rounded corners */
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Light shadow */
+        overflow: hidden; /* Hide overflow for rounded corners */
+    }
+
+</style><br />
+<h5 class="text-darkS mb-4">All Notifications</h5>
+
+@if (User.IsInRole(SD.Role_Admin))
+{
+    <div class="col-12 text-end">
+    <a asp-area="" asp-controller="Notification" asp-action="Create" class="btn btn-dark " id="createnotification">
+        Create Notification <i class="bi bi-bell-fill"></i><i class="bi bi-plus"></i>
+    </a>
+</div>
+}
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Sender</th>
+                <th scope="col">Message Type</th>
+                <th scope="col">Message</th>
+                <th scope="col">DateTime</th>
+                <th scope="col">IsRead</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Noti in Model)
+            {
+                <tr class="notification-row">
+                    <td>@Noti.Notification?.SenderUsername</td>
+                    <td>@Noti.Notification?.MessageType</td>
+                    <td>@Noti.Notification?.Message</td>
+                    <td>@Noti.Notification?.NotificationDateTime</td>
+                    <td>
+                        @if (Noti.IsRead)
+                        {
+                            <span class="badge badge-success">Read</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">Unread</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
