@@ -14,34 +14,20 @@
     <title>HRM System</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/fontawesome-free/css/all.min.css">
-
-    @*   Icons *@
     <link href="https://bootswatch.com/5/lux/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/jqvmap/jqvmap.min.css">
-
     <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css?v=3.2.0">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/daterangepicker/daterangepicker.css">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/summernote/summernote-bs4.min.css">
-
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
-    @* NotificationLinks *@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link href="~/notification/ikr.notification.css" rel="stylesheet" />
@@ -52,21 +38,22 @@
             color: white !important;
         }
 
+        .navbar-nav .nav-item {
+            display: flex !important;
+            align-items: center !important;
+        }
+
     </style>
 
-    <script nonce="ae60b1a4-bbc8-493e-a700-9bf7c86886e8">try { (function (w, d) { !function (k, l, m, n) { k[m] = k[m] || {}; k[m].executed = []; k.zaraz = { deferred: [], listeners: [] }; k.zaraz.q = []; k.zaraz.f = function (o) { return async function () { var p = Array.prototype.slice.call(arguments); k.zaraz.q.push({ m: o, a: p }) } }; for (const q of ["track", "set", "debug"]) k.zaraz[q] = k.zaraz.f(q); k.zaraz.init = () => { var r = l.getElementsByTagName(n)[0], s = l.createElement(n), t = l.getElementsByTagName("title")[0]; t && (k[m].t = l.getElementsByTagName("title")[0].text); k[m].x = Math.random(); k[m].w = k.screen.width; k[m].h = k.screen.height; k[m].j = k.innerHeight; k[m].e = k.innerWidth; k[m].l = k.location.href; k[m].r = l.referrer; k[m].k = k.screen.colorDepth; k[m].n = l.characterSet; k[m].o = (new Date).getTimezoneOffset(); if (k.dataLayer) for (const x of Object.entries(Object.entries(dataLayer).reduce(((y, z) => ({ ...y[1], ...z[1] })), {}))) zaraz.set(x[0], x[1], { scope: "page" }); k[m].q = []; for (; k.zaraz.q.length;) { const A = k.zaraz.q.shift(); k[m].q.push(A) } s.defer = !0; for (const B of [localStorage, sessionStorage]) Object.keys(B || {}).filter((D => D.startsWith("zaraz"))).forEach((C => { try { k[m]["z" + C.slice(7)] = JSON.parse(B.getItem(C)) } catch { k[m]["z" + C.slice(7)] = B.getItem(C) } })); s.referrerPolicy = "origin"; s.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(k[m]))); r.parentNode.insertBefore(s, r) };["complete", "interactive"].includes(l.readyState) ? zaraz.init() : k.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document) } catch (e) { throw fetch("/cdn-cgi/zaraz/t"), e; };</script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
     <div class="wrapper">
-
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake img-fluid rounded" src="~/images/2.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <nav class="main-header navbar navbar-expand navbar-dark">
-
-            @* Home Contact *@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
@@ -78,41 +65,18 @@
                     }
                 </li>
             </ul>
-            <div id="noti_Container"><i class="far fa-bell"></i></div>
 
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
-                    </a>
-                    @* <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div> *@
+                <li class="nav-item">
+                    <div id="noti_Container"></div>
+                    <i style="position:absolute ;margin-left:25px ;margin-top:5px;color:white;" class="far fa-bell"></i>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
-
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item">
@@ -132,19 +96,13 @@
             </ul>
         </nav>
 
-
-
-        @*  Side Nav *@
-
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
             <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
                 <img src="~/images/2.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity:1">
                 <span class="brand-text font-weight-light">Outstanders</span>
             </a>
 
             <div class="sidebar">
-
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         <img src="~/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
@@ -156,76 +114,54 @@
 
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-
                         <li class="nav-item">
                             <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Home") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">
                                 <i class="bi bi-house-door"></i>
-                                <p>
-                                    Home
-                                </p>
+                                <p>Home</p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "AttendanceManagement") ? "active" : "")" asp-area="" asp-controller="AttendanceManagement" asp-action="Index">
                                 <i class="bi bi-list-check"></i>
-                                <p>
-                                    Attendance Management
-                                </p>
+                                <p>Attendance Management</p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "LeaveManagement") ? "active" : "")" asp-area="" asp-controller="LeaveManagement" asp-action="Index">
                                 <i class="bi bi-calendar"></i>
-                                <p>
-                                    Leave Management
-                                </p>
+                                <p>Leave Management</p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "ProfileSettings") ? "active" : "")" asp-area="" asp-controller="ProfileSettings" asp-action="Index">
                                 <i class="bi bi-person-gear"></i>
-                                <p>
-                                    Profile Settings
-                                </p>
+                                <p>Profile Settings</p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Performance") ? "active" : "")" asp-area="" asp-controller="Performance" asp-action="Index">
                                 <i class="bi bi-bullseye"></i>
-                                <p>
-                                    Performance
-                                </p>
+                                <p>Performance</p>
                             </a>
                         </li>
-                        @if (User.IsInRole(SD.Role_Admin)){
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
                             <li class="nav-item">
                                 <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "EmployeeManagement") ? "active" : "")" asp-area="" asp-controller="EmployeeManagement" asp-action="Index">
                                     <i class="bi bi-people"></i>
-                                    <p>
-                                        Employee Management
-                                    </p>
+                                    <p>Employee Management</p>
                                 </a>
                             </li>
-
                             <li class="nav-item">
                                 <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Configuration") ? "active" : "")" asp-area="" asp-controller="Configuration" asp-action="Index">
                                     <i class="fas fa-cogs"></i>
-                                    <p>
-                                        Configurations
-                                    </p>
+                                    <p>Configurations</p>
                                 </a>
                             </li>
                         }
                     </ul>
                 </nav>
-
             </div>
-
         </aside>
 
         <div class="container">
@@ -236,7 +172,6 @@
             </main>
         </div>
 
-
         <footer class="border-bottom footer bg-dark text-muted fixed-bottom">
             <div class="text-center text-light">
                 Made with <i class="bi bi-heart-fill"></i> by Outstanders
@@ -244,49 +179,31 @@
         </footer>
     </div>
 
-
     <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
-
     <script src="~/AdminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
-
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
-
     <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <script src="~/AdminLTE/plugins/chart.js/Chart.min.js"></script>
-
     <script src="~/AdminLTE/plugins/sparklines/sparkline.js"></script>
-
     <script src="~/AdminLTE/plugins/jqvmap/jquery.vmap.min.js"></script>
     <script src="~/AdminLTE/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-
     <script src="~/AdminLTE/plugins/jquery-knob/jquery.knob.min.js"></script>
-
     <script src="~/AdminLTE/plugins/moment/moment.min.js"></script>
     <script src="~/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
-
     <script src="~/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-
     <script src="~/AdminLTE/plugins/summernote/summernote-bs4.min.js"></script>
-
     <script src="~/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-
     <script src="~/AdminLTE/dist/js/adminlte.js?v=3.2.0"></script>
-
     <script src="~/AdminLTE/dist/js/pages/dashboard.js"></script>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-    @* NotificationLinks *@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/notification.js"></script>
     <script src="~/notification/ikr.notificationplugin.js"></script>
-
     <script src="~/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -316,8 +233,7 @@
                 "responsive": true,
             });
         });
-    </script>
-    <script type="text/javascript">
+
         $(document).ready(function () {
             $("#noti_Container").ikrNotificationSetup();
             $.ajax({
@@ -345,6 +261,5 @@
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 </html>
