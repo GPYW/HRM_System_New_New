@@ -26,22 +26,22 @@ namespace HRMS_Web.Controllers
             return View();
         }
 
-        public IActionResult ProjectDetails(int id)
-        {
-            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
-            {
-                new BreadcrumbItem { Title = "Performance", Url = Url.Action("Index", "Performance") },
-                new BreadcrumbItem { Title = "ProjectDetails", Url = Url.Action("Projects", "Performance") },
-            };
-            // Retrieve project details by id from the database or service
-            var project = _projectService.GetProjectById(id); // Assuming you have a service to get project details
-            if (project == null)
-            {
-                return NotFound();
-            }
+        //public IActionResult ProjectDetails(int id)
+        //{
+        //    ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+        //    {
+        //        new BreadcrumbItem { Title = "Performance", Url = Url.Action("Index", "Performance") },
+        //        new BreadcrumbItem { Title = "ProjectDetails", Url = Url.Action("Projects", "Performance") },
+        //    };
+        //    // Retrieve project details by id from the database or service
+        //    var project = _projectService.GetProjectById(id); // Assuming you have a service to get project details
+        //    if (project == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(project);
-        }
+        //    return View(project);
+        //}
 
         public IActionResult Tasks()
         {
