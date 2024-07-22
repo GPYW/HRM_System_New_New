@@ -68,7 +68,7 @@ namespace HRMS_Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateGoal()
+        public async Task<IActionResult> CreateGoals()
         {
             ViewBag.Users = GetUsersAsync().Result;
             return View();
@@ -228,12 +228,6 @@ namespace HRMS_Web.Controllers
 
         public async Task<IActionResult> AppraisalEdit([Bind("AppraisalId,AppraisalDate,Status,Id,Designation,Employee")] Appraisal appraisal, string selectedEmployeeId)
         {
-
-            //if (id != appraisal.AppraisalId)
-            //{
-            //    return NotFound();
-            //}
-
             if (!ModelState.IsValid)
             {
                 Appraisal? obj = _context.Appraisals.Find(appraisal.AppraisalId);
@@ -270,46 +264,6 @@ namespace HRMS_Web.Controllers
             ViewBag.Users = await GetUsersAsync();
             return View(appraisal);
         }
-
-
-
-
-        //// Edit Action
-        //[Authorize(Roles = SD.Role_Admin)]
-        //[HttpGet]
-        //public IActionResult AppraisalEdit(int? AppraisalId)
-        //{
-        //    if (AppraisalId == null || AppraisalId == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Appraisal? AppraisalFromDb = _context.Appraisals.Find(AppraisalId);
-
-        //    if (AppraisalFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(AppraisalFromDb);
-        //}
-
-        //[HttpPost, ActionName("AppraisalEdit")]
-        //public IActionResult AppraisalEdit(Appraisal model)
-        //{
-        //    Appraisal? obj = _context.Appraisals.Find(model.AppraisalId);
-        //    if (obj == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    obj.AppraisalDate = model.AppraisalDate;
-        //    obj.Status = model.Status;
-        //    //  obj.Employee = model.Employee;
-        //    obj.Designation = model.Designation;
-
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Appraisal");
-        //}
-
-        //Delete Appraisal details
 
 
         [HttpPost]
@@ -360,14 +314,30 @@ namespace HRMS_Web.Controllers
             return View(goals);
         }
 
-
         [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateGoal([Bind("Title,Description,StartDate,EndDate,Status")] Goals goal, string selectedEmployeeId)
+
+        public async Task<IActionResult> CreateGoals([Bind("GoalId,StartDate,EndDate,Status,Id,Description,Employee")] Goals goal, string selectedEmployeeId)
         {
             if (!ModelState.IsValid)
             {
+                Goals? obj;
+                if (goal.GoalId == 0)
+                {
+                    obj = new Goals();
+                    _context.Goals.Add(obj);
+                }
+                else
+                {
+                    obj = await _context.Goals.FindAsync(goal.GoalId);
+                    if (obj == null)
+                    {
+                        return NotFound();
+                    }
+                }
+
+
                 var user = await _context.ApplicationUser
                     .Where(u => u.Id == selectedEmployeeId)
                     .Select(u => new { u.FirstName, u.LastName })
@@ -375,10 +345,16 @@ namespace HRMS_Web.Controllers
 
                 if (user != null)
                 {
-                    goal.Employee = $"{user.FirstName} {user.LastName}";
-                    goal.Id = selectedEmployeeId;
+                    obj.Employee = $"{user.FirstName} {user.LastName}";
+                    //  obj.Id = selectedEmployeeId; // Set the selected employee ID
+                    obj.StartDate = goal.StartDate;
+                    obj.EndDate = goal.EndDate;
+                    obj.Status = goal.Status;
+                    obj.Title = "Organizational";
+                    obj.Description = goal.Description;
 
-                    _context.Add(goal);
+
+                    //_context.Add(appraisal);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Goals));
                 }
@@ -389,10 +365,41 @@ namespace HRMS_Web.Controllers
             }
 
             ViewBag.Users = await GetUsersAsync();
-            var goals = await _context.Goals.Include(g => g.User).ToListAsync();
-            //var model = new Tuple<IEnumerable<Goals>, Goals>(goals, goal);
-            return View(goals);
+            return View(Goals);
         }
+
+        //[Authorize(Roles = SD.Role_Admin)]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateGoals([Bind("Title,Description,StartDate,EndDate,Status")] Goals goal, string selectedEmployeeId)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        var user = await _context.ApplicationUser
+        //            .Where(u => u.Id == selectedEmployeeId)
+        //            .Select(u => new { u.FirstName, u.LastName })
+        //            .FirstOrDefaultAsync();
+
+        //        if (user != null)
+        //        {
+        //            goal.Employee = $"{user.FirstName} {user.LastName}";
+        //            goal.Id = selectedEmployeeId;
+
+        //            _context.Add(goal);
+        //            await _context.SaveChangesAsync();
+        //            return RedirectToAction(nameof(Goals));
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError(string.Empty, "User not found");
+        //        }
+        //    }
+
+        //    ViewBag.Users = await GetUsersAsync();
+        //    var goals = await _context.Goals.Include(g => g.User).ToListAsync();
+        //    //var model = new Tuple<IEnumerable<Goals>, Goals>(goals, goal);
+        //    return View(goals);
+        //}
 
         //Edit Goal
 
