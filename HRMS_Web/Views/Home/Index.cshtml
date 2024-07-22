@@ -1,14 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model HRMS_Web.Models.ApplicationUser
+@using HRMS_Web.ViewModel;
 
-    var totalEmployees = ViewData["TotalEmployees"] ?? 0;
-    var todayAttendanceCount = ViewData["TodayAttendanceCount"] ?? 0;
-    var totalAttendancePercentage = ViewData["TotalAttendancePercentage"] ?? 0;
-    var totalLeavesTaken = ViewData["TotalLeavesTaken"] ?? 0;
-    var pendingLeaveRequests = ViewData["PendingLeaveRequests"] ?? 0;
-    var totalDepartments = ViewData["TotalDepartments"] ?? 0;
-    var totalProjects = ViewData["TotalProjects"] ?? 0;
-    var completedTasks = ViewData["CompletedTasks"] ?? 0;
+@{
+    ViewData["Title"] = "Home Page";
 
     var currentTime = DateTime.Now;
     string imageUrl;
@@ -93,8 +87,8 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>@totalEmployees</h3>
-                            <p>Total Employees</p>
+                            <h3>150</h3>
+                            <p>Employees</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-ios-people"></i>
@@ -105,20 +99,63 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>@todayAttendanceCount</h3>
-                            <p>Today's Attendance</p>
+                            <h3>53<sup style="font-size: 20px">%</sup></h3>
+                            <p>Attendance</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-calendar"></i>
                         </div>
                         <a asp-area="" asp-controller="AttendanceManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-lightblue">
+                        <div class="inner">
+                            <h3>44</h3>
+                            <p>Leaves</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a asp-area="" asp-controller="LeaveManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-lightblue">
+                        <div class="inner">
+                            <h3>65</h3>
+                            <p>Reports</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-document-text"></i>
+                        </div>
+                        <a asp-area="" asp-controller="AttendanceManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid container-xl">
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>150</h3>
+                            <p>Employees</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-ios-people"></i>
+                        </div>
+                        <a asp-area="" asp-controller="EmployeeManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>@totalAttendancePercentage<sup style="font-size: 20px">%</sup></h3>
-                            <p>Attendance Percentage</p>
+                            <h3>53<sup style="font-size: 20px">%</sup></h3>
+                            <p>Attendance</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-calendar"></i>
@@ -129,8 +166,8 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-lightblue">
                         <div class="inner">
-                            <h3>@totalLeavesTaken</h3>
-                            <p>Leaves Taken</p>
+                            <h3>44</h3>
+                            <p>Leaves</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
@@ -141,52 +178,17 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-lightblue">
                         <div class="inner">
-                            <h3>@pendingLeaveRequests</h3>
-                            <p>Pending Leave Requests</p>
+                            <h3>65</h3>
+                            <p>Reports</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
+                            <i class="ion ion-document-text"></i>
                         </div>
-                        <a asp-area="" asp-controller="LeaveManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-lightblue">
-                        <div class="inner">
-                            <h3>@totalDepartments</h3>
-                            <p>Total Departments</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a asp-area="" asp-controller="DepartmentManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-lightblue">
-                        <div class="inner">
-                            <h3>@totalProjects</h3>
-                            <p>Total Projects</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a asp-area="" asp-controller="ProjectManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-lightblue">
-                        <div class="inner">
-                            <h3>@completedTasks</h3>
-                            <p>Completed Tasks</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a asp-area="" asp-controller="TaskManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a asp-area="" asp-controller="AttendanceManagement" asp-action="Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 </body>

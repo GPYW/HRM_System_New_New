@@ -1,41 +1,39 @@
-using DocumentFormat.OpenXml.Office2021.DocumentTasks;
-using HRMS_Web.DataAccess.Data;
+using HRMS_Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace HRMS_Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger)
         {
-            _context = context;
+            _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var today = DateTime.Today;
-
-            var totalEmployees = await _context.ApplicationUser.CountAsync();
-            var todayAttendanceCount = await _context.AttendanceTimeTable.CountAsync(a => a.Date == today && a.IsPresent);
-            var totalAttendanceCount = await _context.AttendanceTimeTable.CountAsync(a => a.IsPresent);
-            var totalAttendancePercentage = totalAttendanceCount * 100 / totalEmployees;
-            var totalLeavesTaken = await _context.LeaveRequests.CountAsync();
-            var pendingLeaveRequests = await _context.LeaveRequests.CountAsync(lr => lr.Status == "Pending");
-            var totalDepartments = await _context.Departments.CountAsync();
-
-            ViewData["TotalEmployees"] = totalEmployees;
-            ViewData["TodayAttendanceCount"] = todayAttendanceCount;
-            ViewData["TotalAttendancePercentage"] = totalAttendancePercentage;
-            ViewData["TotalLeavesTaken"] = totalLeavesTaken;
-            ViewData["PendingLeaveRequests"] = pendingLeaveRequests;
-            ViewData["TotalDepartments"] = totalDepartments;
-
+                ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Dashboard", Url = Url.Action("Index", "Home") },
+            };
             return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
