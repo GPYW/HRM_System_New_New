@@ -222,7 +222,7 @@ namespace HRMS_Web.Controllers
                 }
 
                 ViewBag.LeaveTypes = await GetLeaveTypesAsync();
-                return View(model);
+                //return View(model);
             }
 
             model.Status = "Pending";

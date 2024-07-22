@@ -109,7 +109,7 @@ namespace HRMS_Web.Controllers
         [HttpPost]
         public IActionResult Edit(ApplicationUser model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 ApplicationUser? obj = _db.ApplicationUser.Find(model.Id);
                 if (obj == null)

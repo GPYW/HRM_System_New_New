@@ -141,7 +141,7 @@ namespace HRMS_Web.Controllers
                 //return View(appraisal); //to display the validation errors
             }
 
-
+            
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var user = await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Id == userId);
             var user = await _context.ApplicationUser
@@ -159,6 +159,7 @@ namespace HRMS_Web.Controllers
                     .Select(u => u.DepartmentName)
                     .FirstOrDefaultAsync();
 
+                appraisal.Title = "Orgamizational";
                 appraisal.Department = department;
                 _context.Add(appraisal);
                 await _context.SaveChangesAsync();

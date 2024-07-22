@@ -23,7 +23,7 @@ namespace HRMS_Web.Models
         public string Employee { get; set; }
 
         [Required]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [Required]
         public string Designation { get; set; }

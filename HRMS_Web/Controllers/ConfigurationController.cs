@@ -128,6 +128,35 @@ namespace HRMS_Web.Controllers
             return View("Index", viewModel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDepartment([Bind("DepartmentID,DepartmentName,NoOfEmployees")] Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(department);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["Breadcrumb"] = new List<BreadcrumbItem>
+            {
+                new BreadcrumbItem { Title = "Home", Url = Url.Action("Index", "Home") },
+                new BreadcrumbItem { Title = "Configuration", Url = Url.Action("Index", "Configuration") },
+            };
+
+            var viewModel = new ConfigurationViewModel
+            {
+                LeaveTypes = await _context.LeaveManagement.ToListAsync(),
+                NewLeaveType = new LeaveManagement(),
+                Roles = await _roleManager.Roles.ToListAsync(),
+                NewRole = new IdentityRole(),
+                Departments = await _context.Departments.ToListAsync(),
+                NewDepartment = department
+            };
+            return View("Index", viewModel);
+        }
+
     }
 }
 
