@@ -1,0 +1,81 @@
+﻿@using HRMS_Web.Models
+@model Goals
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Edit Goal";
+    var users = ViewBag.Users as List<ApplicationUser>;
+    var statusOptions = new SelectList(new[]
+    {
+        new { Value = "NotStarted", Text = "Not Started" },
+        new { Value = "InProgress", Text = "In Progress" },
+        new { Value = "Completed", Text = "Completed" },
+        new { Value = "OnHold", Text = "On Hold" }
+    }, "Value", "Text", Model.Status);
+}
+
+<h2>Edit Goal</h2>
+
+<form asp-action="EditGoal" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.GoalId)
+    <div class="row">
+        <div class="col-6 pb-4">
+            <label for="Title" class="control-label">Title</label>
+            <input type="text" id="Title" name="Title" class="form-control" value="@Model.Title" />
+            <span id="Title-error" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 pb-4">
+            <label for="Employee" class="control-label">Employee</label>
+            <select id="Employee" name="selectedEmployeeId" class="form-control" required>
+                <option value="" disabled>Select Employee</option>
+                @if (users != null)
+                {
+                    foreach (var user in users)
+                    {
+                        // <option value="@user.Id" @(user.Id == Model.Id ? "selected" : "")>@($"{user.FirstName} {user.LastName}")</option>
+                        <option value="@user.Id">@($"{user.FirstName} {user.LastName}")</option>
+                    }
+                }
+            </select>
+            <span id="EmployeeId-error" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Description" class="control-label">Description</label>
+        <input type="text" id="Description" name="Description" class="form-control" value="@Model.Description" />
+        <span id="Description-error" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-6 pb-4">
+            <label for="StartDate" class="control-label">Start Date</label>
+            <input type="date" id="StartDate" name="StartDate" class="form-control" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+            <span id="StartDate-error" class="text-danger"></span>
+        </div>
+
+        <div class="col-6 pb-4">
+            <label for="EndDate" class="control-label">End Date</label>
+            <input type="date" id="EndDate" name="EndDate" class="form-control" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+            <span id="EndDate-error" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Status" class="control-label">Status</label>
+        <select id="Status" name="Status" class="form-control" asp-items="statusOptions"></select>
+        <span id="Status-error" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+
+    <div class="col-md-6">
+        <div class=" mb-3">
+            <a asp-action="Goals" class="btn btn-outline-dark w-100">Back to List</a>
+        </div>
+    </div>
+</form>
