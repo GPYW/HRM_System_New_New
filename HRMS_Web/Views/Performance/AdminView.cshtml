@@ -1,0 +1,107 @@
+﻿@model Tuple<IEnumerable<HRMS_Web.Models.Appraisal>, IEnumerable<HRMS_Web.Models.Goals>>
+@{
+    ViewData["Title"] = "Admin View";
+}
+
+@using HRMS_Web.Models
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
+
+<style>
+    .nav_link {
+        color: #000000 !important;
+        font-weight: 500;
+        margin-right: 20px;
+    }
+
+        .nav_link:hover {
+            color: #17a2b8 !important;
+        }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fff;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Appraisal">Appraisal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Goals">Goals</a>
+                </li>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="AdminView">Admin View</a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<h4 class="my-4">Admin View</h4>
+
+<h5 class="mb-3">Appraisals</h5>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Employee</th>
+                <th>Appraisal Date</th>
+                <th>Status</th>
+                <th>Designation</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appraisal in Model.Item1)
+            {
+                <tr>
+                    <td>@appraisal.Employee</td>
+                    <td>@appraisal.AppraisalDate.ToString("yyyy-MM-dd")</td>
+                    <td>@appraisal.Status</td>
+                    <td>@appraisal.Designation</td>
+                    <td>@appraisal.Department</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<h5 class="mb-3">Existing Goals</h5>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Employee</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var goal in Model.Item2)
+            {
+                <tr>
+                    <td>@goal.Title</td>
+                    <td>@goal.Description</td>
+                    <td>@goal.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@goal.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>@goal.Status</td>
+                    <td>@goal.Employee</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

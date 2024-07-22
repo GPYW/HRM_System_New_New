@@ -1,0 +1,163 @@
+﻿@* @model Tuple<IEnumerable<Goals>, Goals> *@
+@model IEnumerable<HRMS_Web.Models.Goals>
+@using HRMS_Web.Models
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using HRMS_Web.Models
+@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Goals";
+    var users = ViewBag.Users as List<ApplicationUser>;
+
+}
+
+    <style>
+        .text-center {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table th {
+            font-size: 0.65rem;
+            vertical-align: middle;
+        }
+
+        .table td {
+            font-size: 0.85rem;
+            vertical-align: middle;
+        }
+
+        .btn-icon {
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .table img {
+            max-width: 30px;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        .nav_link {
+            color: #000000 !important;
+            font-weight: 500;
+            margin-right: 20px;
+        }
+
+            .nav_link:hover {
+                color: #17a2b8 !important;
+            }
+    </style>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fff;">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Appraisal">Appraisal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Goals">Goals</a>
+                    </li>
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="AdminView">Admin View</a>
+                        </li>
+                    }
+                    <div style="margin-left:240px;">
+                        <a asp-controller="Performance" asp-action="CreateGoal" class="btn btn-dark">
+                            <i class="bi bi-plus-circle"></i> Add Goal
+                        </a>
+                    </div>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <h2>Employee Goals List</h2>
+
+    <!-- Goals List -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Employee</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        @*  <td>@(item.User?.FirstName + " " + item.User?.LastName ?? "No User Assigned")</td> * *@
+                        <td>@item.Employee</td>
+                        <td>@item.Description</td>
+                        <td>@item.StartDate.ToShortDateString()</td>
+                        <td>@item.EndDate.ToShortDateString()</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <a href="@Url.Action("EditGoal", new { id = item.GoalId })"> <i class="fas fa-edit"></i> Edit</a> |
+                            <a href="@Url.Action("DeleteGoal", new { id = item.GoalId })"> <i class="fas fa-trash-alt"></i>Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">No goals available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+    @* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    var ctx = document.getElementById('goalStatusChart').getContext('2d');
+    var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+    labels: ['Not Started', 'In Progress', 'Completed', 'On Hold'],
+    datasets: [{
+    label: 'Number of Goals',
+    data: [
+    @Model.Item1.Count(g => g.Status == GoalStatus.NotStarted),
+    @Model.Item1.Count(g => g.Status == GoalStatus.InProgress),
+    @Model.Item1.Count(g => g.Status == GoalStatus.Completed),
+    @Model.Item1.Count(g => g.Status == GoalStatus.OnHold)
+    ],
+    backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56'],
+    }]
+    },
+    options: {
+    responsive: true,
+    scales: {
+    y: {
+    beginAtZero: true
+    }
+    }
+    }
+    });
+    </script> *@
+
+</body>
+

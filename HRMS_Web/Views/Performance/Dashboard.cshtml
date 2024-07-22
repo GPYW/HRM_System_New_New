@@ -1,0 +1,229 @@
+﻿@using HRMS_Web;
+@using Microsoft.AspNetCore.Identity
+@using HRMS_Web.Models;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<style>
+    .nav_link {
+        color: #000000 !important;
+        font-weight: 500;
+        margin-right: 20px;
+    }
+
+        .nav_link:hover {
+            color: #17a2b8 !important;
+        }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fff;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Appraisal">Appraisal</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="Goals">Goals</a>
+                </li>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link nav_link" asp-area="" asp-controller="Performance" asp-action="AdminView">Admin View</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+
+@* @model HRMS_Web.Models.PerformanceDashboardViewModel
+ *@
+@* 
+@{
+    ViewData["Title"] = "Performance Dashboard";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="dashboard">
+    <div class="employee-profile card">
+        <img src="@Model.PhotoUrl" alt="Profile Picture" />
+        <h3>@Model.EmployeeName</h3>
+        <p>@Model.JobTitle, @Model.Department</p>
+    </div>
+
+    <div class="performance-summary card">
+        <h4>Performance Score</h4>
+        <p class="score">@Model.PerformanceScore</p>
+    </div>
+
+    <div class="goal-progress card">
+        <h4>Goals</h4>
+        <ul>
+            @foreach (var goal in Model.Goals)
+            {
+                <li>@goal.Description - <span class="progress">@goal.Progress%</span></li>
+            }
+        </ul>
+    </div>
+
+    <div class="performance-reviews card">
+        <h4>Performance Reviews</h4>
+        <ul>
+            @foreach (var review in Model.Reviews)
+            {
+                <li>
+                    <strong>@review.ReviewPeriod:</strong> @review.Rating
+                    <p>@review.Comments</p>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="recent-feedback card">
+        <h4>Recent Feedback</h4>
+        <ul>
+            @foreach (var feedback in Model.RecentFeedback)
+            {
+                <li>
+                    <strong>@feedback.From:</strong> @feedback.Message
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="trainings card">
+        <h4>Training Progress</h4>
+        <ul>
+            @foreach (var training in Model.Trainings)
+            {
+                <li>@training.CourseName - <span class="status">@training.Status</span></li>
+            }
+        </ul>
+    </div>
+
+    <div class="achievements card">
+        <h4>Achievements</h4>
+        <ul>
+            @foreach (var achievement in Model.Achievements)
+            {
+                <li>
+                    <strong>@achievement.Title:</strong> @achievement.Description
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #333;
+        font-size: 2rem;
+    }
+
+    .dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .employee-profile {
+        grid-column: span 2;
+        text-align: center;
+    }
+
+        .employee-profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+        }
+
+    .performance-summary,
+    .goal-progress,
+    .performance-reviews,
+    .recent-feedback,
+    .trainings,
+    .achievements {
+        border-radius: 8px;
+        background-color: #ffffff;
+        padding: 1.5rem;
+    }
+
+        .performance-summary h4,
+        .goal-progress h4,
+        .performance-reviews h4,
+        .recent-feedback h4,
+        .trainings h4,
+        .achievements h4 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+        }
+
+    .score {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .progress {
+        font-weight: bold;
+        color: #17a2b8;
+    }
+
+    .status {
+        font-weight: bold;
+        color: #ffc107;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 0.75rem;
+    }
+
+    strong {
+        color: #343a40;
+    }
+</style>
+ *@
