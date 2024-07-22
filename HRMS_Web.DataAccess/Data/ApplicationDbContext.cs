@@ -29,6 +29,9 @@ namespace HRMS_Web.DataAccess.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<UsersNotification> UsersNotifications { get; set; }
         public virtual DbSet<HubConnection> HubConnections { get; set; } = null!;
+        public DbSet<Appraisal> Appraisals { get; set; }
+        public DbSet<Goals> Goals { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -105,6 +108,18 @@ namespace HRMS_Web.DataAccess.Data
             .HasForeignKey(lr => lr.NotificationId)
             .OnDelete(DeleteBehavior.Restrict) // This sets cascade delete to false
             .IsRequired();
+
+            builder.Entity<Appraisal>()
+               .HasOne(a => a.User)
+               .WithMany(u => u.Appraisals)
+               .HasForeignKey(a => a.Id)
+               .IsRequired();
+
+            builder.Entity<Goals>()
+            .HasOne(g => g.User)
+            .WithMany(e => e.Goals)
+            .HasForeignKey(g => g.Id);
+
 
         }
     }
